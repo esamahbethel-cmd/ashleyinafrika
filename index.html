@@ -1,394 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <title>Ashley in Afrika | Top-Of-Funnel System</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;600;700;800;900&display=swap"
-        rel="stylesheet">
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
-    <style>
-        :root {
-            --bg: #05050A;
-            --surface: #0A0D14;
-            --card: #121622;
-            --border: #1F2538;
-            --text: #F8FAFC;
-            --muted: #94A3B8;
-            --accent: #3B82F6;
-            --gradient: linear-gradient(135deg, #3B82F6, #8B5CF6);
-            --gradient-hover: linear-gradient(135deg, #2563EB, #7C3AED);
-        }
+  <meta charset="UTF-8">
+  <title>Ashley in Afrika | Top-Of-Funnel System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+  <style>
+    :root {
+      --bg: #05050A; --surface: #0A0D14; --card: #121622; --border: #1F2538;
+      --text: #F8FAFC; --muted: #94A3B8; --accent: #3B82F6;
+      --gradient: linear-gradient(135deg, #3B82F6, #8B5CF6);
+      --gradient-hover: linear-gradient(135deg, #2563EB, #7C3AED);
+    }
+    body {
+      margin: 0; padding: 0; background: var(--bg); color: var(--text);
+      font-family: 'Outfit', 'DM Sans', sans-serif; -webkit-font-smoothing: antialiased;
+    }
+    * { box-sizing: border-box; }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #1F2538; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #3B82F6; }
+    
+    .glass { background: rgba(10, 13, 20, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+    button { font-family: inherit; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    
+    .btn-primary {
+      background: var(--gradient); color: white; border: none; padding: 14px 28px;
+      border-radius: 12px; font-weight: 700; font-size: 14px;
+      cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 16px rgba(59, 130, 246, 0.2);
+    }
+    .btn-primary:not(:disabled):hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4); }
+    .btn-secondary {
+      background: var(--card); color: var(--text); border: 1px solid var(--border); padding: 14px 28px;
+      border-radius: 12px; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-secondary:not(:disabled):hover { background: var(--border); }
+    
+    .status-badge { padding: 4px 12px; border-radius: 100px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; display: inline-block; }
 
-        body {
-            margin: 0;
-            padding: 0;
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'Outfit', 'DM Sans', sans-serif;
-            -webkit-font-smoothing: antialiased;
-        }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .animate-up { animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
-        * {
-            box-sizing: border-box;
-        }
+    /* RESPONSIVE LAYOUT CLASSES */
+    .app-container { display: flex; min-height: 100vh; background: var(--bg); }
+    .sidebar { width: 280px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; z-index: 10; }
+    .sidebar-header { padding: 32px 24px; }
+    .sidebar-nav { padding: 0 16px; display: flex; flex-direction: column; gap: 8px; }
+    .content-area { flex: 1; padding: 48px 64px; height: 100vh; overflow-y: auto; overflow-x: hidden; }
+    .page-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 32px; }
+    .outreach-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 32px; }
+    .desktop-table { display: table; width: 100%; border-collapse: collapse; }
+    .mobile-cards { display: none; }
+    .pagination-bar { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; background: var(--surface); border-top: 1px solid var(--border); }
 
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #1F2538;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #3B82F6;
-        }
-
-        .glass {
-            background: rgba(10, 13, 20, 0.85);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        button {
-            font-family: inherit;
-        }
-
-        button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .btn-primary {
-            background: var(--gradient);
-            color: white;
-            border: none;
-            padding: 14px 28px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 16px rgba(59, 130, 246, 0.2);
-        }
-
-        .btn-primary:not(:disabled):hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
-        }
-
-        .btn-secondary {
-            background: var(--card);
-            color: var(--text);
-            border: 1px solid var(--border);
-            padding: 14px 28px;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-secondary:not(:disabled):hover {
-            background: var(--border);
-        }
-
-        .status-badge {
-            padding: 4px 12px;
-            border-radius: 100px;
-            font-size: 11px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            display: inline-block;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .animate-up {
-            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        /* RESPONSIVE LAYOUT CLASSES */
-        .app-container {
-            display: flex;
-            min-height: 100vh;
-            background: var(--bg);
-        }
-
-        .sidebar {
-            width: 280px;
-            background: var(--surface);
-            border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            flex-shrink: 0;
-            z-index: 10;
-        }
-
-        .sidebar-header {
-            padding: 32px 24px;
-        }
-
-        .sidebar-nav {
-            padding: 0 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .content-area {
-            flex: 1;
-            padding: 48px 64px;
-            height: 100vh;
-            overflow-y: auto;
-            overflow-x: hidden;
-        }
-
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-bottom: 32px;
-        }
-
-        .outreach-grid {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 32px;
-        }
-
-        .desktop-table {
-            display: table;
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .mobile-cards {
-            display: none;
-        }
-
-        .pagination-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 24px;
-            background: var(--surface);
-            border-top: 1px solid var(--border);
-        }
-
-        /* MOBILE OVERRIDES */
-        @media (max-width: 850px) {
-            .app-container {
-                flex-direction: column;
-                height: 100vh;
-                overflow: hidden;
-            }
-
-            .sidebar {
-                width: 100%;
-                border-right: none;
-                border-bottom: 1px solid var(--border);
-                padding-bottom: 8px;
-            }
-
-            .sidebar-header {
-                padding: 16px 20px;
-                display: flex;
-                align-items: center;
-                gap: 12px;
-            }
-
-            .sidebar-header>div:nth-child(1) {
-                margin-bottom: 0 !important;
-                width: 32px !important;
-                height: 32px !important;
-                font-size: 16px !important;
-            }
-
-            .sidebar-header>div:nth-child(3) {
-                display: none;
-            }
-
-            .sidebar-nav {
-                flex-direction: row;
-                padding: 8px 16px;
-                overflow-x: auto;
-                scrollbar-width: none;
-            }
-
-            .sidebar-nav::-webkit-scrollbar {
-                display: none;
-            }
-
-            .sidebar-nav>div {
-                white-space: nowrap;
-                font-size: 14px !important;
-                padding: 12px 20px !important;
-            }
-
-            .content-area {
-                padding: 24px 16px;
-                height: auto;
-                overflow-y: auto;
-                padding-bottom: 80px;
-            }
-
-            .page-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 16px;
-                margin-bottom: 24px;
-            }
-
-            .page-header h1 {
-                font-size: 28px !important;
-            }
-
-            .page-header select {
-                width: 100%;
-                padding: 14px !important;
-            }
-
-            .outreach-grid {
-                grid-template-columns: 1fr;
-                gap: 24px;
-            }
-
-            .desktop-table {
-                display: none;
-            }
-
-            .mobile-cards {
-                display: flex;
-                flex-direction: column;
-                gap: 16px;
-                padding: 16px;
-                background: var(--surface);
-            }
-
-            .mobile-card {
-                background: var(--card);
-                border: 1px solid var(--border);
-                border-radius: 12px;
-                padding: 20px;
-            }
-
-            .pagination-bar {
-                flex-direction: column;
-                gap: 16px;
-                text-align: center;
-                padding: 20px 16px;
-            }
-
-            .pagination-bar>div:last-child {
-                width: 100%;
-                display: grid;
-                grid-template-columns: 1fr auto 1fr;
-                gap: 8px;
-            }
-        }
-    </style>
+    /* MOBILE OVERRIDES */
+    @media (max-width: 850px) {
+      .app-container { flex-direction: column; height: 100vh; overflow: hidden; }
+      .sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+      .sidebar-header { padding: 16px 20px; display: flex; align-items: center; gap: 12px; }
+      .sidebar-header > div:nth-child(1) { margin-bottom: 0 !important; width: 32px !important; height: 32px !important; font-size: 16px !important; }
+      .sidebar-header > div:nth-child(3) { display: none; }
+      
+      .sidebar-nav { flex-direction: row; padding: 8px 16px; overflow-x: auto; scrollbar-width: none; }
+      .sidebar-nav::-webkit-scrollbar { display: none; }
+      .sidebar-nav > div { white-space: nowrap; font-size: 14px !important; padding: 12px 20px !important; }
+      
+      .content-area { padding: 24px 16px; height: auto; overflow-y: auto; padding-bottom: 80px; }
+      .page-header { flex-direction: column; align-items: flex-start; gap: 16px; margin-bottom: 24px; }
+      .page-header h1 { font-size: 28px !important; }
+      .page-header select { width: 100%; padding: 14px !important; }
+      
+      .outreach-grid { grid-template-columns: 1fr; gap: 24px; }
+      
+      .desktop-table { display: none; }
+      .mobile-cards { display: flex; flex-direction: column; gap: 16px; padding: 16px; background: var(--surface); }
+      .mobile-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+      
+      .pagination-bar { flex-direction: column; gap: 16px; text-align: center; padding: 20px 16px; }
+      .pagination-bar > div:last-child { width: 100%; display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; }
+    }
+  </style>
 </head>
-
 <body>
-    <div id="root"></div>
-    <script type="text/babel">
-        const { useState, useEffect, useMemo } = React;
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useEffect, useMemo } = React;
 
-        const SEGMENTS = {
-            sme: { label: "SME / Local Business", color: "#A855F7", icon: "🏪", titles: ["Small Business Owner", "Founder"], painPt: "the founder wearing too many hats and burning out on admin tasks" },
-            mme: { label: "Mid-Market Enterprise", color: "#3B82F6", icon: "🏛️", titles: ["Managing Director", "VP of Operations"], painPt: "bloated local payroll cutting into vital profit margins" },
-            general: { label: "High-Growth Founders", color: "#10B981", icon: "🌟", titles: ["Founder & CEO", "Co-Founder"], painPt: "operational friction preventing scaling to the next revenue milestone" },
-            saas: { label: "SaaS & Cloud", color: "#10B981", icon: "☁️", titles: ["Founder", "COO", "Head of CS"], painPt: "support backlogs causing high churn rates" },
-            ecom: { label: "E-Commerce", color: "#F59E0B", icon: "🛍️", titles: ["E-com Director", "Founder", "Ops Mgr"], painPt: "customer service overwhelm during sales spikes" },
-            healthcare: { label: "Healthcare", color: "#8B5CF6", icon: "⚕️", titles: ["Clinic Director", "Ops Manager"], painPt: "administrative overload taking away from patient care" },
-            fintech: { label: "FinTech", color: "#3B82F6", icon: "💳", titles: ["Founder", "VP of Ops"], painPt: "bottlenecks in scaling compliance and user onboarding" },
-            realestate: { label: "Real Estate", color: "#EF4444", icon: "🏢", titles: ["Broker", "PropTech Founder"], painPt: "scattered data and heavy back-office admin tasks" },
-            logistics: { label: "Logistics", color: "#F97316", icon: "🚚", titles: ["Supply Chain VP", "Operations Dir"], painPt: "slow response times causing shipping disputes" },
-            agency: { label: "Marketing Agency", color: "#EC4899", icon: "🎨", titles: ["Agency Owner", "Account Dir"], painPt: "account managers buried in non-billable ops work" },
-            legal: { label: "Legal Services", color: "#6366F1", icon: "⚖️", titles: ["Managing Partner", "Firm Admin"], painPt: "too much time spent on intake rather than billing" },
-            manufacturing: { label: "Manufacturing", color: "#14B8A6", icon: "🏭", titles: ["Plant Mgr", "Operations VP"], painPt: "inefficient supplier communication and vendor management" },
-            b2b: { label: "B2B Services", color: "#F43F5E", icon: "🤝", titles: ["Founder", "Chief Revenue Officer"], painPt: "client fulfillment bottlenecks stalling overall scaling" },
-            consulting: { label: "Consulting Firms", color: "#06B6D4", icon: "📈", titles: ["Principal", "Managing Partner"], painPt: "senior partners handling administrative tasks instead of closing deals" },
-            web3: { label: "Web3 & Crypto", color: "#EAB308", icon: "🔗", titles: ["Founder", "Community Lead"], painPt: "discord chaos and 24/7 global support needs" },
-            edtech: { label: "EdTech", color: "#22D3EE", icon: "📚", titles: ["Founder", "Head of Student Success"], painPt: "scaling student onboarding and technical support" },
-            hrtech: { label: "HR Tech", color: "#D946EF", icon: "🤝", titles: ["Founder", "VP of Product"], painPt: "complex user integrations eating up support time" },
-        };
+    const SEGMENTS = {
+      sme: { label: "SME / Local Business", color: "#A855F7", icon: "🏪", titles: ["Small Business Owner", "Founder"], painPt: "the founder wearing too many hats and burning out on admin tasks" },
+      mme: { label: "Mid-Market Enterprise", color: "#3B82F6", icon: "🏛️", titles: ["Managing Director", "VP of Operations"], painPt: "bloated local payroll cutting into vital profit margins" },
+      general: { label: "High-Growth Founders", color: "#10B981", icon: "🌟", titles: ["Founder & CEO", "Co-Founder"], painPt: "operational friction preventing scaling to the next revenue milestone" },
+      saas: { label: "SaaS & Cloud", color: "#10B981", icon: "☁️", titles: ["Founder", "COO", "Head of CS"], painPt: "support backlogs causing high churn rates" },
+      ecom: { label: "E-Commerce", color: "#F59E0B", icon: "🛍️", titles: ["E-com Director", "Founder", "Ops Mgr"], painPt: "customer service overwhelm during sales spikes" },
+      healthcare: { label: "Healthcare", color: "#8B5CF6", icon: "⚕️", titles: ["Clinic Director", "Ops Manager"], painPt: "administrative overload taking away from patient care" },
+      fintech: { label: "FinTech", color: "#3B82F6", icon: "💳", titles: ["Founder", "VP of Ops"], painPt: "bottlenecks in scaling compliance and user onboarding" },
+      realestate: { label: "Real Estate", color: "#EF4444", icon: "🏢", titles: ["Broker", "PropTech Founder"], painPt: "scattered data and heavy back-office admin tasks" },
+      logistics: { label: "Logistics", color: "#F97316", icon: "🚚", titles: ["Supply Chain VP", "Operations Dir"], painPt: "slow response times causing shipping disputes" },
+      agency: { label: "Marketing Agency", color: "#EC4899", icon: "🎨", titles: ["Agency Owner", "Account Dir"], painPt: "account managers buried in non-billable ops work" },
+      legal: { label: "Legal Services", color: "#6366F1", icon: "⚖️", titles: ["Managing Partner", "Firm Admin"], painPt: "too much time spent on intake rather than billing" },
+      manufacturing: { label: "Manufacturing", color: "#14B8A6", icon: "🏭", titles: ["Plant Mgr", "Operations VP"], painPt: "inefficient supplier communication and vendor management" },
+      b2b: { label: "B2B Services", color: "#F43F5E", icon: "🤝", titles: ["Founder", "Chief Revenue Officer"], painPt: "client fulfillment bottlenecks stalling overall scaling" },
+      consulting: { label: "Consulting Firms", color: "#06B6D4", icon: "📈", titles: ["Principal", "Managing Partner"], painPt: "senior partners handling administrative tasks instead of closing deals" },
+      web3: { label: "Web3 & Crypto", color: "#EAB308", icon: "🔗", titles: ["Founder", "Community Lead"], painPt: "discord chaos and 24/7 global support needs" },
+      edtech: { label: "EdTech", color: "#22D3EE", icon: "📚", titles: ["Founder", "Head of Student Success"], painPt: "scaling student onboarding and technical support" },
+      hrtech: { label: "HR Tech", color: "#D946EF", icon: "🤝", titles: ["Founder", "VP of Product"], painPt: "complex user integrations eating up support time" },
+    };
 
-        const generateMockLeads = () => {
-            const FIRSTS = ["Sarah", "Marcus", "David", "Elena", "James", "Maya", "John", "Chris", "Emma", "Lucas", "Olivia", "Ethan", "Sophia", "Wei", "Aisha", "Noah", "Liam", "Ava", "Isabella", "Mateo"];
-            const LASTS = ["Chen", "Johnson", "Patel", "Smith", "Rodriguez", "Williams", "Kim", "Lee", "Davis", "Martinez", "Garcia", "Wong", "Okafor", "Singh", "Brown", "Wilson", "Anderson", "Taylor"];
-            const SUFFIXES = ["Inc", "Corp", "Solutions", "Technologies", "Global", "Group", "Labs", "Partners", "Ventures", "Systems"];
+    const generateMockLeads = () => {
+      const FIRSTS = ["Sarah", "Marcus", "David", "Elena", "James", "Maya", "John", "Chris", "Emma", "Lucas", "Olivia", "Ethan", "Sophia", "Wei", "Aisha", "Noah", "Liam", "Ava", "Isabella", "Mateo"];
+      const LASTS = ["Chen", "Johnson", "Patel", "Smith", "Rodriguez", "Williams", "Kim", "Lee", "Davis", "Martinez", "Garcia", "Wong", "Okafor", "Singh", "Brown", "Wilson", "Anderson", "Taylor"];
+      const SUFFIXES = ["Inc", "Corp", "Solutions", "Technologies", "Global", "Group", "Labs", "Partners", "Ventures", "Systems"];
+      
+      let mock = [];
+      const segmentsKeys = Object.keys(SEGMENTS);
+      const amountPerSegment = Math.ceil(50000 / segmentsKeys.length);
 
-            let mock = [];
-            const segmentsKeys = Object.keys(SEGMENTS);
-            const amountPerSegment = Math.ceil(50000 / segmentsKeys.length);
+      segmentsKeys.forEach(key => {
+        let seg = SEGMENTS[key];
+        let extendedTitles = [...seg.titles, "HR Manager", "Growth Manager", "Head of Growth", "Director of HR"];
 
-            segmentsKeys.forEach(key => {
-                let seg = SEGMENTS[key];
-                let extendedTitles = [...seg.titles, "HR Manager", "Growth Manager", "Head of Growth", "Director of HR"];
+        for(let i=0; i<amountPerSegment; i++) {
+           let f = FIRSTS[Math.floor(Math.random()*FIRSTS.length)];
+           let l = LASTS[Math.floor(Math.random()*LASTS.length)];
+           let t = extendedTitles[Math.floor(Math.random()*extendedTitles.length)];
+           let companyName = `${l} ${SUFFIXES[Math.floor(Math.random()*SUFFIXES.length)]}`;
+           let DUMMYLOCS = ["United States", "United Kingdom", "Canada", "Remote", "Global"];
+           let loc = DUMMYLOCS[Math.floor(Math.random()*DUMMYLOCS.length)];
+           mock.push({
+               id: `${key}-${i}`,
+               name: `${f} ${l}`,
+               title: t,
+               company: companyName,
+               location: loc,
+               website: `https://www.${companyName.toLowerCase().replace(/[^a-z0-9]/g, "")}.com`,
+               email: "",
+               segment: key,
+               status: Math.random() > 0.85 ? "Contacted" : "New",
+               linkedin: `https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(t + " at " + companyName)}`
+           });
+        }
+      });
+      for (let i = mock.length - 1; i > 0; i--) {
+         const j = Math.floor(Math.random() * (i + 1));
+         [mock[i], mock[j]] = [mock[j], mock[i]];
+      }
+      return mock;
+    };
 
-                for (let i = 0; i < amountPerSegment; i++) {
-                    let f = FIRSTS[Math.floor(Math.random() * FIRSTS.length)];
-                    let l = LASTS[Math.floor(Math.random() * LASTS.length)];
-                    let t = extendedTitles[Math.floor(Math.random() * extendedTitles.length)];
-                    let companyName = `${l} ${SUFFIXES[Math.floor(Math.random() * SUFFIXES.length)]}`;
-                    let DUMMYLOCS = ["United States", "United Kingdom", "Canada", "Remote", "Global"];
-                    let loc = DUMMYLOCS[Math.floor(Math.random() * DUMMYLOCS.length)];
-                    mock.push({
-                        id: `${key}-${i}`,
-                        name: `${f} ${l}`,
-                        title: t,
-                        company: companyName,
-                        location: loc,
-                        website: `https://www.${companyName.toLowerCase().replace(/[^a-z0-9]/g, "")}.com`,
-                        email: "",
-                        segment: key,
-                        status: Math.random() > 0.85 ? "Contacted" : "New",
-                        linkedin: `https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(t + " at " + companyName)}`
-                    });
-                }
-            });
-            for (let i = mock.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [mock[i], mock[j]] = [mock[j], mock[i]];
-            }
-            return mock;
-        };
+    const engineGetLinkedInDM = (lead) => {
+       const s = SEGMENTS[lead.segment];
+       return `Hey ${lead.name.split(' ')[0]},\n\nNoticed ${lead.company} has been making big moves in the ${s.label} space. As a ${lead.title}, I'm sure dealing with ${s.painPt} is top of mind.\n\nWe deploy "Done-For-You" remote ${s.label} execution teams (support, admin, data) to buy back your time and protect revenue for a fraction of local hiring costs.\n\nOpen to a quick connection to see how we could structure a pod for you?`;
+    };
 
-        const engineGetLinkedInDM = (lead) => {
-            const s = SEGMENTS[lead.segment];
-            return `Hey ${lead.name.split(' ')[0]},\n\nNoticed ${lead.company} has been making big moves in the ${s.label} space. As a ${lead.title}, I'm sure dealing with ${s.painPt} is top of mind.\n\nWe deploy "Done-For-You" remote ${s.label} execution teams (support, admin, data) to buy back your time and protect revenue for a fraction of local hiring costs.\n\nOpen to a quick connection to see how we could structure a pod for you?`;
-        };
-
-        const engineGetEmailNurture = (lead) => {
-            const s = SEGMENTS[lead.segment];
-            const fname = lead.name.split(' ')[0];
-
-            return `[TOUCH 1: THE INITIAL PAIN INSIGHT]
+    const engineGetEmailNurture = (lead) => {
+       const s = SEGMENTS[lead.segment];
+       const fname = lead.name.split(' ')[0];
+       
+       return `[TOUCH 1: THE INITIAL PAIN INSIGHT]
 Subject: Question about the ops at ${lead.company}?
 
 Hi ${fname},
@@ -434,400 +208,399 @@ Hey ${fname}, it seems like timing might be off or you're fully staffed up right
 If you ever find yourself running into operational roadblocks in the future and need a scalable remote team fast, keep us in mind!
 
 Cheers!`;
-        };
+    };
 
-        function CopyButton({ text, label = "Copy" }) {
-            const [copied, setCopied] = useState(false);
-            return (
-                <button
-                    onClick={() => { navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
-                    className="btn-secondary"
-                    style={{ padding: "8px 16px", fontSize: 13, background: copied ? "var(--saas)" : "transparent", color: copied ? "#FFF" : "var(--text)", borderColor: copied ? "var(--saas)" : "var(--border)" }}
-                >
-                    {copied ? "✓ Copied" : label}
-                </button>
-            );
-        }
+    function CopyButton({ text, label = "Copy" }) {
+      const [copied, setCopied] = useState(false);
+      return (
+        <button
+          onClick={() => { navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
+          className="btn-secondary"
+          style={{ padding: "8px 16px", fontSize: 13, background: copied ? "var(--saas)" : "transparent", color: copied ? "#FFF" : "var(--text)", borderColor: copied ? "var(--saas)" : "var(--border)" }}
+        >
+          {copied ? "✓ Copied" : label}
+        </button>
+      );
+    }
 
-        function LeadOpsEngine() {
-            const [allLeads, setAllLeads] = useState([]);
-            const [filteredLeads, setFilteredLeads] = useState([]);
-            const [isGenerating, setIsGenerating] = useState(true);
+    function LeadOpsEngine() {
+      const [allLeads, setAllLeads] = useState([]);
+      const [filteredLeads, setFilteredLeads] = useState([]);
+      const [isGenerating, setIsGenerating] = useState(true);
+      
+      const [view, setView] = useState("crm"); 
+      const [filterSegment, setFilterSegment] = useState("all");
+      const [activeLead, setActiveLead] = useState(null);
 
-            const [view, setView] = useState("crm");
-            const [filterSegment, setFilterSegment] = useState("all");
-            const [activeLead, setActiveLead] = useState(null);
+      const [currentPage, setCurrentPage] = useState(1);
+      const leadsPerPage = 100;
 
-            const [currentPage, setCurrentPage] = useState(1);
-            const leadsPerPage = 100;
+      const updateLeadStatus = (leadId, newStatus) => {
+         setAllLeads(prev => prev.map(l => l.id === leadId ? { ...l, status: newStatus } : l));
+      };
 
-            const updateLeadStatus = (leadId, newStatus) => {
-                setAllLeads(prev => prev.map(l => l.id === leadId ? { ...l, status: newStatus } : l));
-            };
+      const downloadLeads = () => {
+         const headers = ["Name","Title","Company","Location","Email","LinkedIn","Website","Industry","Status"];
+         const rows = filteredLeads.map(ld => [
+            ld.name, ld.title, ld.company, ld.location || "", ld.email || "", ld.linkedin || "", ld.website || "", SEGMENTS[ld.segment]?.label || "", ld.status
+         ].map(v => `"${(v||"").replace(/"/g, '""')}"`).join(","));
+         const csv = [headers.join(","), ...rows].join("\n");
+         const blob = new Blob([csv], { type: "text/csv" });
+         const url = URL.createObjectURL(blob);
+         const a = document.createElement("a");
+         a.href = url;
+         a.download = `aia_leads_export_${new Date().toISOString().slice(0,10)}.csv`;
+         a.click();
+         URL.revokeObjectURL(url);
+      };
 
-            const downloadLeads = () => {
-                const headers = ["Name", "Title", "Company", "Location", "Email", "LinkedIn", "Website", "Industry", "Status"];
-                const rows = filteredLeads.map(ld => [
-                    ld.name, ld.title, ld.company, ld.location || "", ld.email || "", ld.linkedin || "", ld.website || "", SEGMENTS[ld.segment]?.label || "", ld.status
-                ].map(v => `"${(v || "").replace(/"/g, '""')}"`).join(","));
-                const csv = [headers.join(","), ...rows].join("\n");
-                const blob = new Blob([csv], { type: "text/csv" });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement("a");
-                a.href = url;
-                a.download = `aia_leads_export_${new Date().toISOString().slice(0, 10)}.csv`;
-                a.click();
-                URL.revokeObjectURL(url);
-            };
+      const handleFileUpload = (e) => {
+         const file = e.target.files[0];
+         if (!file) return;
+         setIsGenerating(true);
+         Papa.parse(file, {
+            header: true,
+            skipEmptyLines: true,
+            complete: function(results) {
+               const incomingLeads = [];
+               results.data.forEach((row, i) => {
+                   let name = row.Name || row["First Name"] ? `${row["First Name"]||""} ${row["Last Name"]||""}`.trim() : row.name;
+                   if(!name) name = "Unknown Lead";
+                   const title = row.Title || row.title || row["Job Title"] || "Growth Manager";
+                   const company = row.Company || row.company || row["Company Name"] || "Unknown Company";
+                   const location = row.Location || row.location || row["Company Location"] || "Global";
+                   const website = row.Website || row.website || row["Company Website"] || row["Company Url"] || row["Company URL"] || row["Website Url"] || "";
+                   const linkedin = row.LinkedIn || row["Person Linkedin Url"] || row["LinkedIn Url"] || row.linkedin || `https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(name + ' ' + company)}`;
+                   const email = row.Email || row.email || row["Person Email"] || row["Work Email"] || "";
+                   
+                   // Smart segment detection from Industry field
+                   const industry = (row.Industry || row.industry || row["Industry Vertical"] || "").toLowerCase();
+                   let detectedSegment = "general";
+                   if (industry.includes("saas") || industry.includes("cloud")) detectedSegment = "saas";
+                   else if (industry.includes("ecom") || industry.includes("commerce")) detectedSegment = "ecom";
+                   else if (industry.includes("health") || industry.includes("medical")) detectedSegment = "healthcare";
+                   else if (industry.includes("fintech") || industry.includes("finance") || industry.includes("crypto") || industry.includes("payment")) detectedSegment = "fintech";
+                   else if (industry.includes("real estate") || industry.includes("proptech")) detectedSegment = "realestate";
+                   else if (industry.includes("logistics") || industry.includes("supply chain") || industry.includes("delivery")) detectedSegment = "logistics";
+                   else if (industry.includes("agency") || industry.includes("marketing")) detectedSegment = "agency";
+                   else if (industry.includes("legal") || industry.includes("law")) detectedSegment = "legal";
+                   else if (industry.includes("manufactur")) detectedSegment = "manufacturing";
+                   else if (industry.includes("consult")) detectedSegment = "consulting";
+                   else if (industry.includes("web3") || industry.includes("blockchain")) detectedSegment = "web3";
+                   else if (industry.includes("edtech") || industry.includes("education")) detectedSegment = "edtech";
+                   else if (industry.includes("hr") || industry.includes("human resource") || industry.includes("people")) detectedSegment = "hrtech";
+                   else if (industry.includes("b2b") || industry.includes("service")) detectedSegment = "b2b";
+                   else if (industry.includes("ai") || industry.includes("dev") || industry.includes("tool")) detectedSegment = "saas";
+                   else if (industry.includes("cyber") || industry.includes("security")) detectedSegment = "saas";
+                   
+                   incomingLeads.push({
+                       id: `csv-${Date.now()}-${i}`,
+                       name, title, company, location, website, linkedin, email, segment: detectedSegment, status: "New"
+                   });
+               });
 
-            const handleFileUpload = (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-                setIsGenerating(true);
-                Papa.parse(file, {
-                    header: true,
-                    skipEmptyLines: true,
-                    complete: function (results) {
-                        const incomingLeads = [];
-                        results.data.forEach((row, i) => {
-                            let name = row.Name || row["First Name"] ? `${row["First Name"] || ""} ${row["Last Name"] || ""}`.trim() : row.name;
-                            if (!name) name = "Unknown Lead";
-                            const title = row.Title || row.title || row["Job Title"] || "Growth Manager";
-                            const company = row.Company || row.company || row["Company Name"] || "Unknown Company";
-                            const location = row.Location || row.location || row["Company Location"] || "Global";
-                            const website = row.Website || row.website || row["Company Website"] || row["Company Url"] || row["Company URL"] || row["Website Url"] || "";
-                            const linkedin = row.LinkedIn || row["Person Linkedin Url"] || row["LinkedIn Url"] || row.linkedin || `https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(name + ' ' + company)}`;
-                            const email = row.Email || row.email || row["Person Email"] || row["Work Email"] || "";
+               setAllLeads(prevLeads => {
+                   // If current leads are the randomly simulated ones, wipe them clean before adding CSV
+                   const baseLeads = prevLeads.some(l => !l.id.startsWith('csv-')) ? [] : prevLeads;
 
-                            // Smart segment detection from Industry field
-                            const industry = (row.Industry || row.industry || row["Industry Vertical"] || "").toLowerCase();
-                            let detectedSegment = "general";
-                            if (industry.includes("saas") || industry.includes("cloud")) detectedSegment = "saas";
-                            else if (industry.includes("ecom") || industry.includes("commerce")) detectedSegment = "ecom";
-                            else if (industry.includes("health") || industry.includes("medical")) detectedSegment = "healthcare";
-                            else if (industry.includes("fintech") || industry.includes("finance") || industry.includes("crypto") || industry.includes("payment")) detectedSegment = "fintech";
-                            else if (industry.includes("real estate") || industry.includes("proptech")) detectedSegment = "realestate";
-                            else if (industry.includes("logistics") || industry.includes("supply chain") || industry.includes("delivery")) detectedSegment = "logistics";
-                            else if (industry.includes("agency") || industry.includes("marketing")) detectedSegment = "agency";
-                            else if (industry.includes("legal") || industry.includes("law")) detectedSegment = "legal";
-                            else if (industry.includes("manufactur")) detectedSegment = "manufacturing";
-                            else if (industry.includes("consult")) detectedSegment = "consulting";
-                            else if (industry.includes("web3") || industry.includes("blockchain")) detectedSegment = "web3";
-                            else if (industry.includes("edtech") || industry.includes("education")) detectedSegment = "edtech";
-                            else if (industry.includes("hr") || industry.includes("human resource") || industry.includes("people")) detectedSegment = "hrtech";
-                            else if (industry.includes("b2b") || industry.includes("service")) detectedSegment = "b2b";
-                            else if (industry.includes("ai") || industry.includes("dev") || industry.includes("tool")) detectedSegment = "saas";
-                            else if (industry.includes("cyber") || industry.includes("security")) detectedSegment = "saas";
+                   // Create a Map to filter duplicates (Prefers distinct LinkedIn URLs, otherwise Name+Company)
+                   const uniqueMap = new Map();
+                   
+                   baseLeads.forEach(ld => {
+                       const key = ld.linkedin && ld.linkedin.includes('/in/') ? ld.linkedin.trim().toLowerCase() : `${ld.name.trim().toLowerCase()}-${ld.company.trim().toLowerCase()}`;
+                       uniqueMap.set(key, ld);
+                   });
 
-                            incomingLeads.push({
-                                id: `csv-${Date.now()}-${i}`,
-                                name, title, company, location, website, linkedin, email, segment: detectedSegment, status: "New"
-                            });
-                        });
+                   incomingLeads.forEach(ld => {
+                       const key = ld.linkedin && ld.linkedin.includes('/in/') ? ld.linkedin.trim().toLowerCase() : `${ld.name.trim().toLowerCase()}-${ld.company.trim().toLowerCase()}`;
+                       if (!uniqueMap.has(key)) {
+                           uniqueMap.set(key, ld);
+                       }
+                   });
 
-                        setAllLeads(prevLeads => {
-                            // If current leads are the randomly simulated ones, wipe them clean before adding CSV
-                            const baseLeads = prevLeads.some(l => !l.id.startsWith('csv-')) ? [] : prevLeads;
-
-                            // Create a Map to filter duplicates (Prefers distinct LinkedIn URLs, otherwise Name+Company)
-                            const uniqueMap = new Map();
-
-                            baseLeads.forEach(ld => {
-                                const key = ld.linkedin && ld.linkedin.includes('/in/') ? ld.linkedin.trim().toLowerCase() : `${ld.name.trim().toLowerCase()}-${ld.company.trim().toLowerCase()}`;
-                                uniqueMap.set(key, ld);
-                            });
-
-                            incomingLeads.forEach(ld => {
-                                const key = ld.linkedin && ld.linkedin.includes('/in/') ? ld.linkedin.trim().toLowerCase() : `${ld.name.trim().toLowerCase()}-${ld.company.trim().toLowerCase()}`;
-                                if (!uniqueMap.has(key)) {
-                                    uniqueMap.set(key, ld);
-                                }
-                            });
-
-                            const finalLeads = Array.from(uniqueMap.values());
-                            setFilteredLeads(finalLeads);
-                            setFilterSegment("all");
-                            setCurrentPage(1);
-                            setIsGenerating(false);
-                            return finalLeads;
-                        });
-                    }
-                });
-            };
-
-            useEffect(() => {
-                // Auto-load the curated CSV leads file if available on the server
-                fetch('aia_target_leads.csv')
-                    .then(response => {
-                        if (!response.ok) throw new Error("Could not load default CSV");
-                        return response.text();
-                    })
-                    .then(csvText => {
-                        const file = new File([csvText], "aia_target_leads.csv", { type: "text/csv" });
-                        handleFileUpload({ target: { files: [file] } });
-                    })
-                    .catch(err => {
-                        console.warn("Falling back to mock leads generation: ", err);
-                        // Fallback to mock generation if CSV not found
-                        const generated = generateMockLeads();
-                        setAllLeads(generated);
-                        setFilteredLeads(generated);
-                        setIsGenerating(false);
-                    });
-            }, []);
-
-            useEffect(() => {
-                if (filterSegment === "all") setFilteredLeads(allLeads);
-                else setFilteredLeads(allLeads.filter(l => l.segment === filterSegment));
-            }, [filterSegment, allLeads]);
-
-            useEffect(() => {
-                setCurrentPage(1);
-            }, [filterSegment]);
-
-            const indexOfLastLead = currentPage * leadsPerPage;
-            const indexOfFirstLead = indexOfLastLead - leadsPerPage;
-            const currentLeads = filteredLeads.slice(indexOfFirstLead, indexOfLastLead);
-            const totalPages = Math.ceil(filteredLeads.length / leadsPerPage);
-
-            if (isGenerating) {
-                return (
-                    <div style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--bg)", color: "var(--text)" }}>
-                        <div style={{ textAlign: "center" }}>
-                            <div style={{ fontSize: 48, marginBottom: 16 }}>🚀</div>
-                            <h2 style={{ margin: "0 0 8px 0" }}>Initializing Pipeline Infrastructure</h2>
-                            <p style={{ color: "var(--muted)" }}>Dynamically loading 50,000+ targeted industry records...</p>
-                        </div>
-                    </div>
-                );
+                   const finalLeads = Array.from(uniqueMap.values());
+                   setFilteredLeads(finalLeads); 
+                   setFilterSegment("all");
+                   setCurrentPage(1);
+                   setIsGenerating(false);
+                   return finalLeads;
+               });
             }
+         });
+      };
 
-            return (
-                <div className="app-container">
-                    {/* Navigation Sidebar */}
-                    <div className="sidebar">
-                        <div className="sidebar-header">
-                            <div style={{ background: "var(--gradient)", width: 40, height: 40, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 900, fontSize: 20, marginBottom: 16 }}>A</div>
-                            <div style={{ fontSize: 18, fontWeight: 800, color: "var(--text)" }}>Ashley in Afrika</div>
-                            <div style={{ fontSize: 11, color: "var(--muted)", textTransform: "uppercase", letterSpacing: "0.1em" }}>Top-Of-Funnel Engine</div>
-                        </div>
+      useEffect(() => {
+         // Auto-load the curated CSV leads file if available on the server
+         fetch('aia_target_leads.csv')
+            .then(response => {
+                if (!response.ok) throw new Error("Could not load default CSV");
+                return response.text();
+            })
+            .then(csvText => {
+                const file = new File([csvText], "aia_target_leads.csv", { type: "text/csv" });
+                handleFileUpload({ target: { files: [file] } });
+            })
+            .catch(err => {
+                console.warn("Falling back to mock leads generation: ", err);
+                // Fallback to mock generation if CSV not found
+                const generated = generateMockLeads();
+                setAllLeads(generated);
+                setFilteredLeads(generated);
+                setIsGenerating(false);
+            });
+      }, []);
 
-                        <div className="sidebar-nav">
-                            <div onClick={() => setView("crm")} style={{ borderRadius: 12, background: view === "crm" ? "var(--card)" : "transparent", color: view === "crm" ? "var(--text)" : "var(--muted)", cursor: "pointer", display: "flex", alignItems: "center", gap: 12, fontWeight: view === "crm" ? 700 : 500, boxShadow: view === "crm" ? "0 4px 12px rgba(0,0,0,0.2)" : "none", transition: "all 0.2s" }}>
-                                <span style={{ fontSize: 18 }}>📁</span> Lead Database <span style={{ marginLeft: "auto", fontSize: 11, background: "var(--border)", padding: "2px 8px", borderRadius: 100 }}>{allLeads.length.toLocaleString()}</span>
-                            </div>
-                            <div onClick={() => setView("outreach")} style={{ borderRadius: 12, background: view === "outreach" ? "var(--card)" : "transparent", color: view === "outreach" ? "var(--text)" : "var(--muted)", cursor: "pointer", display: "flex", alignItems: "center", gap: 12, fontWeight: view === "outreach" ? 700 : 500, boxShadow: view === "outreach" ? "0 4px 12px rgba(0,0,0,0.2)" : "none", transition: "all 0.2s" }}>
-                                <span style={{ fontSize: 18 }}>⚡</span> Outreach Sequences
-                            </div>
-                        </div>
-                    </div>
+      useEffect(() => {
+         if(filterSegment === "all") setFilteredLeads(allLeads);
+         else setFilteredLeads(allLeads.filter(l => l.segment === filterSegment));
+      }, [filterSegment, allLeads]);
 
-                    {/* Content Area */}
-                    <div className="content-area">
+      useEffect(() => {
+         setCurrentPage(1); 
+      }, [filterSegment]);
 
-                        {view === "crm" && (
-                            <div className="animate-up">
-                                <div className="page-header">
-                                    <div>
-                                        <h1 style={{ fontSize: 36, margin: "0 0 8px 0" }}>Pipeline Targets</h1>
-                                        <p style={{ color: "var(--muted)", margin: 0, fontSize: 16 }}>Browse exactly {allLeads.length.toLocaleString()} leads inside the system.</p>
-                                    </div>
-                                    <div style={{ display: "flex", gap: 12, alignItems: "center", width: "100%", maxWidth: "max-content", flexWrap: "wrap", justifyContent: "flex-end" }}>
-                                        <label className="btn-primary" style={{ padding: "12px 20px", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, margin: 0, background: "var(--surface)", border: "1px solid var(--accent)", color: "var(--accent)", boxShadow: "none" }}>
-                                            <input type="file" accept=".csv" style={{ display: "none" }} onChange={handleFileUpload} />
-                                            <span>📥 Upload Real CSV</span>
-                                        </label>
-                                        <button onClick={downloadLeads} className="btn-primary" style={{ padding: "12px 20px", display: "flex", alignItems: "center", gap: 8, margin: 0, background: "var(--surface)", border: "1px solid #10B981", color: "#10B981", boxShadow: "none" }}>
-                                            📤 Download Leads CSV
-                                        </button>
-                                        <select value={filterSegment} onChange={e => setFilterSegment(e.target.value)} style={{ padding: "12px 16px", background: "var(--card)", border: "1px solid var(--border)", borderRadius: 12, color: "var(--text)", outline: "none", fontSize: 14 }}>
-                                            <option value="all">All Targets ({allLeads.length.toLocaleString()})</option>
-                                            {Object.entries(SEGMENTS).map(([k, s]) => <option key={k} value={k}>{s.icon} {s.label}</option>)}
-                                        </select>
-                                    </div>
-                                </div>
+      const indexOfLastLead = currentPage * leadsPerPage;
+      const indexOfFirstLead = indexOfLastLead - leadsPerPage;
+      const currentLeads = filteredLeads.slice(indexOfFirstLead, indexOfLastLead);
+      const totalPages = Math.ceil(filteredLeads.length / leadsPerPage);
 
-                                <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 16, overflow: "hidden", display: "flex", flexDirection: "column" }}>
-
-                                    {/* DESKTOP VIEW */}
-                                    <table className="desktop-table">
-                                        <thead>
-                                            <tr style={{ borderBottom: "1px solid var(--border)", backgroundColor: "var(--surface)", color: "var(--muted)", fontSize: 12, textTransform: "uppercase" }}>
-                                                <th style={{ padding: "16px 24px", textAlign: "left" }}>Prospect Detail</th>
-                                                <th style={{ padding: "16px 24px", textAlign: "left" }}>Location</th>
-                                                <th style={{ padding: "16px 24px", textAlign: "left" }}>Company URL</th>
-                                                <th style={{ padding: "16px 24px", textAlign: "left" }}>Industry Vertical</th>
-                                                <th style={{ padding: "16px 24px", textAlign: "left" }}>Target Status</th>
-                                                <th style={{ padding: "16px 24px", textAlign: "right" }}>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {currentLeads.map((ld, index) => (
-                                                <tr key={index} style={{ borderBottom: "1px solid var(--border)", transition: "background 0.2s" }} onMouseEnter={e => e.currentTarget.style.background = "var(--surface)"} onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
-                                                    <td style={{ padding: "16px 24px" }}>
-                                                        <div style={{ fontWeight: 700, fontSize: 15 }}>{ld.name}</div>
-                                                        <div style={{ color: "var(--muted)", fontSize: 13, marginTop: 4 }}>{ld.title} @ <strong>{ld.company}</strong></div>
-                                                    </td>
-                                                    <td style={{ padding: "16px 24px" }}>
-                                                        <div style={{ color: "var(--text)", fontSize: 14, fontWeight: 500, display: "flex", alignItems: "center", gap: 6 }}>📍 {ld.location || "Global"}</div>
-                                                    </td>
-                                                    <td style={{ padding: "16px 24px" }}>
-                                                        {ld.website ? <a href={ld.website.startsWith('http') ? ld.website : `https://${ld.website}`} target="_blank" rel="noreferrer" style={{ color: "var(--accent)", textDecoration: "none", fontSize: 13, fontWeight: 600 }}>🌐 {ld.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}</a> : null}
-                                                    </td>
-                                                    <td style={{ padding: "16px 24px" }}>
-                                                        <div className="status-badge" style={{ background: SEGMENTS[ld.segment].color + "15", color: SEGMENTS[ld.segment].color }}>
-                                                            {SEGMENTS[ld.segment].icon} {SEGMENTS[ld.segment].label}
-                                                        </div>
-                                                    </td>
-                                                    <td style={{ padding: "16px 24px" }}>
-                                                        <select value={ld.status} onChange={(e) => updateLeadStatus(ld.id, e.target.value)} style={{ padding: "6px 12px", background: ld.status === "New" ? "var(--surface)" : ld.status === "Contacted" ? "rgba(16, 185, 129, 0.1)" : ld.status === "In Progress" ? "rgba(59, 130, 246, 0.1)" : ld.status === "Converted" ? "rgba(245, 158, 11, 0.1)" : "var(--surface)", color: ld.status === "New" ? "var(--muted)" : ld.status === "Contacted" ? "#10B981" : ld.status === "In Progress" ? "#3B82F6" : ld.status === "Converted" ? "#F59E0B" : "var(--muted)", border: "1px solid var(--border)", borderRadius: "8px", outline: "none", fontSize: 12, fontWeight: 700, cursor: "pointer", transition: "all 0.2s" }}>
-                                                            <option value="New">New Lead</option>
-                                                            <option value="Contacted">Contacted ✓</option>
-                                                            <option value="In Progress">In Progress ⏳</option>
-                                                            <option value="Converted">Converted 💰</option>
-                                                            <option value="Rejected">Rejected</option>
-                                                        </select>
-                                                    </td>
-                                                    <td style={{ padding: "16px 24px", textAlign: "right" }}>
-                                                        <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
-                                                            {ld.email ? (
-                                                                <a href={`mailto:${ld.email}`} target="_blank" rel="noreferrer" style={{ textDecoration: "none" }}>
-                                                                    <button className="btn-secondary" style={{ padding: "8px 12px", background: "rgba(245,158,11,0.1)", color: "#F59E0B", borderColor: "rgba(245,158,11,0.3)", maxWidth: "200px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>📧 {ld.email}</button>
-                                                                </a>
-                                                            ) : null}
-                                                            <a href={ld.linkedin} target="_blank" rel="noreferrer" style={{ textDecoration: "none" }}>
-                                                                <button className="btn-secondary" style={{ padding: "8px 12px", background: "rgba(10,102,194,0.1)", color: "#0A66C2", borderColor: "rgba(10,102,194,0.3)" }}>🔗 Search LinkedIn</button>
-                                                            </a>
-                                                            <button className="btn-primary" style={{ padding: "8px 16px" }} onClick={() => { setActiveLead(ld); setView("outreach"); }}>Write Scripts</button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-
-                                    {/* MOBILE VIEW */}
-                                    <div className="mobile-cards">
-                                        {currentLeads.map((ld, index) => (
-                                            <div key={index} className="mobile-card">
-                                                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-                                                    <div className="status-badge" style={{ background: SEGMENTS[ld.segment].color + "15", color: SEGMENTS[ld.segment].color }}>{SEGMENTS[ld.segment].icon} {SEGMENTS[ld.segment].label}</div>
-                                                    <select value={ld.status} onChange={(e) => updateLeadStatus(ld.id, e.target.value)} style={{ padding: "4px 8px", background: ld.status === "New" ? "var(--card)" : ld.status === "Contacted" ? "rgba(16, 185, 129, 0.1)" : ld.status === "In Progress" ? "rgba(59, 130, 246, 0.1)" : ld.status === "Converted" ? "rgba(245, 158, 11, 0.1)" : "var(--card)", color: ld.status === "New" ? "var(--muted)" : ld.status === "Contacted" ? "#10B981" : ld.status === "In Progress" ? "#3B82F6" : ld.status === "Converted" ? "#F59E0B" : "var(--muted)", border: "1px solid var(--border)", borderRadius: "6px", outline: "none", fontSize: 11, fontWeight: 700, cursor: "pointer", transition: "all 0.2s" }}>
-                                                        <option value="New">New Lead</option>
-                                                        <option value="Contacted">Contacted ✓</option>
-                                                        <option value="In Progress">In Progress ⏳</option>
-                                                        <option value="Converted">Converted 💰</option>
-                                                        <option value="Rejected">Rejected</option>
-                                                    </select>
-                                                </div>
-                                                <div style={{ fontWeight: 800, fontSize: 18, marginBottom: 4 }}>{ld.name}</div>
-                                                <div style={{ color: "var(--muted)", fontSize: 14, marginBottom: 2 }}>{ld.title} @ <strong>{ld.company}</strong></div>
-                                                <div style={{ color: "var(--muted)", fontSize: 13, marginBottom: 4 }}>📍 {ld.location}</div>
-                                                {ld.website ? <div style={{ color: "var(--text)", fontSize: 13, marginBottom: 20 }}>
-                                                    <a href={ld.website.startsWith('http') ? ld.website : `https://${ld.website}`} target="_blank" rel="noreferrer" style={{ color: "var(--accent)", textDecoration: "none", fontWeight: 600 }}>🌐 {ld.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}</a>
-                                                </div> : null}
-                                                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-                                                    {ld.email ? (
-                                                        <a href={`mailto:${ld.email}`} target="_blank" rel="noreferrer" style={{ textDecoration: "none" }}>
-                                                            <button className="btn-secondary" style={{ width: "100%", padding: "12px", fontSize: 13, background: "rgba(245,158,11,0.1)", color: "#F59E0B", borderColor: "rgba(245,158,11,0.3)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>📧 {ld.email}</button>
-                                                        </a>
-                                                    ) : null}
-                                                    <a href={ld.linkedin} target="_blank" rel="noreferrer" style={{ textDecoration: "none" }}>
-                                                        <button className="btn-secondary" style={{ width: "100%", padding: "12px", fontSize: 13, background: "rgba(10,102,194,0.1)", color: "#0A66C2", borderColor: "rgba(10,102,194,0.3)" }}>Search LinkedIn</button>
-                                                    </a>
-                                                    <button className="btn-primary" style={{ width: "100%", padding: "12px", fontSize: 13, gridColumn: "span 2" }} onClick={() => { setActiveLead(ld); window.scrollTo(0, 0); setView("outreach"); }}>Write Scripts</button>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-
-                                    {/* Pagination Controls */}
-                                    <div className="pagination-bar">
-                                        <div style={{ color: "var(--muted)", fontSize: 13 }}>
-                                            Showing <strong style={{ color: "var(--text)" }}>{indexOfFirstLead + 1}</strong> to <strong style={{ color: "var(--text)" }}>{Math.min(indexOfLastLead, filteredLeads.length)}</strong> of <strong style={{ color: "var(--text)" }}>{filteredLeads.length.toLocaleString()}</strong> leads
-                                        </div>
-                                        <div>
-                                            <button className="btn-secondary" style={{ padding: "8px 16px" }} disabled={currentPage === 1} onClick={() => setCurrentPage(p => p - 1)}>Previous</button>
-                                            <span style={{ fontSize: 13, color: "var(--text)", fontWeight: 700, padding: "0 12px", textAlign: "center" }}>Page {currentPage} of {totalPages || 1}</span>
-                                            <button className="btn-secondary" style={{ padding: "8px 16px" }} disabled={currentPage >= totalPages} onClick={() => setCurrentPage(p => p + 1)}>Next</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {view === "outreach" && (
-                            <div className="animate-up">
-                                <h1 style={{ fontSize: 32, margin: "0 0 8px 0" }}>Outreach Sequence Engine</h1>
-                                <p style={{ color: "var(--muted)", margin: "0 0 32px 0", fontSize: 16 }}>
-                                    End-to-end customized DMs and Email Sequences.
-                                </p>
-
-                                {activeLead ? (
-                                    <div className="outreach-grid">
-                                        <div>
-                                            <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 16, padding: 24, position: "sticky", top: 24 }}>
-                                                <div className="status-badge" style={{ background: SEGMENTS[activeLead.segment].color + "15", color: SEGMENTS[activeLead.segment].color, display: "inline-block", marginBottom: 16 }}>{SEGMENTS[activeLead.segment].icon} {SEGMENTS[activeLead.segment].label}</div>
-                                                <h2 style={{ margin: "0 0 4px 0", fontSize: 24 }}>{activeLead.name}</h2>
-                                                <div style={{ color: "var(--muted)", fontSize: 14 }}>{activeLead.title}</div>
-                                                <div style={{ color: "var(--muted)", fontSize: 14, marginBottom: 4 }}>{activeLead.company}</div>
-                                                <div style={{ color: "var(--muted)", fontSize: 13, marginBottom: 4 }}>📍 {activeLead.location}</div>
-                                                <div style={{ fontSize: 13, marginBottom: 24 }}>
-                                                    {activeLead.website ? <a href={activeLead.website.startsWith('http') ? activeLead.website : `https://${activeLead.website}`} target="_blank" rel="noreferrer" style={{ color: "var(--accent)", textDecoration: "none", fontWeight: 600 }}>🌐 {activeLead.website.replace(/^https?:\/\//, '')}</a> : null}
-                                                </div>
-
-                                                <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", color: "var(--muted)", marginBottom: 8, letterSpacing: "0.05em" }}>Pain Point Engine Targets:</div>
-                                                <div style={{ fontSize: 14, background: "var(--surface)", padding: 12, borderRadius: 8, border: "1px solid var(--border)", marginBottom: 24, lineHeight: 1.5 }}>
-                                                    "{SEGMENTS[activeLead.segment].painPt}"
-                                                </div>
-
-                                                <a href={activeLead.linkedin} target="_blank" rel="noreferrer" style={{ textDecoration: "none" }}>
-                                                    <button className="btn-secondary" style={{ width: "100%", marginBottom: 12, padding: "12px", background: "rgba(10,102,194,0.1)", color: "#0A66C2", borderColor: "rgba(10,102,194,0.3)" }}>🔗 Query Lead on LinkedIn</button>
-                                                </a>
-                                                <button className="btn-secondary" style={{ width: "100%" }} onClick={() => setActiveLead(null)}>Clear Action</button>
-                                            </div>
-                                        </div>
-
-                                        <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-                                            <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, overflow: "hidden" }}>
-                                                <div style={{ background: "var(--card)", padding: "16px 20px", borderBottom: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                                                    <div style={{ fontWeight: 800, color: "#0A66C2" }}>LinkedIn Connect DM</div>
-                                                    <CopyButton text={engineGetLinkedInDM(activeLead)} />
-                                                </div>
-                                                <div style={{ padding: "16px 20px" }}>
-                                                    <textarea readOnly value={engineGetLinkedInDM(activeLead)} style={{ width: "100%", height: 160, background: "var(--bg)", border: "1px solid var(--border)", borderRadius: 8, padding: 16, fontSize: 14, color: "var(--text)", fontFamily: "inherit", resize: "none", lineHeight: 1.5 }} />
-                                                </div>
-                                            </div>
-
-                                            <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, overflow: "hidden" }}>
-                                                <div style={{ background: "var(--card)", padding: "16px 20px", borderBottom: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                                                    <div style={{ fontWeight: 800, color: "var(--accent)" }}>4-Step Nurture Campaign</div>
-                                                    <CopyButton text={engineGetEmailNurture(activeLead)} label="Copy Entire Sequence" />
-                                                </div>
-                                                <div style={{ padding: "16px 20px" }}>
-                                                    <textarea readOnly value={engineGetEmailNurture(activeLead)} style={{ width: "100%", height: 500, background: "var(--bg)", border: "1px solid var(--border)", borderRadius: 8, padding: 16, fontSize: 14, color: "var(--text)", fontFamily: "inherit", resize: "none", lineHeight: 1.6 }} />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <div style={{ textAlign: "center", padding: "60px 20px", border: "1px dashed var(--border)", borderRadius: 16, color: "var(--muted)", background: "var(--card)" }}>
-                                        <div style={{ fontSize: 48, marginBottom: 16 }}>🎯</div>
-                                        <h3 style={{ margin: "0 0 8px 0" }}>No Target Selected</h3>
-                                        <p style={{ margin: 0, maxWidth: 400, marginLeft: "auto", marginRight: "auto" }}>Go back to the Lead Database and select "Write Scripts" on any lead to instantaneously generate their high-converting outreach pipeline.</p>
-                                        <button className="btn-primary" style={{ marginTop: 24, padding: "12px 24px" }} onClick={() => setView("crm")}>Browse Database</button>
-                                    </div>
-                                )}
-                            </div>
-                        )}
-                    </div>
+      if (isGenerating) {
+          return (
+             <div style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--bg)", color: "var(--text)" }}>
+                <div style={{ textAlign: "center" }}>
+                   <div style={{ fontSize: 48, marginBottom: 16 }}>🚀</div>
+                   <h2 style={{ margin: "0 0 8px 0" }}>Initializing Pipeline Infrastructure</h2>
+                   <p style={{ color: "var(--muted)" }}>Dynamically loading 50,000+ targeted industry records...</p>
                 </div>
-            );
-        }
+             </div>
+          );
+      }
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<LeadOpsEngine />);
-    </script>
+      return (
+        <div className="app-container">
+           {/* Navigation Sidebar */}
+           <div className="sidebar">
+              <div className="sidebar-header">
+                 <div style={{ background: "var(--gradient)", width: 40, height: 40, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 900, fontSize: 20, marginBottom: 16 }}>A</div>
+                 <div style={{ fontSize: 18, fontWeight: 800, color: "var(--text)" }}>Ashley in Afrika</div>
+                 <div style={{ fontSize: 11, color: "var(--muted)", textTransform: "uppercase", letterSpacing: "0.1em" }}>Top-Of-Funnel Engine</div>
+              </div>
+              
+              <div className="sidebar-nav">
+                 <div onClick={() => setView("crm")} style={{ borderRadius: 12, background: view === "crm" ? "var(--card)" : "transparent", color: view === "crm" ? "var(--text)" : "var(--muted)", cursor: "pointer", display: "flex", alignItems: "center", gap: 12, fontWeight: view==="crm"?700:500, boxShadow: view==="crm"?"0 4px 12px rgba(0,0,0,0.2)":"none", transition: "all 0.2s" }}>
+                    <span style={{fontSize: 18}}>📁</span> Lead Database <span style={{marginLeft: "auto", fontSize: 11, background: "var(--border)", padding: "2px 8px", borderRadius: 100}}>{allLeads.length.toLocaleString()}</span>
+                 </div>
+                 <div onClick={() => setView("outreach")} style={{ borderRadius: 12, background: view === "outreach" ? "var(--card)" : "transparent", color: view === "outreach" ? "var(--text)" : "var(--muted)", cursor: "pointer", display: "flex", alignItems: "center", gap: 12, fontWeight: view==="outreach"?700:500, boxShadow: view==="outreach"?"0 4px 12px rgba(0,0,0,0.2)":"none", transition: "all 0.2s" }}>
+                    <span style={{fontSize: 18}}>⚡</span> Outreach Sequences
+                 </div>
+              </div>
+           </div>
+
+           {/* Content Area */}
+           <div className="content-area">
+              
+              {view === "crm" && (
+                <div className="animate-up">
+                   <div className="page-header">
+                      <div>
+                         <h1 style={{ fontSize: 36, margin: "0 0 8px 0" }}>Pipeline Targets</h1>
+                         <p style={{ color: "var(--muted)", margin: 0, fontSize: 16 }}>Browse exactly {allLeads.length.toLocaleString()} leads inside the system.</p>
+                      </div>
+                      <div style={{ display: "flex", gap: 12, alignItems: "center", width: "100%", maxWidth: "max-content", flexWrap: "wrap", justifyContent: "flex-end" }}>
+                         <label className="btn-primary" style={{ padding: "12px 20px", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, margin: 0, background: "var(--surface)", border: "1px solid var(--accent)", color: "var(--accent)", boxShadow: "none" }}>
+                            <input type="file" accept=".csv" style={{ display: "none" }} onChange={handleFileUpload} />
+                            <span>📥 Upload Real CSV</span>
+                         </label>
+                         <button onClick={downloadLeads} className="btn-primary" style={{ padding: "12px 20px", display: "flex", alignItems: "center", gap: 8, margin: 0, background: "var(--surface)", border: "1px solid #10B981", color: "#10B981", boxShadow: "none" }}>
+                            📤 Download Leads CSV
+                         </button>
+                         <select value={filterSegment} onChange={e=>setFilterSegment(e.target.value)} style={{ padding: "12px 16px", background: "var(--card)", border: "1px solid var(--border)", borderRadius: 12, color: "var(--text)", outline: "none", fontSize: 14 }}>
+                            <option value="all">All Targets ({allLeads.length.toLocaleString()})</option>
+                            {Object.entries(SEGMENTS).map(([k,s]) => <option key={k} value={k}>{s.icon} {s.label}</option>)}
+                         </select>
+                      </div>
+                   </div>
+                   
+                   <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 16, overflow: "hidden", display: "flex", flexDirection: "column" }}>
+                      
+                      {/* DESKTOP VIEW */}
+                      <table className="desktop-table">
+                         <thead>
+                            <tr style={{ borderBottom: "1px solid var(--border)", backgroundColor: "var(--surface)", color: "var(--muted)", fontSize: 12, textTransform: "uppercase" }}>
+                               <th style={{ padding: "16px 24px", textAlign: "left" }}>Prospect Detail</th>
+                               <th style={{ padding: "16px 24px", textAlign: "left" }}>Location</th>
+                               <th style={{ padding: "16px 24px", textAlign: "left" }}>Company URL</th>
+                               <th style={{ padding: "16px 24px", textAlign: "left" }}>Industry Vertical</th>
+                               <th style={{ padding: "16px 24px", textAlign: "left" }}>Target Status</th>
+                               <th style={{ padding: "16px 24px", textAlign: "right" }}>Actions</th>
+                            </tr>
+                         </thead>
+                         <tbody>
+                            {currentLeads.map((ld, index) => (
+                              <tr key={index} style={{ borderBottom: "1px solid var(--border)", transition: "background 0.2s" }} onMouseEnter={e=>e.currentTarget.style.background="var(--surface)"} onMouseLeave={e=>e.currentTarget.style.background="transparent"}>
+                                 <td style={{ padding: "16px 24px" }}>
+                                    <div style={{ fontWeight: 700, fontSize: 15 }}>{ld.name}</div>
+                                    <div style={{ color: "var(--muted)", fontSize: 13, marginTop: 4 }}>{ld.title} @ <strong>{ld.company}</strong></div>
+                                 </td>
+                                 <td style={{ padding: "16px 24px" }}>
+                                    <div style={{ color: "var(--text)", fontSize: 14, fontWeight: 500, display: "flex", alignItems: "center", gap: 6 }}>📍 {ld.location || "Global"}</div>
+                                 </td>
+                                 <td style={{ padding: "16px 24px" }}>
+                                    {ld.website ? <a href={ld.website.startsWith('http') ? ld.website : `https://${ld.website}`} target="_blank" rel="noreferrer" style={{ color: "var(--accent)", textDecoration: "none", fontSize: 13, fontWeight: 600 }}>🌐 {ld.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}</a> : null}
+                                 </td>
+                                 <td style={{ padding: "16px 24px" }}>
+                                    <div className="status-badge" style={{ background: SEGMENTS[ld.segment].color+"15", color: SEGMENTS[ld.segment].color }}>
+                                       {SEGMENTS[ld.segment].icon} {SEGMENTS[ld.segment].label}
+                                    </div>
+                                 </td>
+                                 <td style={{ padding: "16px 24px" }}>
+                                    <select value={ld.status} onChange={(e) => updateLeadStatus(ld.id, e.target.value)} style={{ padding: "6px 12px", background: ld.status === "New" ? "var(--surface)" : ld.status === "Contacted" ? "rgba(16, 185, 129, 0.1)" : ld.status === "In Progress" ? "rgba(59, 130, 246, 0.1)" : ld.status === "Converted" ? "rgba(245, 158, 11, 0.1)" : "var(--surface)", color: ld.status === "New" ? "var(--muted)" : ld.status === "Contacted" ? "#10B981" : ld.status === "In Progress" ? "#3B82F6" : ld.status === "Converted" ? "#F59E0B" : "var(--muted)", border: "1px solid var(--border)", borderRadius: "8px", outline: "none", fontSize: 12, fontWeight: 700, cursor: "pointer", transition: "all 0.2s" }}>
+                                       <option value="New">New Lead</option>
+                                       <option value="Contacted">Contacted ✓</option>
+                                       <option value="In Progress">In Progress ⏳</option>
+                                       <option value="Converted">Converted 💰</option>
+                                       <option value="Rejected">Rejected</option>
+                                    </select>
+                                 </td>
+                                 <td style={{ padding: "16px 24px", textAlign: "right" }}>
+                                    <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
+                                       {ld.email ? (
+                                          <a href={`mailto:${ld.email}`} target="_blank" rel="noreferrer" style={{ textDecoration: "none" }}>
+                                             <button className="btn-secondary" style={{ padding: "8px 12px", background: "rgba(245,158,11,0.1)", color: "#F59E0B", borderColor: "rgba(245,158,11,0.3)", maxWidth: "200px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>📧 {ld.email}</button>
+                                          </a>
+                                       ) : null}
+                                       <a href={ld.linkedin} target="_blank" rel="noreferrer" style={{ textDecoration: "none" }}>
+                                          <button className="btn-secondary" style={{ padding: "8px 12px", background: "rgba(10,102,194,0.1)", color: "#0A66C2", borderColor: "rgba(10,102,194,0.3)" }}>🔗 Search LinkedIn</button>
+                                       </a>
+                                       <button className="btn-primary" style={{ padding: "8px 16px" }} onClick={()=>{setActiveLead(ld); setView("outreach");}}>Write Scripts</button>
+                                    </div>
+                                 </td>
+                              </tr>
+                            ))}
+                         </tbody>
+                      </table>
+
+                      {/* MOBILE VIEW */}
+                      <div className="mobile-cards">
+                         {currentLeads.map((ld, index) => (
+                            <div key={index} className="mobile-card">
+                               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+                                  <div className="status-badge" style={{ background: SEGMENTS[ld.segment].color+"15", color: SEGMENTS[ld.segment].color }}>{SEGMENTS[ld.segment].icon} {SEGMENTS[ld.segment].label}</div>
+                                  <select value={ld.status} onChange={(e) => updateLeadStatus(ld.id, e.target.value)} style={{ padding: "4px 8px", background: ld.status === "New" ? "var(--card)" : ld.status === "Contacted" ? "rgba(16, 185, 129, 0.1)" : ld.status === "In Progress" ? "rgba(59, 130, 246, 0.1)" : ld.status === "Converted" ? "rgba(245, 158, 11, 0.1)" : "var(--card)", color: ld.status === "New" ? "var(--muted)" : ld.status === "Contacted" ? "#10B981" : ld.status === "In Progress" ? "#3B82F6" : ld.status === "Converted" ? "#F59E0B" : "var(--muted)", border: "1px solid var(--border)", borderRadius: "6px", outline: "none", fontSize: 11, fontWeight: 700, cursor: "pointer", transition: "all 0.2s" }}>
+                                     <option value="New">New Lead</option>
+                                     <option value="Contacted">Contacted ✓</option>
+                                     <option value="In Progress">In Progress ⏳</option>
+                                     <option value="Converted">Converted 💰</option>
+                                     <option value="Rejected">Rejected</option>
+                                  </select>
+                               </div>
+                               <div style={{ fontWeight: 800, fontSize: 18, marginBottom: 4 }}>{ld.name}</div>
+                               <div style={{ color: "var(--muted)", fontSize: 14, marginBottom: 2 }}>{ld.title} @ <strong>{ld.company}</strong></div>
+                               <div style={{ color: "var(--muted)", fontSize: 13, marginBottom: 4 }}>📍 {ld.location}</div>
+                               {ld.website ? <div style={{ color: "var(--text)", fontSize: 13, marginBottom: 20 }}>
+                                  <a href={ld.website.startsWith('http') ? ld.website : `https://${ld.website}`} target="_blank" rel="noreferrer" style={{ color: "var(--accent)", textDecoration: "none", fontWeight: 600 }}>🌐 {ld.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}</a>
+                               </div> : null}
+                               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+                                  {ld.email ? (
+                                     <a href={`mailto:${ld.email}`} target="_blank" rel="noreferrer" style={{ textDecoration: "none" }}>
+                                        <button className="btn-secondary" style={{ width: "100%", padding: "12px", fontSize: 13, background: "rgba(245,158,11,0.1)", color: "#F59E0B", borderColor: "rgba(245,158,11,0.3)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>📧 {ld.email}</button>
+                                     </a>
+                                  ) : null}
+                                  <a href={ld.linkedin} target="_blank" rel="noreferrer" style={{ textDecoration: "none" }}>
+                                     <button className="btn-secondary" style={{ width: "100%", padding: "12px", fontSize: 13, background: "rgba(10,102,194,0.1)", color: "#0A66C2", borderColor: "rgba(10,102,194,0.3)" }}>Search LinkedIn</button>
+                                  </a>
+                                  <button className="btn-primary" style={{ width: "100%", padding: "12px", fontSize: 13, gridColumn: "span 2" }} onClick={()=>{setActiveLead(ld); window.scrollTo(0, 0); setView("outreach");}}>Write Scripts</button>
+                               </div>
+                            </div>
+                         ))}
+                      </div>
+
+                      {/* Pagination Controls */}
+                      <div className="pagination-bar">
+                         <div style={{ color: "var(--muted)", fontSize: 13 }}>
+                            Showing <strong style={{color: "var(--text)"}}>{indexOfFirstLead + 1}</strong> to <strong style={{color: "var(--text)"}}>{Math.min(indexOfLastLead, filteredLeads.length)}</strong> of <strong style={{color: "var(--text)"}}>{filteredLeads.length.toLocaleString()}</strong> leads
+                         </div>
+                         <div>
+                            <button className="btn-secondary" style={{ padding: "8px 16px" }} disabled={currentPage === 1} onClick={() => setCurrentPage(p => p - 1)}>Previous</button>
+                            <span style={{ fontSize: 13, color: "var(--text)", fontWeight: 700, padding: "0 12px", textAlign: "center" }}>Page {currentPage} of {totalPages || 1}</span>
+                            <button className="btn-secondary" style={{ padding: "8px 16px" }} disabled={currentPage >= totalPages} onClick={() => setCurrentPage(p => p + 1)}>Next</button>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+              )}
+
+              {view === "outreach" && (
+                <div className="animate-up">
+                   <h1 style={{ fontSize: 32, margin: "0 0 8px 0" }}>Outreach Sequence Engine</h1>
+                   <p style={{ color: "var(--muted)", margin: "0 0 32px 0", fontSize: 16 }}>
+                      End-to-end customized DMs and Email Sequences.
+                   </p>
+
+                   {activeLead ? (
+                      <div className="outreach-grid">
+                         <div>
+                            <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 16, padding: 24, position: "sticky", top: 24 }}>
+                               <div className="status-badge" style={{ background: SEGMENTS[activeLead.segment].color+"15", color: SEGMENTS[activeLead.segment].color, display: "inline-block", marginBottom: 16 }}>{SEGMENTS[activeLead.segment].icon} {SEGMENTS[activeLead.segment].label}</div>
+                               <h2 style={{ margin: "0 0 4px 0", fontSize: 24 }}>{activeLead.name}</h2>
+                               <div style={{ color: "var(--muted)", fontSize: 14 }}>{activeLead.title}</div>
+                               <div style={{ color: "var(--muted)", fontSize: 14, marginBottom: 4 }}>{activeLead.company}</div>
+                               <div style={{ color: "var(--muted)", fontSize: 13, marginBottom: 4 }}>📍 {activeLead.location}</div>
+                               <div style={{ fontSize: 13, marginBottom: 24 }}>
+                                  {activeLead.website ? <a href={activeLead.website.startsWith('http') ? activeLead.website : `https://${activeLead.website}`} target="_blank" rel="noreferrer" style={{ color: "var(--accent)", textDecoration: "none", fontWeight: 600 }}>🌐 {activeLead.website.replace(/^https?:\/\//, '')}</a> : null}
+                               </div>
+                               
+                               <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", color: "var(--muted)", marginBottom: 8, letterSpacing: "0.05em" }}>Pain Point Engine Targets:</div>
+                               <div style={{ fontSize: 14, background: "var(--surface)", padding: 12, borderRadius: 8, border: "1px solid var(--border)", marginBottom: 24, lineHeight: 1.5 }}>
+                                  "{SEGMENTS[activeLead.segment].painPt}"
+                               </div>
+
+                               <a href={activeLead.linkedin} target="_blank" rel="noreferrer" style={{ textDecoration: "none" }}>
+                                  <button className="btn-secondary" style={{ width: "100%", marginBottom: 12, padding: "12px", background: "rgba(10,102,194,0.1)", color: "#0A66C2", borderColor: "rgba(10,102,194,0.3)" }}>🔗 Query Lead on LinkedIn</button>
+                               </a>
+                               <button className="btn-secondary" style={{ width: "100%" }} onClick={()=>setActiveLead(null)}>Clear Action</button>
+                            </div>
+                         </div>
+
+                         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+                            <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, overflow: "hidden" }}>
+                               <div style={{ background: "var(--card)", padding: "16px 20px", borderBottom: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                                  <div style={{ fontWeight: 800, color: "#0A66C2" }}>LinkedIn Connect DM</div>
+                                  <CopyButton text={engineGetLinkedInDM(activeLead)} />
+                                </div>
+                               <div style={{ padding: "16px 20px" }}>
+                                  <textarea readOnly value={engineGetLinkedInDM(activeLead)} style={{ width: "100%", height: 160, background: "var(--bg)", border: "1px solid var(--border)", borderRadius: 8, padding: 16, fontSize: 14, color: "var(--text)", fontFamily: "inherit", resize: "none", lineHeight: 1.5 }} />
+                               </div>
+                            </div>
+
+                            <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, overflow: "hidden" }}>
+                               <div style={{ background: "var(--card)", padding: "16px 20px", borderBottom: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                                  <div style={{ fontWeight: 800, color: "var(--accent)" }}>4-Step Nurture Campaign</div>
+                                  <CopyButton text={engineGetEmailNurture(activeLead)} label="Copy Entire Sequence" />
+                               </div>
+                               <div style={{ padding: "16px 20px" }}>
+                                  <textarea readOnly value={engineGetEmailNurture(activeLead)} style={{ width: "100%", height: 500, background: "var(--bg)", border: "1px solid var(--border)", borderRadius: 8, padding: 16, fontSize: 14, color: "var(--text)", fontFamily: "inherit", resize: "none", lineHeight: 1.6 }} />
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                   ) : (
+                      <div style={{ textAlign: "center", padding: "60px 20px", border: "1px dashed var(--border)", borderRadius: 16, color: "var(--muted)", background: "var(--card)" }}>
+                         <div style={{ fontSize: 48, marginBottom: 16 }}>🎯</div>
+                         <h3 style={{ margin: "0 0 8px 0" }}>No Target Selected</h3>
+                         <p style={{ margin: 0, maxWidth: 400, marginLeft: "auto", marginRight: "auto" }}>Go back to the Lead Database and select "Write Scripts" on any lead to instantaneously generate their high-converting outreach pipeline.</p>
+                         <button className="btn-primary" style={{ marginTop: 24, padding: "12px 24px" }} onClick={()=>setView("crm")}>Browse Database</button>
+                      </div>
+                   )}
+                </div>
+              )}
+           </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LeadOpsEngine />);
+  </script>
 </body>
-
 </html>

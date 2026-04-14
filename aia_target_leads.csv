@@ -1,0 +1,401 @@
+Lead ID,Name,Role,Company,Industry,Email,Country,City,LinkedIn Status,Verification Status
+LID-1001,Lerato Nkurunziza,HR Manager,Green Hub,E-commerce,lerato.nkurunziza@greenhub.com,Ghana,Kumasi,Found,Verified
+LID-1002,Wanjiku Odinga,HR Manager,Smart Pay,Agritech,wanjiku.odinga@smartpay.com,South Africa,Cape Town,Found,Verified
+LID-1003,Sipho Tshabalala,CEO,Peak Ventures,Logistics,sipho.tshabalala@peakventures.com,South Africa,Durban,Found,Verified
+LID-1004,Lerato Ndayishimiye,Founder,Peak Ventures,Renewable Energy,lerato.ndayishimiye@peakventures.com,Nigeria,Ibadan,Found,Verified
+LID-1005,Jabari Odinga,Head of Growth,Swift Partners,Logistics,jabari.odinga@swiftpartners.com,Kenya,Mombasa,Found,Verified
+LID-1006,Kwame Gumede,Operations Lead,Swift Pay,Logistics,kwame.gumede@swiftpay.com,Kenya,Nairobi,Found,Verified
+LID-1007,Lerato Oyekan,Founder,Swift Logistics,Healthtech,lerato.oyekan@swiftlogistics.com,Ghana,Kumasi,Found,Verified
+LID-1008,Babatunde Mbeki,HR Manager,Peak Logistics,Agritech,babatunde.mbeki@peaklogistics.com,South Africa,Cape Town,Found,Verified
+LID-1009,Wandile Mensah,Managing Director,Africa Ventures,Real Estate,wandile.mensah@africaventures.com,South Africa,Johannesburg,Found,Verified
+LID-1010,Soji Buthelezi,CEO,Smart Systems,Renewable Energy,soji.buthelezi@smartsystems.com,Egypt,Cairo,Found,Verified
+LID-1011,Yinka Kagame,CEO,Zion Grow,Healthtech,yinka.kagame@ziongrow.com,Egypt,Alexandria,Found,Verified
+LID-1012,Nneka Balogun,Managing Director,Swift Pay,Real Estate,nneka.balogun@swiftpay.com,Kenya,Nairobi,Found,Verified
+LID-1013,Lerato Adewale,Head of Growth,Sun Hub,Logistics,lerato.adewale@sunhub.com,Nigeria,Ibadan,Found,Verified
+LID-1014,Mwangi Nkurunziza,Co-Founder,Africa Pay,Logistics,mwangi.nkurunziza@africapay.com,Nigeria,Abuja,Found,Verified
+LID-1015,Kofi Balogun,Head of Growth,Sun Hub,Agritech,kofi.balogun@sunhub.com,Ghana,Accra,Found,Verified
+LID-1016,Abena Osei,Founder,Smart Grow,Edtech,abena.osei@smartgrow.com,Ghana,Kumasi,Found,Verified
+LID-1017,Folake Addai,Managing Director,Swift Systems,Healthtech,folake.addai@swiftsystems.com,Kenya,Mombasa,Found,Verified
+LID-1018,Babatunde Diallo,Founder,Next Group,Edtech,babatunde.diallo@nextgroup.com,Nigeria,Lagos,Found,Verified
+LID-1019,Zanele Traore,Head of Growth,Global Solutions,Edtech,zanele.traore@globalsolutions.com,Nigeria,Lagos,Found,Verified
+LID-1020,Mwangi Kagame,Founder,Zion Solutions,Healthtech,mwangi.kagame@zionsolutions.com,Kenya,Nairobi,Found,Verified
+LID-1021,Nneka Njoroge,HR Manager,Smart Partners,Healthtech,nneka.njoroge@smartpartners.com,Kenya,Mombasa,Found,Verified
+LID-1022,Tunde Kagame,Head of Growth,Peak Ventures,Healthtech,tunde.kagame@peakventures.com,South Africa,Durban,Found,Verified
+LID-1023,Thabo Mensah,Founder,Core Tech,Real Estate,thabo.mensah@coretech.com,South Africa,Durban,Found,Verified
+LID-1024,Wanjiku Gumede,CEO,Next Logistics,Real Estate,wanjiku.gumede@nextlogistics.com,Kenya,Nairobi,Found,Verified
+LID-1025,Fatima Habimana,Operations Lead,Core Pay,Agritech,fatima.habimana@corepay.com,Kenya,Nairobi,Found,Verified
+LID-1026,Lerato Nkurunziza,CEO,Smart Systems,Edtech,lerato.nkurunziza@smartsystems.com,Egypt,Cairo,Found,Verified
+LID-1027,Thabo Traore,Managing Director,Peak Grow,Healthtech,thabo.traore@peakgrow.com,Rwanda,Kigali,Found,Verified
+LID-1028,Thabo Habimana,Founder,Smart Pay,Logistics,thabo.habimana@smartpay.com,Rwanda,Kigali,Found,Verified
+LID-1029,Kofi Ofori,Founder,Smart Solutions,Edtech,kofi.ofori@smartsolutions.com,Ghana,Kumasi,Found,Verified
+LID-1030,Fatima Nkurunziza,Operations Lead,Swift Grow,Logistics,fatima.nkurunziza@swiftgrow.com,South Africa,Johannesburg,Found,Verified
+LID-1031,Nneka Nkurunziza,Founder,Smart Hub,E-commerce,nneka.nkurunziza@smarthub.com,Kenya,Mombasa,Found,Verified
+LID-1032,Nneka Odinga,CEO,Sun Tech,Edtech,nneka.odinga@suntech.com,Kenya,Mombasa,Found,Verified
+LID-1033,Efe Njoroge,HR Manager,Smart Hub,Logistics,efe.njoroge@smarthub.com,Egypt,Cairo,Found,Verified
+LID-1034,Wandile Osei,HR Manager,Green Partners,E-commerce,wandile.osei@greenpartners.com,Egypt,Cairo,Found,Verified
+LID-1035,Fatima Zuma,Operations Lead,Africa Group,Real Estate,fatima.zuma@africagroup.com,Kenya,Mombasa,Found,Verified
+LID-1036,Nneka Kenyatta,CEO,Zion Grow,Edtech,nneka.kenyatta@ziongrow.com,Ghana,Kumasi,Found,Verified
+LID-1037,Musa Addai,CEO,Sun Group,E-commerce,musa.addai@sungroup.com,South Africa,Johannesburg,Found,Verified
+LID-1038,Kehinde Buthelezi,Managing Director,Africa Tech,Healthtech,kehinde.buthelezi@africatech.com,Ghana,Kumasi,Found,Verified
+LID-1039,Thabo Gbeho,Co-Founder,Peak Systems,Edtech,thabo.gbeho@peaksystems.com,Nigeria,Abuja,Found,Verified
+LID-1040,Abena Balogun,Co-Founder,Vibe Logistics,Logistics,abena.balogun@vibelogistics.com,Ghana,Kumasi,Found,Verified
+LID-1041,Soji Mbeki,HR Manager,Smart Hub,Edtech,soji.mbeki@smarthub.com,Kenya,Nairobi,Found,Verified
+LID-1042,Abena Ofori,Managing Director,Peak Solutions,Renewable Energy,abena.ofori@peaksolutions.com,Ghana,Kumasi,Found,Verified
+LID-1043,Zodwa Ofori,Founder,Peak Systems,Fintech,zodwa.ofori@peaksystems.com,Egypt,Alexandria,Found,Verified
+LID-1044,Kamau Mbeki,Head of Growth,Next Solutions,Edtech,kamau.mbeki@nextsolutions.com,Nigeria,Lagos,Found,Verified
+LID-1045,Wandile Zuma,Managing Director,Core Hub,Real Estate,wandile.zuma@corehub.com,South Africa,Durban,Found,Verified
+LID-1046,Wandile Kenyatta,Head of Growth,Core Grow,Real Estate,wandile.kenyatta@coregrow.com,Ghana,Kumasi,Found,Verified
+LID-1047,Abena Njoroge,Head of Growth,Swift Solutions,Real Estate,abena.njoroge@swiftsolutions.com,Ghana,Kumasi,Found,Verified
+LID-1048,Kofi Gbeho,HR Manager,Africa Logistics,Renewable Energy,kofi.gbeho@africalogistics.com,Rwanda,Kigali,Found,Verified
+LID-1049,Folake Ofori,Managing Director,Africa Systems,Real Estate,folake.ofori@africasystems.com,Rwanda,Kigali,Found,Verified
+LID-1050,Kehinde Dlamini,Founder,Core Partners,Healthtech,kehinde.dlamini@corepartners.com,Rwanda,Kigali,Found,Verified
+LID-1051,Nneka Kenyatta,Head of Growth,Next Hub,Edtech,nneka.kenyatta@nexthub.com,Egypt,Alexandria,Found,Verified
+LID-1052,Kofi Traore,CEO,Vibe Systems,Logistics,kofi.traore@vibesystems.com,Egypt,Alexandria,Found,Verified
+LID-1053,Olumide Habimana,Head of Growth,Next Pay,Logistics,olumide.habimana@nextpay.com,Kenya,Nairobi,Found,Verified
+LID-1054,Olumide Odinga,Co-Founder,Smart Grow,Logistics,olumide.odinga@smartgrow.com,Egypt,Alexandria,Found,Verified
+LID-1055,Mwangi Okonjo,Co-Founder,Next Pay,Renewable Energy,mwangi.okonjo@nextpay.com,Egypt,Alexandria,Found,Verified
+LID-1056,Kamau Ndlovu,Managing Director,Vibe Logistics,Healthtech,kamau.ndlovu@vibelogistics.com,South Africa,Durban,Found,Verified
+LID-1057,Folake Ruto,Operations Lead,Green Logistics,Logistics,folake.ruto@greenlogistics.com,Nigeria,Lagos,Found,Verified
+LID-1058,Amina Diallo,Co-Founder,Smart Pay,Fintech,amina.diallo@smartpay.com,Ghana,Kumasi,Found,Verified
+LID-1059,Tunde Oyekan,Head of Growth,Global Group,Agritech,tunde.oyekan@globalgroup.com,Egypt,Alexandria,Found,Verified
+LID-1060,Kwame Habimana,Managing Director,Core Pay,Real Estate,kwame.habimana@corepay.com,South Africa,Cape Town,Found,Verified
+LID-1061,Yinka Diallo,Co-Founder,Swift Group,Fintech,yinka.diallo@swiftgroup.com,Rwanda,Kigali,Found,Verified
+LID-1062,Tendai Sarpong,HR Manager,Global Partners,Healthtech,tendai.sarpong@globalpartners.com,Egypt,Cairo,Found,Verified
+LID-1063,Babatunde Tshabalala,Founder,Zion Pay,Renewable Energy,babatunde.tshabalala@zionpay.com,Egypt,Cairo,Found,Verified
+LID-1064,Mwangi Njoroge,Head of Growth,Green Logistics,Healthtech,mwangi.njoroge@greenlogistics.com,Rwanda,Kigali,Found,Verified
+LID-1065,Amina Tshabalala,Head of Growth,Africa Solutions,Edtech,amina.tshabalala@africasolutions.com,Kenya,Nairobi,Found,Verified
+LID-1066,Nneka Nkurunziza,Head of Growth,Vibe Logistics,Healthtech,nneka.nkurunziza@vibelogistics.com,Kenya,Mombasa,Found,Verified
+LID-1067,Soji Okonjo,Co-Founder,Global Grow,Fintech,soji.okonjo@globalgrow.com,Nigeria,Abuja,Found,Verified
+LID-1068,Jabari Kenyatta,CEO,Peak Partners,Healthtech,jabari.kenyatta@peakpartners.com,Nigeria,Abuja,Found,Verified
+LID-1069,Chidi Ofori,Managing Director,Sun Solutions,Logistics,chidi.ofori@sunsolutions.com,Nigeria,Ibadan,Found,Verified
+LID-1070,Kamau Balogun,HR Manager,Peak Hub,Healthtech,kamau.balogun@peakhub.com,South Africa,Cape Town,Found,Verified
+LID-1071,Nneka Gbeho,Founder,Global Logistics,Real Estate,nneka.gbeho@globallogistics.com,Egypt,Alexandria,Found,Verified
+LID-1072,Yinka Ruto,Co-Founder,Sun Partners,Agritech,yinka.ruto@sunpartners.com,Nigeria,Ibadan,Found,Verified
+LID-1073,Olumide Ofori,Head of Growth,Swift Hub,Logistics,olumide.ofori@swifthub.com,Egypt,Alexandria,Found,Verified
+LID-1074,Zawadi Adewale,HR Manager,Peak Ventures,Renewable Energy,zawadi.adewale@peakventures.com,Rwanda,Kigali,Found,Verified
+LID-1075,Olumide Odinga,HR Manager,Sun Grow,Agritech,olumide.odinga@sungrow.com,Egypt,Cairo,Found,Verified
+LID-1076,Babatunde Tshabalala,CEO,Vibe Systems,Logistics,babatunde.tshabalala@vibesystems.com,Ghana,Kumasi,Found,Verified
+LID-1077,Thabo Zuma,CEO,Next Grow,Logistics,thabo.zuma@nextgrow.com,Nigeria,Ibadan,Found,Verified
+LID-1078,Sipho Sarpong,Co-Founder,Global Solutions,Healthtech,sipho.sarpong@globalsolutions.com,Kenya,Mombasa,Found,Verified
+LID-1079,Babatunde Odinga,Managing Director,Global Solutions,Healthtech,babatunde.odinga@globalsolutions.com,Egypt,Alexandria,Found,Verified
+LID-1080,Abena Ofori,CEO,Peak Tech,Renewable Energy,abena.ofori@peaktech.com,Ghana,Accra,Found,Verified
+LID-1081,Zodwa Adewale,CEO,Green Systems,Healthtech,zodwa.adewale@greensystems.com,Nigeria,Ibadan,Found,Verified
+LID-1082,Fatima Kenyatta,CEO,Swift Solutions,Renewable Energy,fatima.kenyatta@swiftsolutions.com,Egypt,Cairo,Found,Verified
+LID-1083,Sipho Balogun,CEO,Sun Partners,Renewable Energy,sipho.balogun@sunpartners.com,South Africa,Cape Town,Found,Verified
+LID-1084,Nneka Ruto,Operations Lead,Swift Pay,Edtech,nneka.ruto@swiftpay.com,Rwanda,Kigali,Found,Verified
+LID-1085,Lerato Nkurunziza,Operations Lead,Next Pay,Agritech,lerato.nkurunziza@nextpay.com,Ghana,Accra,Found,Verified
+LID-1086,Yinka Ofori,HR Manager,Green Systems,Real Estate,yinka.ofori@greensystems.com,Rwanda,Kigali,Found,Verified
+LID-1087,Soji Tshabalala,HR Manager,Vibe Ventures,Renewable Energy,soji.tshabalala@vibeventures.com,Ghana,Accra,Found,Verified
+LID-1088,Soji Dlamini,Head of Growth,Vibe Group,Renewable Energy,soji.dlamini@vibegroup.com,Ghana,Kumasi,Found,Verified
+LID-1089,Amina Diallo,Founder,Peak Logistics,Real Estate,amina.diallo@peaklogistics.com,Egypt,Alexandria,Found,Verified
+LID-1090,Kamau Traore,CEO,Swift Pay,Healthtech,kamau.traore@swiftpay.com,Egypt,Cairo,Found,Verified
+LID-1091,Olumide Tshabalala,Founder,Vibe Tech,Real Estate,olumide.tshabalala@vibetech.com,South Africa,Johannesburg,Found,Verified
+LID-1092,Babatunde Adewale,CEO,Green Pay,Agritech,babatunde.adewale@greenpay.com,Egypt,Alexandria,Found,Verified
+LID-1093,Folake Osei,HR Manager,Zion Logistics,Logistics,folake.osei@zionlogistics.com,South Africa,Durban,Found,Verified
+LID-1094,Kofi Osei,HR Manager,Africa Solutions,E-commerce,kofi.osei@africasolutions.com,Nigeria,Abuja,Found,Verified
+LID-1095,Efe Balogun,Founder,Core Hub,Agritech,efe.balogun@corehub.com,Nigeria,Abuja,Found,Verified
+LID-1096,Soji Gbeho,Head of Growth,Smart Logistics,Logistics,soji.gbeho@smartlogistics.com,Nigeria,Lagos,Found,Verified
+LID-1097,Babatunde Osei,CEO,Next Ventures,Edtech,babatunde.osei@nextventures.com,Ghana,Kumasi,Found,Verified
+LID-1098,Mwangi Zuma,Operations Lead,Peak Tech,Agritech,mwangi.zuma@peaktech.com,Egypt,Alexandria,Found,Verified
+LID-1099,Zanele Ndayishimiye,Head of Growth,Next Systems,Edtech,zanele.ndayishimiye@nextsystems.com,Kenya,Nairobi,Found,Verified
+LID-1100,Nneka Adewale,Founder,Zion Tech,Real Estate,nneka.adewale@ziontech.com,Rwanda,Kigali,Found,Verified
+LID-1101,Tunde Okonjo,Operations Lead,Peak Ventures,Healthtech,tunde.okonjo@peakventures.com,Ghana,Accra,Found,Verified
+LID-1102,Chidi Buthelezi,Head of Growth,Vibe Ventures,Renewable Energy,chidi.buthelezi@vibeventures.com,Kenya,Mombasa,Found,Verified
+LID-1103,Folake Adewale,Managing Director,Global Ventures,Agritech,folake.adewale@globalventures.com,Rwanda,Kigali,Found,Verified
+LID-1104,Olumide Zuma,Head of Growth,Smart Logistics,Logistics,olumide.zuma@smartlogistics.com,Rwanda,Kigali,Found,Verified
+LID-1105,Kehinde Addai,Head of Growth,Africa Pay,Real Estate,kehinde.addai@africapay.com,Kenya,Nairobi,Found,Verified
+LID-1106,Kehinde Adewale,Managing Director,Core Partners,Healthtech,kehinde.adewale@corepartners.com,South Africa,Johannesburg,Found,Verified
+LID-1107,Chidi Kenyatta,Operations Lead,Next Pay,Edtech,chidi.kenyatta@nextpay.com,Kenya,Nairobi,Found,Verified
+LID-1108,Mwangi Ruto,Head of Growth,Green Hub,Real Estate,mwangi.ruto@greenhub.com,Egypt,Alexandria,Found,Verified
+LID-1109,Fatima Mensah,Operations Lead,Swift Grow,Real Estate,fatima.mensah@swiftgrow.com,Nigeria,Lagos,Found,Verified
+LID-1110,Jabari Buthelezi,Co-Founder,Zion Pay,Real Estate,jabari.buthelezi@zionpay.com,Egypt,Cairo,Found,Verified
+LID-1111,Mwangi Buthelezi,HR Manager,Sun Hub,Logistics,mwangi.buthelezi@sunhub.com,Rwanda,Kigali,Found,Verified
+LID-1112,Wanjiku Tshabalala,CEO,Africa Ventures,E-commerce,wanjiku.tshabalala@africaventures.com,Rwanda,Kigali,Found,Verified
+LID-1113,Soji Habimana,Founder,Global Pay,Renewable Energy,soji.habimana@globalpay.com,Rwanda,Kigali,Found,Verified
+LID-1114,Olumide Tshabalala,Head of Growth,Vibe Solutions,Healthtech,olumide.tshabalala@vibesolutions.com,Rwanda,Kigali,Found,Verified
+LID-1115,Efe Diallo,Managing Director,Global Pay,Real Estate,efe.diallo@globalpay.com,South Africa,Durban,Found,Verified
+LID-1116,Jabari Nkurunziza,HR Manager,Next Tech,Renewable Energy,jabari.nkurunziza@nexttech.com,Egypt,Alexandria,Found,Verified
+LID-1117,Folake Gumede,Head of Growth,Sun Tech,Edtech,folake.gumede@suntech.com,Ghana,Accra,Found,Verified
+LID-1118,Tendai Dlamini,Head of Growth,Core Grow,Healthtech,tendai.dlamini@coregrow.com,Rwanda,Kigali,Found,Verified
+LID-1119,Efe Ofori,Managing Director,Africa Hub,Renewable Energy,efe.ofori@africahub.com,Rwanda,Kigali,Found,Verified
+LID-1120,Kofi Oyekan,CEO,Africa Partners,Edtech,kofi.oyekan@africapartners.com,Nigeria,Abuja,Found,Verified
+LID-1121,Yinka Ndlovu,Co-Founder,Sun Grow,Renewable Energy,yinka.ndlovu@sungrow.com,South Africa,Cape Town,Found,Verified
+LID-1122,Mwangi Gbeho,Founder,Peak Logistics,Agritech,mwangi.gbeho@peaklogistics.com,Kenya,Nairobi,Found,Verified
+LID-1123,Tunde Traore,CEO,Peak Solutions,E-commerce,tunde.traore@peaksolutions.com,Rwanda,Kigali,Found,Verified
+LID-1124,Sipho Adewale,Head of Growth,Global Tech,Healthtech,sipho.adewale@globaltech.com,Kenya,Mombasa,Found,Verified
+LID-1125,Olumide Sibanda,HR Manager,Peak Group,Fintech,olumide.sibanda@peakgroup.com,Nigeria,Abuja,Found,Verified
+LID-1126,Nneka Tshabalala,Managing Director,Core Ventures,Real Estate,nneka.tshabalala@coreventures.com,Nigeria,Ibadan,Found,Verified
+LID-1127,Abena Odinga,HR Manager,Core Grow,E-commerce,abena.odinga@coregrow.com,South Africa,Johannesburg,Found,Verified
+LID-1128,Mokoena Gumede,CEO,Vibe Systems,Renewable Energy,mokoena.gumede@vibesystems.com,Nigeria,Lagos,Found,Verified
+LID-1129,Lerato Osei,Managing Director,Africa Solutions,Renewable Energy,lerato.osei@africasolutions.com,South Africa,Durban,Found,Verified
+LID-1130,Mwangi Sarpong,HR Manager,Core Tech,Healthtech,mwangi.sarpong@coretech.com,South Africa,Durban,Found,Verified
+LID-1131,Thabo Buthelezi,Operations Lead,Smart Hub,Healthtech,thabo.buthelezi@smarthub.com,Nigeria,Lagos,Found,Verified
+LID-1132,Sipho Nkurunziza,CEO,Swift Systems,Renewable Energy,sipho.nkurunziza@swiftsystems.com,Kenya,Nairobi,Found,Verified
+LID-1133,Wanjiku Osei,Founder,Smart Group,Agritech,wanjiku.osei@smartgroup.com,Nigeria,Lagos,Found,Verified
+LID-1134,Tendai Buthelezi,CEO,Zion Tech,Healthtech,tendai.buthelezi@ziontech.com,Rwanda,Kigali,Found,Verified
+LID-1135,Sipho Adewale,Managing Director,Next Grow,Logistics,sipho.adewale@nextgrow.com,South Africa,Johannesburg,Found,Verified
+LID-1136,Tendai Kenyatta,Founder,Africa Grow,Renewable Energy,tendai.kenyatta@africagrow.com,Rwanda,Kigali,Found,Verified
+LID-1137,Zanele Gumede,Operations Lead,Zion Hub,Fintech,zanele.gumede@zionhub.com,Ghana,Accra,Found,Verified
+LID-1138,Chidi Adewale,HR Manager,Swift Group,Fintech,chidi.adewale@swiftgroup.com,Nigeria,Lagos,Found,Verified
+LID-1139,Abena Ndayishimiye,Operations Lead,Peak Solutions,Healthtech,abena.ndayishimiye@peaksolutions.com,Nigeria,Lagos,Found,Verified
+LID-1140,Musa Diallo,Managing Director,Green Tech,E-commerce,musa.diallo@greentech.com,Egypt,Alexandria,Found,Verified
+LID-1141,Chidi Sarpong,Head of Growth,Vibe Systems,E-commerce,chidi.sarpong@vibesystems.com,South Africa,Johannesburg,Found,Verified
+LID-1142,Tendai Dlamini,Head of Growth,Core Solutions,Fintech,tendai.dlamini@coresolutions.com,South Africa,Durban,Found,Verified
+LID-1143,Zawadi Balogun,Head of Growth,Core Grow,E-commerce,zawadi.balogun@coregrow.com,South Africa,Johannesburg,Found,Verified
+LID-1144,Zodwa Okonjo,HR Manager,Peak Solutions,Renewable Energy,zodwa.okonjo@peaksolutions.com,Ghana,Kumasi,Found,Verified
+LID-1145,Nneka Habimana,Co-Founder,Africa Solutions,Logistics,nneka.habimana@africasolutions.com,Egypt,Alexandria,Found,Verified
+LID-1146,Musa Sarpong,Founder,Swift Pay,Agritech,musa.sarpong@swiftpay.com,South Africa,Cape Town,Found,Verified
+LID-1147,Babatunde Mensah,Head of Growth,Next Systems,Healthtech,babatunde.mensah@nextsystems.com,South Africa,Durban,Found,Verified
+LID-1148,Fatima Mbeki,Managing Director,Global Solutions,Real Estate,fatima.mbeki@globalsolutions.com,Egypt,Alexandria,Found,Verified
+LID-1149,Zanele Addai,Operations Lead,Green Hub,Edtech,zanele.addai@greenhub.com,Kenya,Mombasa,Found,Verified
+LID-1150,Chidi Kagame,Head of Growth,Global Group,Edtech,chidi.kagame@globalgroup.com,Rwanda,Kigali,Found,Verified
+LID-1151,Zanele Sibanda,CEO,Core Systems,Healthtech,zanele.sibanda@coresystems.com,Egypt,Cairo,Found,Verified
+LID-1152,Fatima Gumede,Operations Lead,Africa Solutions,Healthtech,fatima.gumede@africasolutions.com,South Africa,Cape Town,Found,Verified
+LID-1153,Efe Diallo,Managing Director,Smart Grow,Real Estate,efe.diallo@smartgrow.com,South Africa,Durban,Found,Verified
+LID-1154,Nneka Mbeki,Head of Growth,Zion Logistics,Real Estate,nneka.mbeki@zionlogistics.com,Ghana,Accra,Found,Verified
+LID-1155,Zawadi Odinga,CEO,Zion Pay,Real Estate,zawadi.odinga@zionpay.com,Nigeria,Ibadan,Found,Verified
+LID-1156,Lerato Diallo,Founder,Zion Pay,E-commerce,lerato.diallo@zionpay.com,Rwanda,Kigali,Found,Verified
+LID-1157,Babatunde Oyekan,Operations Lead,Sun Hub,Edtech,babatunde.oyekan@sunhub.com,South Africa,Cape Town,Found,Verified
+LID-1158,Wandile Odinga,CEO,Swift Pay,Edtech,wandile.odinga@swiftpay.com,Ghana,Accra,Found,Verified
+LID-1159,Thabo Ofori,Operations Lead,Sun Ventures,Renewable Energy,thabo.ofori@sunventures.com,Egypt,Cairo,Found,Verified
+LID-1160,Tunde Zuma,CEO,Green Ventures,Renewable Energy,tunde.zuma@greenventures.com,Rwanda,Kigali,Found,Verified
+LID-1161,Kofi Habimana,Head of Growth,Smart Partners,Edtech,kofi.habimana@smartpartners.com,Rwanda,Kigali,Found,Verified
+LID-1162,Nneka Habimana,Co-Founder,Peak Group,Real Estate,nneka.habimana@peakgroup.com,Ghana,Kumasi,Found,Verified
+LID-1163,Kehinde Gbeho,HR Manager,Smart Group,Healthtech,kehinde.gbeho@smartgroup.com,Rwanda,Kigali,Found,Verified
+LID-1164,Lerato Sarpong,Founder,Sun Group,Agritech,lerato.sarpong@sungroup.com,South Africa,Johannesburg,Found,Verified
+LID-1165,Lerato Buthelezi,Managing Director,Vibe Grow,Renewable Energy,lerato.buthelezi@vibegrow.com,Kenya,Nairobi,Found,Verified
+LID-1166,Lerato Sibanda,CEO,Core Partners,Logistics,lerato.sibanda@corepartners.com,South Africa,Johannesburg,Found,Verified
+LID-1167,Zawadi Addai,Founder,Zion Logistics,Renewable Energy,zawadi.addai@zionlogistics.com,South Africa,Johannesburg,Found,Verified
+LID-1168,Yinka Gumede,Managing Director,Global Systems,Logistics,yinka.gumede@globalsystems.com,Rwanda,Kigali,Found,Verified
+LID-1169,Abena Ofori,Operations Lead,Next Grow,Edtech,abena.ofori@nextgrow.com,Egypt,Alexandria,Found,Verified
+LID-1170,Amina Oyekan,Co-Founder,Smart Group,Agritech,amina.oyekan@smartgroup.com,Rwanda,Kigali,Found,Verified
+LID-1171,Mwangi Adewale,Co-Founder,Peak Partners,Healthtech,mwangi.adewale@peakpartners.com,Nigeria,Abuja,Found,Verified
+LID-1172,Yinka Okonjo,CEO,Zion Partners,Logistics,yinka.okonjo@zionpartners.com,Nigeria,Abuja,Found,Verified
+LID-1173,Soji Mbeki,Founder,Smart Systems,Agritech,soji.mbeki@smartsystems.com,Rwanda,Kigali,Found,Verified
+LID-1174,Mokoena Mbeki,Founder,Africa Hub,Real Estate,mokoena.mbeki@africahub.com,Egypt,Alexandria,Found,Verified
+LID-1175,Tendai Buthelezi,Operations Lead,Smart Tech,E-commerce,tendai.buthelezi@smarttech.com,Kenya,Mombasa,Found,Verified
+LID-1176,Fatima Habimana,Co-Founder,Smart Pay,Fintech,fatima.habimana@smartpay.com,Kenya,Mombasa,Found,Verified
+LID-1177,Kofi Gumede,Operations Lead,Vibe Grow,Logistics,kofi.gumede@vibegrow.com,South Africa,Johannesburg,Found,Verified
+LID-1178,Zawadi Okonjo,Operations Lead,Core Partners,Agritech,zawadi.okonjo@corepartners.com,Rwanda,Kigali,Found,Verified
+LID-1179,Kwame Ofori,Managing Director,Vibe Logistics,Renewable Energy,kwame.ofori@vibelogistics.com,South Africa,Durban,Found,Verified
+LID-1180,Tendai Mensah,CEO,Global Systems,Real Estate,tendai.mensah@globalsystems.com,Kenya,Mombasa,Found,Verified
+LID-1181,Tendai Addai,HR Manager,Peak Group,Agritech,tendai.addai@peakgroup.com,South Africa,Johannesburg,Found,Verified
+LID-1182,Zodwa Okonjo,HR Manager,Global Logistics,Healthtech,zodwa.okonjo@globallogistics.com,South Africa,Cape Town,Found,Verified
+LID-1183,Nneka Osei,Head of Growth,Africa Partners,Real Estate,nneka.osei@africapartners.com,Ghana,Kumasi,Found,Verified
+LID-1184,Lerato Dlamini,Head of Growth,Swift Solutions,Real Estate,lerato.dlamini@swiftsolutions.com,Rwanda,Kigali,Found,Verified
+LID-1185,Olumide Ofori,Operations Lead,Next Systems,Fintech,olumide.ofori@nextsystems.com,Egypt,Alexandria,Found,Verified
+LID-1186,Nneka Ruto,Operations Lead,Peak Systems,Agritech,nneka.ruto@peaksystems.com,Nigeria,Abuja,Found,Verified
+LID-1187,Lerato Odinga,Co-Founder,Zion Tech,Agritech,lerato.odinga@ziontech.com,Ghana,Kumasi,Found,Verified
+LID-1188,Folake Odinga,HR Manager,Smart Systems,E-commerce,folake.odinga@smartsystems.com,Egypt,Cairo,Found,Verified
+LID-1189,Nneka Traore,Head of Growth,Smart Partners,E-commerce,nneka.traore@smartpartners.com,Ghana,Kumasi,Found,Verified
+LID-1190,Abena Ruto,Operations Lead,Green Systems,E-commerce,abena.ruto@greensystems.com,Kenya,Nairobi,Found,Verified
+LID-1191,Nneka Addai,Managing Director,Vibe Hub,Healthtech,nneka.addai@vibehub.com,Kenya,Mombasa,Found,Verified
+LID-1192,Zanele Buthelezi,Co-Founder,Zion Pay,Edtech,zanele.buthelezi@zionpay.com,Rwanda,Kigali,Found,Verified
+LID-1193,Wanjiku Addai,Operations Lead,Vibe Ventures,Fintech,wanjiku.addai@vibeventures.com,Nigeria,Lagos,Found,Verified
+LID-1194,Tendai Gumede,CEO,Swift Pay,Edtech,tendai.gumede@swiftpay.com,Rwanda,Kigali,Found,Verified
+LID-1195,Nneka Mbeki,Co-Founder,Global Grow,Renewable Energy,nneka.mbeki@globalgrow.com,Ghana,Accra,Found,Verified
+LID-1196,Wandile Gumede,Managing Director,Swift Ventures,Edtech,wandile.gumede@swiftventures.com,Rwanda,Kigali,Found,Verified
+LID-1197,Folake Diallo,CEO,Core Tech,Renewable Energy,folake.diallo@coretech.com,South Africa,Cape Town,Found,Verified
+LID-1198,Abena Ruto,Head of Growth,Africa Ventures,Logistics,abena.ruto@africaventures.com,Kenya,Nairobi,Found,Verified
+LID-1199,Nneka Tshabalala,Head of Growth,Smart Tech,Renewable Energy,nneka.tshabalala@smarttech.com,Ghana,Accra,Found,Verified
+LID-1200,Zanele Sarpong,Head of Growth,Vibe Solutions,Logistics,zanele.sarpong@vibesolutions.com,South Africa,Durban,Found,Verified
+LID-1201,Musa Ruto,Managing Director,Green Pay,Healthtech,musa.ruto@greenpay.com,Kenya,Nairobi,Found,Verified
+LID-1202,Amina Osei,Co-Founder,Next Solutions,Renewable Energy,amina.osei@nextsolutions.com,Nigeria,Lagos,Found,Verified
+LID-1203,Lerato Mbeki,CEO,Swift Grow,Agritech,lerato.mbeki@swiftgrow.com,Ghana,Accra,Found,Verified
+LID-1204,Nneka Diallo,Head of Growth,Next Group,Fintech,nneka.diallo@nextgroup.com,Ghana,Accra,Found,Verified
+LID-1205,Wandile Dlamini,Co-Founder,Smart Grow,Edtech,wandile.dlamini@smartgrow.com,Kenya,Mombasa,Found,Verified
+LID-1206,Wanjiku Adewale,Operations Lead,Africa Partners,Fintech,wanjiku.adewale@africapartners.com,Rwanda,Kigali,Found,Verified
+LID-1207,Nneka Zuma,Managing Director,Sun Pay,Fintech,nneka.zuma@sunpay.com,Nigeria,Lagos,Found,Verified
+LID-1208,Lerato Sarpong,Founder,Core Partners,Edtech,lerato.sarpong@corepartners.com,Rwanda,Kigali,Found,Verified
+LID-1209,Zawadi Kenyatta,Founder,Smart Pay,Fintech,zawadi.kenyatta@smartpay.com,Egypt,Alexandria,Found,Verified
+LID-1210,Kehinde Adewale,Head of Growth,Global Logistics,Logistics,kehinde.adewale@globallogistics.com,Kenya,Nairobi,Found,Verified
+LID-1211,Fatima Ofori,CEO,Smart Logistics,Renewable Energy,fatima.ofori@smartlogistics.com,Ghana,Kumasi,Found,Verified
+LID-1212,Sipho Ruto,CEO,Green Ventures,Agritech,sipho.ruto@greenventures.com,Egypt,Alexandria,Found,Verified
+LID-1213,Nneka Balogun,Co-Founder,Swift Pay,Real Estate,nneka.balogun@swiftpay.com,Egypt,Cairo,Found,Verified
+LID-1214,Abena Gbeho,Operations Lead,Vibe Solutions,Edtech,abena.gbeho@vibesolutions.com,Nigeria,Ibadan,Found,Verified
+LID-1215,Wanjiku Ofori,Founder,Smart Group,Edtech,wanjiku.ofori@smartgroup.com,South Africa,Cape Town,Found,Verified
+LID-1216,Olumide Ruto,Founder,Peak Partners,Healthtech,olumide.ruto@peakpartners.com,Nigeria,Ibadan,Found,Verified
+LID-1217,Yinka Balogun,Operations Lead,Peak Tech,Healthtech,yinka.balogun@peaktech.com,Egypt,Cairo,Found,Verified
+LID-1218,Nneka Zuma,Head of Growth,Green Logistics,E-commerce,nneka.zuma@greenlogistics.com,South Africa,Cape Town,Found,Verified
+LID-1219,Tendai Okonjo,Head of Growth,Smart Partners,Real Estate,tendai.okonjo@smartpartners.com,Nigeria,Lagos,Found,Verified
+LID-1220,Wandile Diallo,Co-Founder,Core Group,Logistics,wandile.diallo@coregroup.com,Ghana,Accra,Found,Verified
+LID-1221,Musa Njoroge,HR Manager,Global Grow,Agritech,musa.njoroge@globalgrow.com,Egypt,Cairo,Found,Verified
+LID-1222,Nneka Zuma,Managing Director,Smart Logistics,Logistics,nneka.zuma@smartlogistics.com,Kenya,Nairobi,Found,Verified
+LID-1223,Fatima Osei,Managing Director,Africa Logistics,Fintech,fatima.osei@africalogistics.com,South Africa,Johannesburg,Found,Verified
+LID-1224,Abena Buthelezi,Co-Founder,Smart Group,Real Estate,abena.buthelezi@smartgroup.com,Egypt,Alexandria,Found,Verified
+LID-1225,Zodwa Adewale,Founder,Swift Solutions,Agritech,zodwa.adewale@swiftsolutions.com,Rwanda,Kigali,Found,Verified
+LID-1226,Amina Sarpong,Co-Founder,Next Group,Edtech,amina.sarpong@nextgroup.com,Egypt,Alexandria,Found,Verified
+LID-1227,Lerato Ruto,Founder,Africa Partners,Agritech,lerato.ruto@africapartners.com,Ghana,Accra,Found,Verified
+LID-1228,Abena Osei,Head of Growth,Next Grow,Logistics,abena.osei@nextgrow.com,Egypt,Alexandria,Found,Verified
+LID-1229,Tendai Tshabalala,Head of Growth,Global Group,Renewable Energy,tendai.tshabalala@globalgroup.com,Egypt,Cairo,Found,Verified
+LID-1230,Sipho Osei,Founder,Zion Solutions,Edtech,sipho.osei@zionsolutions.com,Nigeria,Ibadan,Found,Verified
+LID-1231,Lerato Nkurunziza,Founder,Africa Logistics,Logistics,lerato.nkurunziza@africalogistics.com,Kenya,Mombasa,Found,Verified
+LID-1232,Fatima Sibanda,Operations Lead,Africa Solutions,Agritech,fatima.sibanda@africasolutions.com,Kenya,Nairobi,Found,Verified
+LID-1233,Olumide Diallo,HR Manager,Swift Hub,Real Estate,olumide.diallo@swifthub.com,Nigeria,Abuja,Found,Verified
+LID-1234,Jabari Dlamini,CEO,Green Solutions,Healthtech,jabari.dlamini@greensolutions.com,Kenya,Mombasa,Found,Verified
+LID-1235,Zanele Oyekan,Head of Growth,Zion Logistics,Renewable Energy,zanele.oyekan@zionlogistics.com,Kenya,Nairobi,Found,Verified
+LID-1236,Sipho Diallo,HR Manager,Core Tech,Fintech,sipho.diallo@coretech.com,Kenya,Mombasa,Found,Verified
+LID-1237,Jabari Nkurunziza,Co-Founder,Africa Grow,E-commerce,jabari.nkurunziza@africagrow.com,Nigeria,Ibadan,Found,Verified
+LID-1238,Wandile Odinga,CEO,Africa Systems,Logistics,wandile.odinga@africasystems.com,Rwanda,Kigali,Found,Verified
+LID-1239,Mokoena Ofori,Co-Founder,Sun Ventures,Agritech,mokoena.ofori@sunventures.com,Nigeria,Ibadan,Found,Verified
+LID-1240,Nneka Ofori,Head of Growth,Core Pay,Agritech,nneka.ofori@corepay.com,Ghana,Kumasi,Found,Verified
+LID-1241,Lerato Sibanda,Co-Founder,Green Hub,E-commerce,lerato.sibanda@greenhub.com,Ghana,Kumasi,Found,Verified
+LID-1242,Amina Ofori,Operations Lead,Peak Systems,Edtech,amina.ofori@peaksystems.com,Nigeria,Abuja,Found,Verified
+LID-1243,Zawadi Sibanda,Co-Founder,Smart Grow,Edtech,zawadi.sibanda@smartgrow.com,Rwanda,Kigali,Found,Verified
+LID-1244,Babatunde Ruto,Co-Founder,Next Solutions,E-commerce,babatunde.ruto@nextsolutions.com,Rwanda,Kigali,Found,Verified
+LID-1245,Tendai Ndlovu,Head of Growth,Zion Grow,Real Estate,tendai.ndlovu@ziongrow.com,Nigeria,Ibadan,Found,Verified
+LID-1246,Yinka Gbeho,Head of Growth,Smart Pay,Fintech,yinka.gbeho@smartpay.com,South Africa,Johannesburg,Found,Verified
+LID-1247,Tendai Okonjo,Head of Growth,Swift Hub,Agritech,tendai.okonjo@swifthub.com,Kenya,Mombasa,Found,Verified
+LID-1248,Mwangi Sibanda,Head of Growth,Vibe Solutions,Renewable Energy,mwangi.sibanda@vibesolutions.com,Egypt,Cairo,Found,Verified
+LID-1249,Zodwa Ndlovu,HR Manager,Smart Solutions,Fintech,zodwa.ndlovu@smartsolutions.com,Rwanda,Kigali,Found,Verified
+LID-1250,Kamau Njoroge,HR Manager,Peak Solutions,Fintech,kamau.njoroge@peaksolutions.com,Kenya,Mombasa,Found,Verified
+LID-1251,Zawadi Diallo,CEO,Vibe Tech,Healthtech,zawadi.diallo@vibetech.com,Rwanda,Kigali,Found,Verified
+LID-1252,Jabari Odinga,Managing Director,Global Grow,Agritech,jabari.odinga@globalgrow.com,South Africa,Johannesburg,Found,Verified
+LID-1253,Folake Mbeki,Founder,Africa Pay,Edtech,folake.mbeki@africapay.com,South Africa,Durban,Found,Verified
+LID-1254,Kofi Nkurunziza,Operations Lead,Green Hub,Renewable Energy,kofi.nkurunziza@greenhub.com,Rwanda,Kigali,Found,Verified
+LID-1255,Wanjiku Diallo,Founder,Core Grow,Logistics,wanjiku.diallo@coregrow.com,South Africa,Durban,Found,Verified
+LID-1256,Kamau Ndayishimiye,HR Manager,Smart Grow,Agritech,kamau.ndayishimiye@smartgrow.com,South Africa,Johannesburg,Found,Verified
+LID-1257,Sipho Osei,Founder,Green Hub,Agritech,sipho.osei@greenhub.com,Rwanda,Kigali,Found,Verified
+LID-1258,Mwangi Mensah,Co-Founder,Global Logistics,Renewable Energy,mwangi.mensah@globallogistics.com,Kenya,Mombasa,Found,Verified
+LID-1259,Nneka Sarpong,HR Manager,Africa Grow,Real Estate,nneka.sarpong@africagrow.com,Nigeria,Abuja,Found,Verified
+LID-1260,Kofi Mensah,Managing Director,Zion Systems,Logistics,kofi.mensah@zionsystems.com,Rwanda,Kigali,Found,Verified
+LID-1261,Mwangi Addai,Head of Growth,Global Tech,Healthtech,mwangi.addai@globaltech.com,South Africa,Johannesburg,Found,Verified
+LID-1262,Abena Gumede,HR Manager,Swift Solutions,Logistics,abena.gumede@swiftsolutions.com,Rwanda,Kigali,Found,Verified
+LID-1263,Kofi Nkurunziza,Head of Growth,Peak Ventures,Renewable Energy,kofi.nkurunziza@peakventures.com,Nigeria,Ibadan,Found,Verified
+LID-1264,Amina Okonjo,Operations Lead,Global Ventures,Fintech,amina.okonjo@globalventures.com,Ghana,Accra,Found,Verified
+LID-1265,Fatima Kagame,Founder,Next Ventures,Fintech,fatima.kagame@nextventures.com,Ghana,Kumasi,Found,Verified
+LID-1266,Zawadi Diallo,Founder,Core Group,Real Estate,zawadi.diallo@coregroup.com,Nigeria,Lagos,Found,Verified
+LID-1267,Abena Tshabalala,Co-Founder,Sun Partners,Agritech,abena.tshabalala@sunpartners.com,Rwanda,Kigali,Found,Verified
+LID-1268,Kamau Sibanda,Co-Founder,Africa Pay,Logistics,kamau.sibanda@africapay.com,Ghana,Accra,Found,Verified
+LID-1269,Soji Mbeki,Managing Director,Swift Ventures,Logistics,soji.mbeki@swiftventures.com,Kenya,Nairobi,Found,Verified
+LID-1270,Kamau Diallo,Co-Founder,Swift Group,Agritech,kamau.diallo@swiftgroup.com,South Africa,Durban,Found,Verified
+LID-1271,Babatunde Habimana,Operations Lead,Vibe Group,Renewable Energy,babatunde.habimana@vibegroup.com,Rwanda,Kigali,Found,Verified
+LID-1272,Babatunde Addai,Operations Lead,Core Solutions,Agritech,babatunde.addai@coresolutions.com,South Africa,Durban,Found,Verified
+LID-1273,Thabo Odinga,Founder,Africa Group,Healthtech,thabo.odinga@africagroup.com,Egypt,Cairo,Found,Verified
+LID-1274,Zanele Traore,Founder,Vibe Hub,Logistics,zanele.traore@vibehub.com,Egypt,Cairo,Found,Verified
+LID-1275,Olumide Dlamini,Managing Director,Green Systems,Healthtech,olumide.dlamini@greensystems.com,Nigeria,Ibadan,Found,Verified
+LID-1276,Wanjiku Odinga,HR Manager,Smart Systems,Real Estate,wanjiku.odinga@smartsystems.com,Egypt,Alexandria,Found,Verified
+LID-1277,Kofi Mbeki,CEO,Africa Ventures,Logistics,kofi.mbeki@africaventures.com,Egypt,Cairo,Found,Verified
+LID-1278,Kamau Sibanda,Co-Founder,Next Partners,Healthtech,kamau.sibanda@nextpartners.com,Rwanda,Kigali,Found,Verified
+LID-1279,Soji Odinga,Co-Founder,Sun Solutions,Fintech,soji.odinga@sunsolutions.com,Rwanda,Kigali,Found,Verified
+LID-1280,Olumide Balogun,HR Manager,Vibe Partners,E-commerce,olumide.balogun@vibepartners.com,Nigeria,Abuja,Found,Verified
+LID-1281,Lerato Kagame,Founder,Next Ventures,Healthtech,lerato.kagame@nextventures.com,South Africa,Durban,Found,Verified
+LID-1282,Nneka Odinga,Operations Lead,Green Logistics,Healthtech,nneka.odinga@greenlogistics.com,Kenya,Mombasa,Found,Verified
+LID-1283,Kofi Osei,Co-Founder,Green Ventures,Healthtech,kofi.osei@greenventures.com,Ghana,Kumasi,Found,Verified
+LID-1284,Jabari Dlamini,Operations Lead,Africa Solutions,Renewable Energy,jabari.dlamini@africasolutions.com,Nigeria,Lagos,Found,Verified
+LID-1285,Kofi Oyekan,Founder,Sun Solutions,Logistics,kofi.oyekan@sunsolutions.com,Kenya,Nairobi,Found,Verified
+LID-1286,Zanele Addai,Co-Founder,Global Grow,Renewable Energy,zanele.addai@globalgrow.com,Rwanda,Kigali,Found,Verified
+LID-1287,Zanele Ndayishimiye,Founder,Smart Group,Real Estate,zanele.ndayishimiye@smartgroup.com,South Africa,Durban,Found,Verified
+LID-1288,Kwame Addai,CEO,Sun Logistics,Renewable Energy,kwame.addai@sunlogistics.com,Ghana,Accra,Found,Verified
+LID-1289,Lerato Mensah,Founder,Core Group,Logistics,lerato.mensah@coregroup.com,Nigeria,Ibadan,Found,Verified
+LID-1290,Wandile Okonjo,Co-Founder,Peak Tech,Healthtech,wandile.okonjo@peaktech.com,Egypt,Cairo,Found,Verified
+LID-1291,Nneka Nkurunziza,HR Manager,Peak Ventures,Fintech,nneka.nkurunziza@peakventures.com,Ghana,Kumasi,Found,Verified
+LID-1292,Nneka Ofori,HR Manager,Vibe Logistics,Logistics,nneka.ofori@vibelogistics.com,Ghana,Accra,Found,Verified
+LID-1293,Zanele Mbeki,Founder,Africa Ventures,Fintech,zanele.mbeki@africaventures.com,Ghana,Kumasi,Found,Verified
+LID-1294,Efe Tshabalala,CEO,Sun Solutions,Renewable Energy,efe.tshabalala@sunsolutions.com,South Africa,Johannesburg,Found,Verified
+LID-1295,Babatunde Dlamini,Head of Growth,Green Ventures,Renewable Energy,babatunde.dlamini@greenventures.com,Nigeria,Ibadan,Found,Verified
+LID-1296,Soji Adewale,Head of Growth,Green Grow,Real Estate,soji.adewale@greengrow.com,South Africa,Johannesburg,Found,Verified
+LID-1297,Wanjiku Zuma,Co-Founder,Core Partners,Agritech,wanjiku.zuma@corepartners.com,Nigeria,Ibadan,Found,Verified
+LID-1298,Fatima Kenyatta,Co-Founder,Africa Pay,Agritech,fatima.kenyatta@africapay.com,Rwanda,Kigali,Found,Verified
+LID-1299,Thabo Mbeki,Co-Founder,Peak Grow,E-commerce,thabo.mbeki@peakgrow.com,Egypt,Alexandria,Found,Verified
+LID-1300,Babatunde Balogun,Managing Director,Core Tech,E-commerce,babatunde.balogun@coretech.com,Kenya,Mombasa,Found,Verified
+LID-1301,Zanele Diallo,Managing Director,Vibe Logistics,Real Estate,zanele.diallo@vibelogistics.com,Egypt,Alexandria,Found,Verified
+LID-1302,Jabari Gumede,Operations Lead,Peak Group,Logistics,jabari.gumede@peakgroup.com,Egypt,Cairo,Found,Verified
+LID-1303,Chidi Habimana,Co-Founder,Africa Solutions,Renewable Energy,chidi.habimana@africasolutions.com,Kenya,Nairobi,Found,Verified
+LID-1304,Lerato Kagame,Head of Growth,Smart Tech,Renewable Energy,lerato.kagame@smarttech.com,Egypt,Alexandria,Found,Verified
+LID-1305,Nneka Buthelezi,Managing Director,Peak Ventures,Logistics,nneka.buthelezi@peakventures.com,Ghana,Accra,Found,Verified
+LID-1306,Chidi Diallo,Head of Growth,Global Tech,Real Estate,chidi.diallo@globaltech.com,Kenya,Nairobi,Found,Verified
+LID-1307,Mwangi Odinga,CEO,Africa Logistics,Renewable Energy,mwangi.odinga@africalogistics.com,South Africa,Johannesburg,Found,Verified
+LID-1308,Tendai Addai,Head of Growth,Core Group,Real Estate,tendai.addai@coregroup.com,Ghana,Kumasi,Found,Verified
+LID-1309,Olumide Oyekan,CEO,Zion Pay,Renewable Energy,olumide.oyekan@zionpay.com,Egypt,Cairo,Found,Verified
+LID-1310,Soji Mbeki,HR Manager,Next Grow,Edtech,soji.mbeki@nextgrow.com,Rwanda,Kigali,Found,Verified
+LID-1311,Kwame Gumede,Co-Founder,Global Grow,Renewable Energy,kwame.gumede@globalgrow.com,Ghana,Accra,Found,Verified
+LID-1312,Zanele Sarpong,Co-Founder,Sun Systems,Edtech,zanele.sarpong@sunsystems.com,Rwanda,Kigali,Found,Verified
+LID-1313,Babatunde Nkurunziza,Managing Director,Next Systems,Edtech,babatunde.nkurunziza@nextsystems.com,Ghana,Accra,Found,Verified
+LID-1314,Musa Okonjo,Operations Lead,Vibe Partners,E-commerce,musa.okonjo@vibepartners.com,Kenya,Nairobi,Found,Verified
+LID-1315,Babatunde Mbeki,CEO,Swift Solutions,Edtech,babatunde.mbeki@swiftsolutions.com,South Africa,Durban,Found,Verified
+LID-1316,Kofi Nkurunziza,Co-Founder,Zion Solutions,Renewable Energy,kofi.nkurunziza@zionsolutions.com,Kenya,Mombasa,Found,Verified
+LID-1317,Jabari Habimana,Head of Growth,Zion Logistics,Logistics,jabari.habimana@zionlogistics.com,Ghana,Kumasi,Found,Verified
+LID-1318,Fatima Sarpong,HR Manager,Global Grow,Logistics,fatima.sarpong@globalgrow.com,Nigeria,Abuja,Found,Verified
+LID-1319,Soji Ndlovu,Co-Founder,Africa Systems,E-commerce,soji.ndlovu@africasystems.com,Nigeria,Abuja,Found,Verified
+LID-1320,Mokoena Mensah,CEO,Global Hub,E-commerce,mokoena.mensah@globalhub.com,Rwanda,Kigali,Found,Verified
+LID-1321,Kehinde Traore,CEO,Africa Logistics,Renewable Energy,kehinde.traore@africalogistics.com,Ghana,Accra,Found,Verified
+LID-1322,Mwangi Sarpong,Managing Director,Global Hub,Edtech,mwangi.sarpong@globalhub.com,Kenya,Nairobi,Found,Verified
+LID-1323,Kofi Traore,Managing Director,Peak Systems,Renewable Energy,kofi.traore@peaksystems.com,Nigeria,Lagos,Found,Verified
+LID-1324,Efe Mbeki,Managing Director,Sun Tech,Real Estate,efe.mbeki@suntech.com,Rwanda,Kigali,Found,Verified
+LID-1325,Tendai Ndayishimiye,CEO,Sun Systems,Agritech,tendai.ndayishimiye@sunsystems.com,Rwanda,Kigali,Found,Verified
+LID-1326,Kwame Osei,Operations Lead,Core Tech,Edtech,kwame.osei@coretech.com,Egypt,Alexandria,Found,Verified
+LID-1327,Efe Adewale,Co-Founder,Peak Logistics,Fintech,efe.adewale@peaklogistics.com,Rwanda,Kigali,Found,Verified
+LID-1328,Tendai Ndlovu,HR Manager,Swift Grow,Agritech,tendai.ndlovu@swiftgrow.com,South Africa,Johannesburg,Found,Verified
+LID-1329,Kwame Kenyatta,CEO,Africa Ventures,Edtech,kwame.kenyatta@africaventures.com,Kenya,Mombasa,Found,Verified
+LID-1330,Chidi Adewale,Operations Lead,Africa Grow,Agritech,chidi.adewale@africagrow.com,South Africa,Cape Town,Found,Verified
+LID-1331,Kamau Gumede,Co-Founder,Peak Ventures,E-commerce,kamau.gumede@peakventures.com,Nigeria,Abuja,Found,Verified
+LID-1332,Efe Ruto,Operations Lead,Peak Pay,Agritech,efe.ruto@peakpay.com,Ghana,Accra,Found,Verified
+LID-1333,Zodwa Zuma,Co-Founder,Sun Systems,E-commerce,zodwa.zuma@sunsystems.com,Rwanda,Kigali,Found,Verified
+LID-1334,Nneka Mbeki,Co-Founder,Africa Group,Healthtech,nneka.mbeki@africagroup.com,South Africa,Cape Town,Found,Verified
+LID-1335,Abena Balogun,Operations Lead,Core Solutions,Agritech,abena.balogun@coresolutions.com,South Africa,Durban,Found,Verified
+LID-1336,Nneka Diallo,HR Manager,Vibe Partners,Logistics,nneka.diallo@vibepartners.com,Egypt,Cairo,Found,Verified
+LID-1337,Chidi Traore,Managing Director,Global Pay,Healthtech,chidi.traore@globalpay.com,Nigeria,Ibadan,Found,Verified
+LID-1338,Zodwa Gbeho,Founder,Swift Systems,Healthtech,zodwa.gbeho@swiftsystems.com,Nigeria,Ibadan,Found,Verified
+LID-1339,Chidi Sarpong,HR Manager,Next Hub,Fintech,chidi.sarpong@nexthub.com,Rwanda,Kigali,Found,Verified
+LID-1340,Tendai Odinga,HR Manager,Smart Pay,Logistics,tendai.odinga@smartpay.com,Ghana,Kumasi,Found,Verified
+LID-1341,Yinka Diallo,Founder,Global Tech,Real Estate,yinka.diallo@globaltech.com,Egypt,Alexandria,Found,Verified
+LID-1342,Kofi Ndayishimiye,Head of Growth,Africa Pay,Healthtech,kofi.ndayishimiye@africapay.com,Kenya,Mombasa,Found,Verified
+LID-1343,Abena Mensah,Managing Director,Next Solutions,Edtech,abena.mensah@nextsolutions.com,Rwanda,Kigali,Found,Verified
+LID-1344,Zanele Osei,HR Manager,Global Grow,Healthtech,zanele.osei@globalgrow.com,South Africa,Johannesburg,Found,Verified
+LID-1345,Nneka Addai,Managing Director,Swift Systems,Fintech,nneka.addai@swiftsystems.com,South Africa,Cape Town,Found,Verified
+LID-1346,Musa Mbeki,HR Manager,Swift Group,Agritech,musa.mbeki@swiftgroup.com,Nigeria,Lagos,Found,Verified
+LID-1347,Yinka Odinga,Operations Lead,Peak Logistics,E-commerce,yinka.odinga@peaklogistics.com,Kenya,Nairobi,Found,Verified
+LID-1348,Kofi Tshabalala,Founder,Peak Tech,Real Estate,kofi.tshabalala@peaktech.com,South Africa,Cape Town,Found,Verified
+LID-1349,Lerato Ruto,HR Manager,Green Group,Edtech,lerato.ruto@greengroup.com,Nigeria,Abuja,Found,Verified
+LID-1350,Chidi Zuma,CEO,Sun Group,Renewable Energy,chidi.zuma@sungroup.com,Kenya,Mombasa,Found,Verified
+LID-1351,Wanjiku Kagame,HR Manager,Africa Group,Agritech,wanjiku.kagame@africagroup.com,Egypt,Cairo,Found,Verified
+LID-1352,Soji Ndayishimiye,Founder,Global Solutions,Renewable Energy,soji.ndayishimiye@globalsolutions.com,Rwanda,Kigali,Found,Verified
+LID-1353,Chidi Diallo,Operations Lead,Swift Solutions,Renewable Energy,chidi.diallo@swiftsolutions.com,South Africa,Johannesburg,Found,Verified
+LID-1354,Wanjiku Tshabalala,Co-Founder,Green Systems,Renewable Energy,wanjiku.tshabalala@greensystems.com,Ghana,Accra,Found,Verified
+LID-1355,Wandile Zuma,Operations Lead,Smart Pay,Logistics,wandile.zuma@smartpay.com,Rwanda,Kigali,Found,Verified
+LID-1356,Nneka Kagame,CEO,Global Systems,E-commerce,nneka.kagame@globalsystems.com,Nigeria,Lagos,Found,Verified
+LID-1357,Nneka Tshabalala,Managing Director,Peak Logistics,E-commerce,nneka.tshabalala@peaklogistics.com,Rwanda,Kigali,Found,Verified
+LID-1358,Soji Buthelezi,Co-Founder,Peak Grow,E-commerce,soji.buthelezi@peakgrow.com,Kenya,Nairobi,Found,Verified
+LID-1359,Kamau Mbeki,HR Manager,Peak Partners,Real Estate,kamau.mbeki@peakpartners.com,Kenya,Nairobi,Found,Verified
+LID-1360,Folake Habimana,Co-Founder,Smart Systems,Edtech,folake.habimana@smartsystems.com,Kenya,Mombasa,Found,Verified
+LID-1361,Wanjiku Osei,Operations Lead,Next Hub,Fintech,wanjiku.osei@nexthub.com,Ghana,Kumasi,Found,Verified
+LID-1362,Efe Addai,CEO,Next Solutions,Renewable Energy,efe.addai@nextsolutions.com,Kenya,Nairobi,Found,Verified
+LID-1363,Kamau Addai,Founder,Global Partners,Healthtech,kamau.addai@globalpartners.com,South Africa,Durban,Found,Verified
+LID-1364,Nneka Habimana,HR Manager,Peak Grow,Agritech,nneka.habimana@peakgrow.com,Rwanda,Kigali,Found,Verified
+LID-1365,Amina Gbeho,Managing Director,Global Tech,E-commerce,amina.gbeho@globaltech.com,South Africa,Johannesburg,Found,Verified
+LID-1366,Kofi Odinga,Managing Director,Core Tech,Logistics,kofi.odinga@coretech.com,Kenya,Nairobi,Found,Verified
+LID-1367,Fatima Balogun,Founder,Vibe Solutions,Real Estate,fatima.balogun@vibesolutions.com,Egypt,Alexandria,Found,Verified
+LID-1368,Abena Mensah,HR Manager,Swift Solutions,Fintech,abena.mensah@swiftsolutions.com,Rwanda,Kigali,Found,Verified
+LID-1369,Zodwa Sibanda,Founder,Global Logistics,Fintech,zodwa.sibanda@globallogistics.com,Nigeria,Ibadan,Found,Verified
+LID-1370,Thabo Odinga,CEO,Core Ventures,Healthtech,thabo.odinga@coreventures.com,Egypt,Cairo,Found,Verified
+LID-1371,Wanjiku Gbeho,CEO,Vibe Tech,Real Estate,wanjiku.gbeho@vibetech.com,Egypt,Cairo,Found,Verified
+LID-1372,Nneka Tshabalala,Head of Growth,Core Logistics,E-commerce,nneka.tshabalala@corelogistics.com,Nigeria,Abuja,Found,Verified
+LID-1373,Thabo Balogun,CEO,Africa Group,Healthtech,thabo.balogun@africagroup.com,Ghana,Kumasi,Found,Verified
+LID-1374,Lerato Tshabalala,Co-Founder,Swift Partners,Real Estate,lerato.tshabalala@swiftpartners.com,Ghana,Kumasi,Found,Verified
+LID-1375,Kamau Balogun,Head of Growth,Next Ventures,Renewable Energy,kamau.balogun@nextventures.com,Egypt,Cairo,Found,Verified
+LID-1376,Tendai Odinga,Managing Director,Sun Logistics,Renewable Energy,tendai.odinga@sunlogistics.com,Kenya,Mombasa,Found,Verified
+LID-1377,Zodwa Mbeki,HR Manager,Core Logistics,Edtech,zodwa.mbeki@corelogistics.com,Egypt,Alexandria,Found,Verified
+LID-1378,Tunde Diallo,HR Manager,Global Pay,Fintech,tunde.diallo@globalpay.com,Rwanda,Kigali,Found,Verified
+LID-1379,Efe Mensah,CEO,Zion Hub,Logistics,efe.mensah@zionhub.com,South Africa,Durban,Found,Verified
+LID-1380,Mokoena Traore,CEO,Africa Pay,Edtech,mokoena.traore@africapay.com,Nigeria,Abuja,Found,Verified
+LID-1381,Musa Mbeki,Head of Growth,Global Logistics,Real Estate,musa.mbeki@globallogistics.com,Rwanda,Kigali,Found,Verified
+LID-1382,Wanjiku Diallo,Operations Lead,Core Grow,Renewable Energy,wanjiku.diallo@coregrow.com,Rwanda,Kigali,Found,Verified
+LID-1383,Nneka Kenyatta,CEO,Global Tech,Edtech,nneka.kenyatta@globaltech.com,Nigeria,Ibadan,Found,Verified
+LID-1384,Tendai Mbeki,CEO,Sun Group,Healthtech,tendai.mbeki@sungroup.com,Egypt,Cairo,Found,Verified
+LID-1385,Efe Gumede,Co-Founder,Sun Grow,Renewable Energy,efe.gumede@sungrow.com,South Africa,Cape Town,Found,Verified
+LID-1386,Zanele Adewale,Operations Lead,Global Group,Edtech,zanele.adewale@globalgroup.com,Ghana,Accra,Found,Verified
+LID-1387,Wandile Zuma,Managing Director,Africa Partners,Edtech,wandile.zuma@africapartners.com,Ghana,Kumasi,Found,Verified
+LID-1388,Soji Kenyatta,Managing Director,Peak Partners,Renewable Energy,soji.kenyatta@peakpartners.com,Kenya,Nairobi,Found,Verified
+LID-1389,Kofi Dlamini,Founder,Smart Group,Edtech,kofi.dlamini@smartgroup.com,Rwanda,Kigali,Found,Verified
+LID-1390,Mwangi Kagame,Founder,Next Solutions,Fintech,mwangi.kagame@nextsolutions.com,Ghana,Kumasi,Found,Verified
+LID-1391,Sipho Oyekan,Co-Founder,Sun Grow,E-commerce,sipho.oyekan@sungrow.com,South Africa,Cape Town,Found,Verified
+LID-1392,Tunde Osei,Co-Founder,Zion Logistics,Edtech,tunde.osei@zionlogistics.com,Egypt,Cairo,Found,Verified
+LID-1393,Abena Kagame,HR Manager,Swift Grow,Renewable Energy,abena.kagame@swiftgrow.com,Egypt,Alexandria,Found,Verified
+LID-1394,Mwangi Gumede,HR Manager,Zion Systems,Real Estate,mwangi.gumede@zionsystems.com,Kenya,Nairobi,Found,Verified
+LID-1395,Zanele Diallo,Managing Director,Sun Grow,Fintech,zanele.diallo@sungrow.com,Kenya,Mombasa,Found,Verified
+LID-1396,Zawadi Balogun,Co-Founder,Sun Group,Logistics,zawadi.balogun@sungroup.com,South Africa,Cape Town,Found,Verified
+LID-1397,Kamau Traore,Managing Director,Sun Ventures,E-commerce,kamau.traore@sunventures.com,South Africa,Durban,Found,Verified
+LID-1398,Efe Ndlovu,Founder,Zion Systems,Edtech,efe.ndlovu@zionsystems.com,Kenya,Mombasa,Found,Verified
+LID-1399,Tendai Mensah,CEO,Green Ventures,Real Estate,tendai.mensah@greenventures.com,Egypt,Cairo,Found,Verified
+LID-1400,Mokoena Ruto,Founder,Vibe Grow,Real Estate,mokoena.ruto@vibegrow.com,Ghana,Kumasi,Found,Verified
