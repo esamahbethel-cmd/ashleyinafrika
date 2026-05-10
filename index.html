@@ -1,506 +1,433 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AIA Outreach Engine — Secured</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#06080D;--sf:#0C0F18;--cd:#111520;--bd:#1A1F30;--tx:#E4E8F1;--mt:#5E6B8A;--dm:#2D3550;--ac:#F5A623;--dg:#EF4444;--sc:#10B981;--sa:#10B981;--ec:#F59E0B;--hc:#8B5CF6;--bl:#3B82F6;--pk:#EC4899;--zp:#FF4A00}
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--tx);font-family:'Outfit',system-ui,sans-serif;min-height:100vh;overflow-x:hidden}
-input{font-family:'JetBrains Mono',monospace}
-button{font-family:'Outfit',system-ui,sans-serif}
-::-webkit-scrollbar{width:4px;height:4px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--dm);border-radius:2px}
+  <meta charset="UTF-8">
+  <title>Ashley in Afrika | Outreach Command Center</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+  <style>
+    :root {
+      --bg: #05050A; --surface: #0A0D14; --card: #121622; --border: #1F2538;
+      --text: #F8FAFC; --muted: #94A3B8; --accent: #3B82F6;
+      --gradient: linear-gradient(135deg, #3B82F6, #8B5CF6);
+      --gradient2: linear-gradient(135deg, #F59E0B, #EF4444);
+    }
+    body { margin:0;padding:0;background:var(--bg);color:var(--text);font-family:'Outfit','DM Sans',sans-serif;-webkit-font-smoothing:antialiased }
+    * { box-sizing:border-box }
+    ::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#1F2538;border-radius:4px}
+    button{font-family:inherit}button:disabled{opacity:.5;cursor:not-allowed}
+    .btn-primary{background:var(--gradient);color:white;border:none;padding:14px 28px;border-radius:12px;font-weight:700;font-size:14px;cursor:pointer;transition:all .3s;box-shadow:0 4px 16px rgba(59,130,246,.2)}
+    .btn-primary:not(:disabled):hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(59,130,246,.4)}
+    .btn-secondary{background:var(--card);color:var(--text);border:1px solid var(--border);padding:14px 28px;border-radius:12px;font-weight:600;font-size:14px;cursor:pointer;transition:all .2s}
+    .btn-secondary:not(:disabled):hover{background:var(--border)}
+    .status-badge{padding:4px 12px;border-radius:100px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;display:inline-block}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    .animate-up{animation:fadeIn .4s cubic-bezier(.16,1,.3,1) forwards}
+    .app-container{display:flex;min-height:100vh;background:var(--bg)}
+    .sidebar{width:280px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;z-index:10}
+    .sidebar-header{padding:32px 24px}
+    .sidebar-nav{padding:0 16px;display:flex;flex-direction:column;gap:6px}
+    .content-area{flex:1;padding:48px 64px;height:100vh;overflow-y:auto;overflow-x:hidden}
+    .page-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:32px}
+    .outreach-grid{display:grid;grid-template-columns:1fr 2fr;gap:32px}
+    .desktop-table{display:table;width:100%;border-collapse:collapse}
+    .mobile-cards{display:none}
+    .pagination-bar{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;background:var(--surface);border-top:1px solid var(--border)}
+    .nav-item{border-radius:12px;cursor:pointer;display:flex;align-items:center;gap:12px;padding:12px 16px;transition:all .2s;font-size:15px}
+    .nav-item:hover{background:rgba(255,255,255,.03)}
+    .nav-divider{height:1px;background:var(--border);margin:12px 0}
+    .tab-bar{display:flex;gap:4px;margin-bottom:20px;background:var(--surface);border-radius:12px;padding:4px;border:1px solid var(--border)}
+    .tab-btn{flex:1;padding:10px 16px;border-radius:8px;border:none;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;text-align:center}
+    @media(max-width:850px){
+      .app-container{flex-direction:column;height:100vh;overflow:hidden}
+      .sidebar{width:100%;border-right:none;border-bottom:1px solid var(--border);padding-bottom:8px}
+      .sidebar-header{padding:16px 20px;display:flex;align-items:center;gap:12px}
+      .sidebar-header>div:nth-child(1){margin-bottom:0!important;width:32px!important;height:32px!important;font-size:16px!important}
+      .sidebar-header>div:nth-child(3){display:none}
+      .sidebar-nav{flex-direction:row;padding:8px 16px;overflow-x:auto;scrollbar-width:none}
+      .sidebar-nav::-webkit-scrollbar{display:none}
+      .nav-item{white-space:nowrap;font-size:14px!important;padding:10px 16px!important}
+      .content-area{padding:24px 16px;height:auto;overflow-y:auto;padding-bottom:80px}
+      .page-header{flex-direction:column;align-items:flex-start;gap:16px;margin-bottom:24px}
+      .page-header h1{font-size:28px!important}
+      .outreach-grid{grid-template-columns:1fr;gap:24px}
+      .desktop-table{display:none}
+      .mobile-cards{display:flex;flex-direction:column;gap:16px;padding:16px;background:var(--surface)}
+      .mobile-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
+      .pagination-bar{flex-direction:column;gap:16px;text-align:center;padding:20px 16px}
+    }
 
-/* AUTH GATE */
-#auth-gate{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;animation:fadeUp .6s ease}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.auth-box{width:100%;max-width:380px}
-.auth-logo{text-align:center;margin-bottom:28px}
-.auth-icon{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,rgba(245,166,35,.13),rgba(245,166,35,.03));border:2px solid rgba(245,166,35,.2);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:24px}
-.auth-tag{font-size:9px;font-weight:700;letter-spacing:.2em;color:var(--ac);text-transform:uppercase;margin-bottom:6px}
-.auth-title{font-size:20px;font-weight:800;color:var(--tx)}
-.auth-sub{font-size:11px;color:var(--mt);margin-top:6px}
-.auth-card{background:var(--cd);border:1.5px solid var(--bd);border-radius:12px;padding:22px}
-.auth-card.error{border-color:rgba(239,68,68,.33)}
-.auth-label{font-size:9px;font-weight:700;color:var(--mt);letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:6px}
-.auth-input-wrap{position:relative;margin-bottom:14px}
-.auth-input{width:100%;padding:11px 40px 11px 12px;border-radius:7px;border:1.5px solid var(--bd);background:var(--sf);color:var(--tx);font-size:14px;font-weight:600;letter-spacing:.15em;outline:none;transition:all .2s}
-.auth-input:focus{border-color:rgba(245,166,35,.4)}
-.auth-input.locked{background:rgba(239,68,68,.1);opacity:.5}
-.auth-toggle{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--mt);cursor:pointer;font-size:13px;padding:4px}
-.auth-err{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:7px;padding:8px 10px;margin-bottom:12px;font-size:11px;color:var(--dg);font-weight:600}
-.auth-lockout{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:7px;padding:10px 12px;margin-bottom:12px;text-align:center}
-.auth-lockout-label{font-size:9px;font-weight:700;color:var(--dg);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px}
-.auth-lockout-timer{font-size:20px;font-weight:800;color:var(--dg);font-family:'JetBrains Mono',monospace}
-.auth-btn{width:100%;padding:11px 0;border-radius:7px;border:none;background:linear-gradient(135deg,#F5A623,#E09000);color:#000;font-size:12px;font-weight:700;letter-spacing:.04em;cursor:pointer;text-transform:uppercase;transition:all .2s}
-.auth-btn:disabled{background:var(--dm);color:var(--mt);cursor:not-allowed}
-.auth-dots{display:flex;justify-content:center;gap:4px;margin-top:10px}
-.auth-dot{width:7px;height:7px;border-radius:50%;background:var(--dm);transition:background .3s}
-.auth-dot.used{background:var(--dg)}
-.auth-footer{text-align:center;margin-top:16px;font-size:8px;color:var(--dm);letter-spacing:.08em}
+    /* ═══ AUTH GATE STYLES ═══ */
+    #auth-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif}
+    #auth-overlay.hidden{display:none}
+    .abox{width:100%;max-width:380px;padding:20px;animation:afIn .6s ease}
+    @keyframes afIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .a-icon{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,rgba(59,130,246,.15),rgba(139,92,246,.08));border:2px solid rgba(59,130,246,.25);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:24px}
+    .a-tag{font-size:9px;font-weight:700;letter-spacing:.2em;color:var(--accent);text-transform:uppercase;margin-bottom:6px;text-align:center}
+    .a-h1{font-size:22px;font-weight:800;color:var(--text);text-align:center;margin:0}
+    .a-sub{font-size:11px;color:var(--muted);margin-top:8px;text-align:center;line-height:1.5}
+    .a-card{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:24px;margin-top:24px;transition:border-color .3s}
+    .a-card.err{border-color:rgba(239,68,68,.4)}
+    .a-lbl{font-size:9px;font-weight:700;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:8px}
+    .a-iw{position:relative;margin-bottom:16px}
+    .a-inp{width:100%;padding:12px 44px 12px 14px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);font-size:15px;font-weight:600;font-family:'JetBrains Mono',monospace;letter-spacing:.15em;outline:none;box-sizing:border-box;transition:all .2s}
+    .a-inp:focus{border-color:rgba(59,130,246,.5)}
+    .a-inp:disabled{opacity:.5;background:rgba(239,68,68,.05)}
+    .a-eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:4px}
+    .a-err{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;margin-bottom:14px;font-size:11px;color:#EF4444;font-weight:600;display:none}
+    .a-err.vis{display:block}
+    .a-lck{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:12px;margin-bottom:14px;text-align:center;display:none}
+    .a-lck.vis{display:block}
+    .a-lck-l{font-size:9px;font-weight:700;color:#EF4444;letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px}
+    .a-lck-t{font-size:22px;font-weight:800;color:#EF4444;font-family:'JetBrains Mono',monospace}
+    .a-btn{width:100%;padding:13px 0;border-radius:8px;border:none;background:var(--gradient);color:#fff;font-size:13px;font-weight:700;letter-spacing:.04em;cursor:pointer;text-transform:uppercase;transition:all .2s;font-family:'Outfit',sans-serif}
+    .a-btn:disabled{background:var(--border);color:var(--muted);cursor:not-allowed}
+    .a-btn:not(:disabled):hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(59,130,246,.3)}
+    .a-dots{display:flex;justify-content:center;gap:4px;margin-top:10px}
+    .a-dot{width:7px;height:7px;border-radius:50%;background:var(--border);transition:background .3s}
+    .a-dot.x{background:#EF4444}
+    .a-ft{text-align:center;margin-top:18px;font-size:8px;color:#1F2538;letter-spacing:.08em}
+    .sb{display:flex;align-items:center;justify-content:space-between;padding:5px 14px;background:var(--surface);border-bottom:1px solid var(--border);font-size:10px;font-family:'Outfit',sans-serif}
+    .sb.hidden{display:none}
+    .sb-l{display:flex;align-items:center;gap:8px}
+    .sb-d{width:6px;height:6px;border-radius:50%;background:#10B981;box-shadow:0 0 6px rgba(16,185,129,.4)}
+    .sb-n{color:var(--text);font-weight:700}
+    .sb-b{font-size:8px;font-weight:700;padding:1px 5px;border-radius:3px;background:rgba(59,130,246,.1);color:var(--accent);border:1px solid rgba(59,130,246,.2);text-transform:uppercase;letter-spacing:.06em}
+    .sb-r{display:flex;align-items:center;gap:10px}
+    .sb-t{color:#1F2538}
+    .sb-x{padding:2px 8px;border-radius:4px;border:1px solid rgba(239,68,68,.2);background:rgba(239,68,68,.08);color:#EF4444;font-size:9px;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:.04em;font-family:'Outfit',sans-serif}
+    #root{display:none}
 
-/* SESSION BAR */
-.session-bar{display:flex;align-items:center;justify-content:space-between;padding:5px 14px;background:var(--sf);border-bottom:1px solid var(--bd);font-size:10px}
-.session-user{display:flex;align-items:center;gap:8px}
-.session-dot{width:6px;height:6px;border-radius:50%;background:var(--sc);box-shadow:0 0 6px rgba(16,185,129,.4)}
-.session-name{color:var(--tx);font-weight:700}
-.session-role{font-size:8px;font-weight:700;padding:1px 5px;border-radius:3px;background:rgba(245,166,35,.1);color:var(--ac);border:1px solid rgba(245,166,35,.2);text-transform:uppercase;letter-spacing:.06em}
-.session-right{display:flex;align-items:center;gap:10px}
-.session-time{color:var(--dm)}
-.session-logout{padding:2px 8px;border-radius:4px;border:1px solid rgba(239,68,68,.2);background:rgba(239,68,68,.1);color:var(--dg);font-size:9px;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:.04em}
-
-/* APP HEADER */
-.app-header{background:linear-gradient(180deg,var(--sf),var(--bg));border-bottom:1px solid var(--bd);padding:16px 16px 12px}
-.app-header-inner{display:flex;align-items:center;justify-content:space-between}
-.app-tag{font-size:9px;font-weight:700;letter-spacing:.18em;color:var(--ac);text-transform:uppercase}
-.app-title{font-size:18px;font-weight:800;margin:4px 0 0;letter-spacing:-.02em}
-.app-meta{text-align:right;font-size:9px;color:var(--mt)}
-
-/* NAV */
-.nav{display:flex;gap:2px;padding:8px 12px;overflow-x:auto;border-bottom:1px solid var(--bd);background:var(--sf)}
-.nav-btn{flex:0 0 auto;padding:6px 10px;border-radius:6px;border:none;background:transparent;color:var(--mt);font-size:10px;font-weight:500;cursor:pointer;white-space:nowrap;transition:all .2s;letter-spacing:.02em}
-.nav-btn.active{background:rgba(245,166,35,.1);color:var(--ac);font-weight:700}
-
-/* CONTENT */
-.content{padding:16px 14px;max-width:600px;margin:0 auto}
-.section-title{font-size:14px;font-weight:700;margin-bottom:4px}
-.section-sub{font-size:11px;color:var(--mt);margin-bottom:14px}
-
-/* SEGMENT SELECTOR */
-.seg-sel{display:flex;gap:6px;margin-bottom:16px}
-.seg-btn{flex:1;padding:10px 8px;border-radius:8px;border:1px solid var(--bd);background:transparent;color:var(--mt);font-size:12px;font-weight:700;cursor:pointer;transition:all .25s;text-align:center}
-.seg-btn.active{border-width:1.5px}
-.seg-btn .seg-tag{font-size:9px;font-weight:500;margin-top:2px;opacity:.7}
-
-/* CARDS */
-.card{background:var(--cd);border:1px solid var(--bd);border-radius:10px;margin-bottom:10px;overflow:hidden}
-.card-header{padding:14px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
-.card-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.card-title{font-weight:700;font-size:13px;margin-left:8px}
-.card-subtitle{font-size:10px;color:var(--mt);margin-top:3px;margin-left:16px}
-.card-arrow{color:var(--mt);font-size:16px;transition:transform .2s}
-.card-arrow.open{transform:rotate(180deg)}
-.card-body{padding:0 16px 14px}
-.prompt-box{background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:14px;font-size:11px;line-height:1.6;color:var(--mt);white-space:pre-wrap;font-family:'JetBrains Mono',monospace;max-height:400px;overflow-y:auto;margin-bottom:10px}
-.copy-btn{padding:6px 14px;border-radius:6px;border:1px solid var(--bd);background:var(--sf);color:var(--mt);font-size:11px;font-weight:600;cursor:pointer;transition:all .2s;letter-spacing:.03em}
-.copy-btn.copied{border-color:var(--sc);background:rgba(16,185,129,.1);color:var(--sc)}
-
-/* ICP GRID */
-.icp-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.icp-block{background:var(--cd);border:1px solid var(--bd);border-radius:8px;padding:12px}
-.icp-block-title{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
-.icp-item{font-size:11px;color:var(--mt);line-height:1.5;margin-bottom:3px}
-.icp-full{grid-column:1/-1;display:flex;gap:16px;padding:12px;border-radius:8px}
-
-/* STAT GRID */
-.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
-.stat-card{background:var(--cd);border:1px solid var(--bd);border-radius:8px;padding:14px 12px;text-align:center}
-.stat-value{font-size:22px;font-weight:800}
-.stat-label{font-size:10px;color:var(--mt);margin-top:2px}
-
-/* ACTION LIST */
-.action-item{background:var(--cd);border:1px solid var(--bd);border-radius:8px;padding:12px 14px;margin-bottom:6px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:border-color .2s}
-.action-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.action-title{font-size:12px;font-weight:700}
-.action-desc{font-size:10px;color:var(--mt)}
-.action-arrow{color:var(--dm);font-size:14px;margin-left:auto}
-
-/* ADMIN PANEL */
-.admin-panel{background:var(--cd);border:1px solid rgba(245,166,35,.13);border-radius:10px;padding:14px;margin-bottom:14px}
-.admin-title{font-size:9px;font-weight:700;color:var(--ac);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
-.admin-row{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:var(--sf);border:1px solid var(--bd);border-radius:5px;margin-bottom:4px}
-.admin-name{font-size:11px;font-weight:700}
-.admin-code{font-size:10px;color:var(--mt);font-family:'JetBrains Mono',monospace;background:var(--bg);padding:2px 6px;border-radius:3px}
-
-/* OFFER/PRICING */
-.offer-item{display:flex;align-items:center;gap:10px;background:var(--cd);border:1px solid var(--bd);border-radius:8px;padding:10px 12px;margin-bottom:4px}
-.offer-num{width:24px;height:24px;border-radius:6px;background:var(--sf);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--mt);flex-shrink:0}
-.offer-name{font-size:12px;font-weight:700;flex:1}
-.offer-badge{font-size:9px;font-weight:700;padding:2px 8px;border-radius:4px;letter-spacing:.04em;text-transform:uppercase}
-
-/* PRICING TIER */
-.tier-card{background:var(--cd);border-radius:10px;padding:16px;margin-bottom:10px}
-.tier-label{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
-.tier-name{font-size:14px;font-weight:800;margin-top:2px}
-.tier-price{font-size:14px;font-weight:800}
-.tier-desc{font-size:11px;color:var(--mt);margin-top:4px}
-
-/* CADENCE */
-.cadence-line{position:absolute;left:9px;top:14px;bottom:14px;width:2px;border-radius:1px}
-.cadence-dot{position:absolute;left:-16px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--bg);border-width:2.5px;border-style:solid}
-.cadence-item{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px;position:relative}
-
-/* FOLLOW-UP */
-.followup-item{display:flex;align-items:center;gap:10px;background:var(--cd);border:1px solid var(--bd);border-radius:8px;padding:10px 12px;margin-bottom:4px}
-.followup-badge{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0}
-.followup-title{font-size:11px;font-weight:700}
-.followup-desc{font-size:10px;color:var(--mt)}
-.followup-channel{font-size:9px;color:var(--dm);text-align:right;margin-left:auto}
-
-/* POSITIONING BOX */
-.pos-box{background:rgba(245,166,35,.03);border:1px dashed rgba(245,166,35,.2);border-radius:8px;padding:12px;margin-top:16px}
-.pos-label{font-size:10px;font-weight:700;color:var(--ac);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
-.pos-text{font-size:11px;color:var(--mt);line-height:1.6;font-style:italic}
-
-/* FLOW BOX */
-.flow-box{background:var(--cd);border:1px solid var(--bd);border-radius:8px;padding:12px;margin-top:8px}
-.flow-label{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
-.flow-text{font-size:11px;color:var(--mt);line-height:1.6}
-
-/* PARTNER TYPES */
-.partner-box{background:var(--cd);border:1px solid var(--bd);border-radius:8px;padding:12px;margin-top:8px}
-.partner-label{font-size:10px;font-weight:700;color:var(--pk);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
-.partner-item{font-size:11px;color:var(--mt);line-height:1.6;margin-bottom:2px}
-
-/* FOOTER */
-.app-footer{text-align:center;padding:20px 0 24px;font-size:8px;color:var(--dm);letter-spacing:.1em;text-transform:uppercase}
-
-/* HIDDEN */
-.hidden{display:none!important}
-</style>
+  </style>
 </head>
 <body>
 
-<!-- ═══ AUTH GATE ═══ -->
-<div id="auth-gate">
-<div class="auth-box">
-<div class="auth-logo">
-<div class="auth-icon">🔒</div>
-<div class="auth-tag">AIA Outreach Engine</div>
-<h1 class="auth-title">Authorized Access Only</h1>
-<p class="auth-sub">Enter your team access code to continue.</p>
-</div>
-<div class="auth-card" id="auth-card">
-<label class="auth-label">Access Code</label>
-<div class="auth-input-wrap">
-<input type="password" id="pin-input" class="auth-input" placeholder="Enter access code" autofocus>
-<button class="auth-toggle" id="pin-toggle" onclick="togglePin()">◎</button>
-</div>
-<div id="auth-error" class="auth-err hidden"></div>
-<div id="auth-lockout" class="auth-lockout hidden">
-<div class="auth-lockout-label">Locked</div>
-<div class="auth-lockout-timer" id="lockout-timer">00:00</div>
-</div>
-<button class="auth-btn" id="auth-btn" onclick="authenticate()">Authenticate</button>
-<div id="auth-dots" class="auth-dots hidden"></div>
-</div>
-<div class="auth-footer">ANTIGRAVITY OPS ENGINE · SECURED</div>
-</div>
-</div>
+  <div id="auth-overlay"><div class="abox">
+    <div class="a-icon">🔒</div><div class="a-tag">AIA Outreach Engine</div>
+    <h1 class="a-h1">Authorized Access Only</h1>
+    <p class="a-sub">Enter your team access code to continue.</p>
+    <div class="a-card" id="acard">
+      <label class="a-lbl">Access Code</label>
+      <div class="a-iw"><input type="password" id="apin" class="a-inp" placeholder="Enter access code" autofocus><button class="a-eye" id="aeye" onclick="aTP()">◎</button></div>
+      <div class="a-err" id="aerr"></div>
+      <div class="a-lck" id="alck"><div class="a-lck-l">Account Locked</div><div class="a-lck-t" id="alkt">00:00</div></div>
+      <button class="a-btn" id="abtn" onclick="aSub()">Authenticate</button>
+      <div class="a-dots" id="adots"></div>
+    </div><div class="a-ft">ANTIGRAVITY OPS ENGINE · SECURED ACCESS</div>
+  </div></div>
+  <div class="sb hidden" id="sbar"><div class="sb-l"><div class="sb-d"></div><span style="color:var(--muted)">Logged in as <span class="sb-n" id="sname"></span></span><span class="sb-b hidden" id="sbadge">Admin</span></div><div class="sb-r"><span class="sb-t" id="stimer"></span><button class="sb-x" onclick="aOut()">Logout</button></div></div>
 
-<!-- ═══ MAIN APP ═══ -->
-<div id="main-app" class="hidden">
+  <div id="root"></div>
 
-<!-- Session Bar -->
-<div class="session-bar" id="session-bar">
-<div class="session-user">
-<div class="session-dot"></div>
-<span style="color:var(--mt)">Logged in as <span class="session-name" id="session-name"></span></span>
-<span class="session-role hidden" id="session-role">Admin</span>
-</div>
-<div class="session-right">
-<span class="session-time" id="session-time"></span>
-<button class="session-logout" onclick="logout()">Logout</button>
-</div>
-</div>
+  <script>
+  var AU={users:[{name:"Ashley Cleveland",pin:"AIA2026AC",role:"admin"},{name:"Bethel Esamah",pin:"AIA2026BE",role:"admin"},{name:"Gwen L. Miñoza",pin:"AIA2026GM",role:"team"},{name:"Nailah Best",pin:"AIA2026NB",role:"team"}],sm:480,ma:5,lm:15};
+  var aA=0,aLU=null,aLI=null,aSI=null,aSP=false;
+  function aInit(){try{var s=JSON.parse(sessionStorage.getItem("aia_s"));if(s&&s.exp>Date.now()){aShow(s);return}}catch(e){}try{var lk=JSON.parse(sessionStorage.getItem("aia_lk"));if(lk&&lk.until>Date.now()){aLU=lk.until;aA=lk.a;aStartLk()}}catch(e){}document.getElementById("apin").addEventListener("keydown",function(e){if(e.key==="Enter")aSub()})}
+  function aTP(){var i=document.getElementById("apin"),b=document.getElementById("aeye");aSP=!aSP;i.type=aSP?"text":"password";i.style.letterSpacing=aSP?"0.05em":"0.15em";b.textContent=aSP?"◉":"◎"}
+  function aSub(){if(aLU&&aLU>Date.now())return;var p=document.getElementById("apin").value.trim(),u=AU.users.find(function(x){return x.pin===p});if(u){var s={name:u.name,role:u.role,at:Date.now(),exp:Date.now()+AU.sm*60000};sessionStorage.setItem("aia_s",JSON.stringify(s));sessionStorage.removeItem("aia_lk");aShow(s)}else{aA++;if(aA>=AU.ma){aLU=Date.now()+AU.lm*60000;sessionStorage.setItem("aia_lk",JSON.stringify({until:aLU,a:aA}));aErr("Locked for "+AU.lm+" minutes.");aStartLk()}else{aErr("Invalid code. "+(AU.ma-aA)+" attempts left.");aDots()}document.getElementById("apin").value=""}}
+  function aErr(m){var e=document.getElementById("aerr");e.textContent="⚠ "+m;e.classList.add("vis");document.getElementById("acard").classList.add("err")}
+  function aDots(){var e=document.getElementById("adots");e.innerHTML=Array.from({length:AU.ma}).map(function(_,i){return'<div class="a-dot '+(i<aA?"x":"")+'"></div>'}).join("")}
+  function aStartLk(){var i=document.getElementById("apin");i.disabled=true;i.placeholder="Locked";document.getElementById("abtn").disabled=true;document.getElementById("alck").classList.add("vis");aLI=setInterval(function(){var r=Math.max(0,aLU-Date.now());if(r<=0){clearInterval(aLI);aLU=null;aA=0;sessionStorage.removeItem("aia_lk");i.disabled=false;i.placeholder="Enter access code";document.getElementById("abtn").disabled=false;document.getElementById("alck").classList.remove("vis");document.getElementById("adots").innerHTML="";document.getElementById("aerr").classList.remove("vis");document.getElementById("acard").classList.remove("err");return}var m=Math.ceil(r/60000),s=Math.ceil((r%60000)/1000);document.getElementById("alkt").textContent=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0")},1000)}
+  function aShow(s){document.getElementById("auth-overlay").classList.add("hidden");document.getElementById("root").style.display="block";document.getElementById("sbar").classList.remove("hidden");document.getElementById("sname").textContent=s.name;if(s.role==="admin")document.getElementById("sbadge").classList.remove("hidden");aUpT(s);aSI=setInterval(function(){aUpT(s)},30000)}
+  function aUpT(s){var r=Math.max(0,s.exp-Date.now());if(r<=0){aOut();return}document.getElementById("stimer").textContent=Math.floor(r/3600000)+"h "+Math.floor((r%3600000)/60000)+"m"}
+  function aOut(){sessionStorage.removeItem("aia_s");clearInterval(aSI);location.reload()}
+  window.addEventListener("DOMContentLoaded",aInit);
+  </script>
 
-<!-- Header -->
-<div class="app-header">
-<div class="app-header-inner">
-<div>
-<div class="app-tag">AIA · Secured Outreach Engine</div>
-<h1 class="app-title">Antigravity Ops Engine</h1>
-</div>
-<div class="app-meta">
-<div>EO: Bethel</div>
-<div style="color:var(--dm)">Ashley Cleveland</div>
-</div>
-</div>
-</div>
+  <script type="text/babel">
+    const { useState, useEffect } = React;
 
-<!-- Nav -->
-<div class="nav" id="nav"></div>
+    /* ═══ SEGMENTS — CLIENT ICP ═══ */
+    const CLIENT_SEGMENTS = {
+      saas:{label:"SaaS & Cloud",color:"#10B981",icon:"☁️",titles:["Founder","COO","Head of CS"],painPt:"support backlogs causing high churn rates"},
+      ecom:{label:"E-Commerce",color:"#F59E0B",icon:"🛍️",titles:["E-com Director","Founder","Ops Mgr"],painPt:"customer service overwhelm during sales spikes"},
+      healthcare:{label:"Healthcare",color:"#8B5CF6",icon:"⚕️",titles:["Clinic Director","Ops Manager"],painPt:"administrative overload taking away from patient care"},
+      fintech:{label:"FinTech",color:"#3B82F6",icon:"💳",titles:["Founder","VP of Ops"],painPt:"bottlenecks in scaling compliance and user onboarding"},
+      general:{label:"High-Growth Founders",color:"#10B981",icon:"🌟",titles:["Founder & CEO","Co-Founder"],painPt:"operational friction preventing scaling to the next revenue milestone"},
+      agency:{label:"Marketing Agency",color:"#EC4899",icon:"🎨",titles:["Agency Owner","Account Dir"],painPt:"account managers buried in non-billable ops work"},
+      hrtech:{label:"HR Tech",color:"#D946EF",icon:"🤝",titles:["Founder","VP of Product"],painPt:"complex user integrations eating up support time"},
+      realestate:{label:"Real Estate",color:"#EF4444",icon:"🏢",titles:["Broker","PropTech Founder"],painPt:"scattered data and heavy back-office admin tasks"},
+      logistics:{label:"Logistics",color:"#F97316",icon:"🚚",titles:["Supply Chain VP","Operations Dir"],painPt:"slow response times causing shipping disputes"},
+      consulting:{label:"Consulting Firms",color:"#06B6D4",icon:"📈",titles:["Principal","Managing Partner"],painPt:"senior partners handling admin instead of closing deals"},
+      b2b:{label:"B2B Services",color:"#F43F5E",icon:"🤝",titles:["Founder","CRO"],painPt:"client fulfillment bottlenecks stalling scaling"},
+      edtech:{label:"EdTech",color:"#22D3EE",icon:"📚",titles:["Founder","Head of Student Success"],painPt:"scaling student onboarding and technical support"},
+    };
 
-<!-- Content -->
-<div class="content" id="content"></div>
+    /* ═══ SEGMENTS — BRAND PARTNERS ═══ */
+    const PARTNER_SEGMENTS = {
+      bank:{label:"African Banks",color:"#059669",icon:"🏦",painPt:"expanding digital presence and Pan-African brand visibility"},
+      airline:{label:"African Airlines",color:"#2563EB",icon:"✈️",painPt:"growing route networks and global brand partnerships"},
+      hotel:{label:"Hotels & Hospitality",color:"#9333EA",icon:"🏨",painPt:"attracting premium business travel and event partnerships"},
+      construction:{label:"Construction & Real Estate",color:"#DC2626",icon:"🏗️",painPt:"building brand recognition across African markets"},
+      tourism:{label:"Tourism & Govt Agencies",color:"#0891B2",icon:"🌍",painPt:"attracting international investment and tourism to Africa"},
+      general:{label:"Other Partners",color:"#6366F1",icon:"🤝",painPt:"expanding African talent visibility globally"},
+    };
 
-<!-- Footer -->
-<div class="app-footer">AIA Outreach Command Center · Antigravity Ops Engine · v2.0 Secured</div>
-</div>
+    /* ═══ OUTREACH GENERATORS — CLIENT ═══ */
+    const clientLinkedInDM = (lead) => {
+       const s = CLIENT_SEGMENTS[lead.segment] || CLIENT_SEGMENTS.general;
+       return `Hey ${lead.name.split(' ')[0]},\n\nNoticed ${lead.company} has been making big moves in the ${s.label} space. As a ${lead.title}, I'm sure dealing with ${s.painPt} is top of mind.\n\nWe deploy "Done-For-You" remote execution teams (support, admin, data) to buy back your time and protect revenue — for a fraction of local hiring costs.\n\nOpen to a quick connection to see how we could structure a pod for you?`;
+    };
 
-<script>
-// ═══ AUTH CONFIG ═══
-const AUTH={users:[
-{name:"Ashley Cleveland",pin:"AIA2026AC",role:"admin"},
-{name:"Bethel Esamah",pin:"AIA2026BE",role:"admin"},
-{name:"Gwen L. Miñoza",pin:"AIA2026GM",role:"team"},
-{name:"Nailah Best",pin:"AIA2026NB",role:"team"}
-],sessionMin:480,maxAttempts:5,lockoutMin:15};
+    const clientVoiceNote = (lead) => {
+       const s = CLIENT_SEGMENTS[lead.segment] || CLIENT_SEGMENTS.general;
+       const fname = lead.name.split(' ')[0];
+       return `[VOICE NOTE SCRIPT — Record naturally, not robotic]\n\n"Hey ${fname}, it's Ashley from Ashley in Afrika.\n\nI came across ${lead.company} and noticed you're scaling in the ${s.label} space — really impressive what you're building.\n\nI work with founders like you who are dealing with ${s.painPt}. We drop in pre-trained remote execution pods — support, admin, ops — so you can buy back your time without the cost of hiring locally.\n\nI'd love to share how we recently helped a team similar to yours clear a major ops backlog in 30 days. Would you be open to a quick 10-minute chat? Let me know — talk soon!"\n\n[TIPS: Keep under 60 seconds. Smile while recording. Mention their company name clearly. End with a specific ask.]`;
+    };
 
-let attempts=0,lockUntil=null,lockInterval=null,sessionInterval=null,currentSession=null;
-let currentView="dashboard",currentSeg="saas",showPin=false;
+    const clientNurture = (lead) => {
+       const s = CLIENT_SEGMENTS[lead.segment] || CLIENT_SEGMENTS.general;
+       const fname = lead.name.split(' ')[0];
+       return `[TOUCH 1: THE INITIAL PAIN INSIGHT]\nSubject: Question about the ops at ${lead.company}?\n\nHi ${fname},\n\nUsually when I speak with ${lead.title}s in the ${s.label} space, their biggest bottleneck is ${s.painPt}.\n\nAt Ashley in Afrika, we fix this by dropping in a pre-trained, 3-person remote execution pod for less than the cost of one local US hire.\n\nWould you be open to a 10-minute chat this Thursday to see what an ops structure looks like for ${lead.company}?\n\nBest,\nAshley Cleveland\n\n------------------------------------------------------\n[TOUCH 2: THE CASE STUDY (3 Days Later)]\nSubject: Re: Question about the ops at ${lead.company}?\n\nHey ${fname},\n\nFollowing up! We recently deployed an Execution Pod for a scaling ${s.label} company.\n\nBEFORE: Founders trapped doing support and admin work.\nAFTER: Our remote team cleared a massive operational backlog in 30 days.\n\nAre you dealing with any capacity issues like this right now?\n\n------------------------------------------------------\n[TOUCH 3: THE HIGH-VALUE OFFER (7 Days Later)]\nSubject: A quick resource for ${lead.company}\n\nHi ${fname},\n\nI put together a "Revenue Leak Audit" specifically for ${s.label} companies showing the exact ops structure needed to scale past current milestones.\n\nWant me to send it over? No call required.\n\n------------------------------------------------------\n[TOUCH 4: THE RESPECTFUL BREAKUP (14 Days Later)]\nSubject: Closing the loop\n\nHey ${fname}, timing might be off right now, so this will be my last email.\n\nIf you ever run into operational roadblocks and need a scalable remote team fast, keep us in mind!\n\nCheers!`;
+    };
 
-// ═══ AUTH FUNCTIONS ═══
-function init(){
-try{const s=JSON.parse(sessionStorage.getItem("aia_s"));if(s&&s.exp>Date.now()){showApp(s);return}}catch{}
-try{const lk=JSON.parse(sessionStorage.getItem("aia_lk"));if(lk&&lk.until>Date.now()){lockUntil=lk.until;attempts=lk.a;startLockout()}}catch{}
-document.getElementById("pin-input").addEventListener("keydown",e=>{if(e.key==="Enter")authenticate()});
-}
+    /* ═══ OUTREACH GENERATORS — BRAND PARTNER ═══ */
+    const partnerLinkedInDM = (lead) => {
+       const fname = lead.name.split(' ')[0];
+       return `Dear ${fname},\n\nI lead Ashley in Afrika, a talent deployment brand connecting world-class African professionals with global companies.\n\nWe're building a Brand Partners program and ${lead.company}'s commitment to African excellence makes this a natural fit.\n\nWould you be open to a brief conversation about a potential partnership? I'd welcome the chance to share how our networks could create mutual value.\n\nWarm regards,\nAshley Cleveland`;
+    };
 
-function togglePin(){
-const inp=document.getElementById("pin-input");const btn=document.getElementById("pin-toggle");
-showPin=!showPin;inp.type=showPin?"text":"password";inp.style.letterSpacing=showPin?".05em":".15em";btn.textContent=showPin?"◉":"◎";
-}
+    const partnerVoiceNote = (lead) => {
+       const fname = lead.name.split(' ')[0];
+       return `[VOICE NOTE SCRIPT — Professional, warm tone]\n\n"Hi ${fname}, this is Ashley Cleveland from Ashley in Afrika.\n\nI'm reaching out because I deeply admire what ${lead.company} is doing across the African continent. We're building a brand partners program that connects leading African organizations with our global network of founders and operators.\n\nI believe there's a strong alignment between what ${lead.company} represents and our mission of elevating African talent on the world stage.\n\nI'd love to explore what a partnership could look like — whether that's co-branded visibility, joint events, or cross-promotional campaigns. Would you be open to a brief conversation? Looking forward to connecting!"\n\n[TIPS: Keep under 60 seconds. Tone should be professional and mission-driven, not salesy. Mention their org name clearly. Emphasize mutual value.]`;
+    };
 
-function authenticate(){
-if(lockUntil&&lockUntil>Date.now())return;
-const pin=document.getElementById("pin-input").value.trim();
-const user=AUTH.users.find(u=>u.pin===pin);
-if(user){
-const s={name:user.name,role:user.role,at:Date.now(),exp:Date.now()+AUTH.sessionMin*60000};
-sessionStorage.setItem("aia_s",JSON.stringify(s));sessionStorage.removeItem("aia_lk");
-showApp(s);
-}else{
-attempts++;
-if(attempts>=AUTH.maxAttempts){
-lockUntil=Date.now()+AUTH.lockoutMin*60000;
-sessionStorage.setItem("aia_lk",JSON.stringify({until:lockUntil,a:attempts}));
-showError("Locked for "+AUTH.lockoutMin+" minutes.");startLockout();
-}else{
-showError("Invalid code. "+(AUTH.maxAttempts-attempts)+" attempts left.");showDots();
-}
-document.getElementById("pin-input").value="";
-}
-}
+    const partnerNurture = (lead) => {
+       const fname = lead.name.split(' ')[0];
+       const s = PARTNER_SEGMENTS[lead.segment] || PARTNER_SEGMENTS.general;
+       return `[TOUCH 1: THE PARTNERSHIP INTRODUCTION]\nSubject: Partnership opportunity — Ashley in Afrika x ${lead.company}\n\nDear ${fname},\n\nI lead Ashley in Afrika, a talent deployment brand connecting world-class African professionals with global companies across the US and UK.\n\nWe're building a Brand Partners program to align with organizations that share our mission of elevating African talent on the global stage. ${lead.company}'s leadership in the ${s.label.toLowerCase()} space makes this a natural fit.\n\nPartnership could include co-branded visibility, featured placement in our employer showcase, cross-promotional campaigns, and joint thought leadership.\n\nI'd welcome a conversation to explore alignment.\n\nWarm regards,\nAshley Cleveland\nFounder, Ashley in Afrika\n\n------------------------------------------------------\n[TOUCH 2: THE VALUE PROOF (5 Days Later)]\nSubject: Re: Partnership opportunity — Ashley in Afrika x ${lead.company}\n\nHi ${fname},\n\nFollowing up on my previous note. To give you a sense of our reach:\n\nWe work with scaling companies across the US, UK, and Europe, placing structured remote execution teams from across the African continent. Our community includes founders, operators, and decision-makers actively investing in African talent infrastructure.\n\nA partnership with ${lead.company} would put your brand directly in front of this audience.\n\nWould 15 minutes work to explore this further?\n\n------------------------------------------------------\n[TOUCH 3: THE SPECIFIC PROPOSAL (10 Days Later)]\nSubject: Quick idea for ${lead.company}\n\nHi ${fname},\n\nI had a specific idea I wanted to run by you:\n\nWhat if we featured ${lead.company} in our upcoming "African Excellence" spotlight series — a content campaign reaching our global founder network? We'd handle all production.\n\nNo cost, just visibility. Interested?\n\n------------------------------------------------------\n[TOUCH 4: THE GRACEFUL CLOSE (21 Days Later)]\nSubject: Closing the loop on partnership\n\nHi ${fname},\n\nI understand timing may not be right, so I'll leave this here.\n\nIf ${lead.company} ever explores brand partnerships that amplify African talent globally, we'd be honored to be part of that conversation.\n\nWishing you and the team continued success.\n\nWarmly,\nAshley Cleveland`;
+    };
 
-function showError(msg){const el=document.getElementById("auth-error");el.textContent="⚠ "+msg;el.classList.remove("hidden");document.getElementById("auth-card").classList.add("error")}
-function clearError(){document.getElementById("auth-error").classList.add("hidden");document.getElementById("auth-card").classList.remove("error")}
+    /* ═══ MOCK LEAD GENERATORS ═══ */
+    const generateMockClients = () => {
+      const F=["Sarah","Marcus","David","Elena","James","Maya","John","Chris","Emma","Lucas","Olivia","Ethan"];
+      const L=["Chen","Johnson","Patel","Smith","Rodriguez","Williams","Kim","Lee","Davis","Martinez"];
+      const S=["Inc","Corp","Solutions","Technologies","Global","Group","Labs"];
+      let m=[];const keys=Object.keys(CLIENT_SEGMENTS);
+      keys.forEach(k=>{for(let i=0;i<200;i++){let f=F[Math.floor(Math.random()*F.length)],l=L[Math.floor(Math.random()*L.length)],t=CLIENT_SEGMENTS[k].titles[Math.floor(Math.random()*CLIENT_SEGMENTS[k].titles.length)],c=`${l} ${S[Math.floor(Math.random()*S.length)]}`;
+      m.push({id:`${k}-${i}`,name:`${f} ${l}`,title:t,company:c,location:["United States","United Kingdom","Canada","Remote"][Math.floor(Math.random()*4)],website:`https://${c.toLowerCase().replace(/[^a-z0-9]/g,"")}.com`,email:"",segment:k,status:"New",linkedin:`https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(t+" at "+c)}`})}});
+      return m;
+    };
 
-function showDots(){
-const el=document.getElementById("auth-dots");el.classList.remove("hidden");
-el.innerHTML=Array.from({length:AUTH.maxAttempts}).map((_,i)=>`<div class="auth-dot ${i<attempts?"used":""}"></div>`).join("");
-}
+    /* ═══ COPY BUTTON ═══ */
+    function CopyBtn({text,label="Copy"}){
+      const[c,setC]=useState(false);
+      return <button onClick={()=>{navigator.clipboard.writeText(text);setC(true);setTimeout(()=>setC(false),2000)}} className="btn-secondary" style={{padding:"8px 16px",fontSize:13,background:c?"rgba(16,185,129,.2)":"transparent",color:c?"#10B981":"var(--text)",borderColor:c?"#10B981":"var(--border)"}}>{c?"✓ Copied":label}</button>;
+    }
 
-function startLockout(){
-const inp=document.getElementById("pin-input");inp.classList.add("locked");inp.disabled=true;inp.placeholder="Locked";
-document.getElementById("auth-btn").disabled=true;
-document.getElementById("auth-lockout").classList.remove("hidden");
-lockInterval=setInterval(()=>{
-const r=Math.max(0,lockUntil-Date.now());
-if(r<=0){clearInterval(lockInterval);lockUntil=null;attempts=0;sessionStorage.removeItem("aia_lk");
-inp.classList.remove("locked");inp.disabled=false;inp.placeholder="Enter access code";
-document.getElementById("auth-btn").disabled=false;document.getElementById("auth-lockout").classList.add("hidden");
-document.getElementById("auth-dots").classList.add("hidden");clearError();return;}
-const m=Math.ceil(r/60000),s=Math.ceil((r%60000)/1000);
-document.getElementById("lockout-timer").textContent=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
-},1000);
-}
+    /* ═══ OUTREACH PANEL ═══ */
+    function OutreachPanel({lead,track,onClear}){
+      const isPartner = track==="partners";
+      const segs = isPartner ? PARTNER_SEGMENTS : CLIENT_SEGMENTS;
+      const s = segs[lead.segment] || segs.general;
+      const dm = isPartner ? partnerLinkedInDM(lead) : clientLinkedInDM(lead);
+      const vn = isPartner ? partnerVoiceNote(lead) : clientVoiceNote(lead);
+      const nurture = isPartner ? partnerNurture(lead) : clientNurture(lead);
 
-function showApp(s){
-currentSession=s;
-document.getElementById("auth-gate").classList.add("hidden");
-document.getElementById("main-app").classList.remove("hidden");
-document.getElementById("session-name").textContent=s.name;
-if(s.role==="admin")document.getElementById("session-role").classList.remove("hidden");
-updateSessionTime();sessionInterval=setInterval(updateSessionTime,30000);
-buildNav();renderView();
-}
+      return (
+        <div className="outreach-grid">
+          <div>
+            <div style={{background:"var(--card)",border:"1px solid var(--border)",borderRadius:16,padding:24,position:"sticky",top:24}}>
+              <div className="status-badge" style={{background:s.color+"15",color:s.color,display:"inline-block",marginBottom:16}}>{s.icon} {s.label}</div>
+              <h2 style={{margin:"0 0 4px 0",fontSize:24}}>{lead.name}</h2>
+              <div style={{color:"var(--muted)",fontSize:14}}>{lead.title}</div>
+              <div style={{color:"var(--muted)",fontSize:14,marginBottom:4}}>{lead.company}</div>
+              <div style={{color:"var(--muted)",fontSize:13,marginBottom:4}}>📍 {lead.location||"Global"}</div>
+              {lead.website?<div style={{fontSize:13,marginBottom:24}}><a href={lead.website.startsWith('http')?lead.website:`https://${lead.website}`} target="_blank" rel="noreferrer" style={{color:"var(--accent)",textDecoration:"none",fontWeight:600}}>🌐 {lead.website.replace(/^https?:\/\//,'')}</a></div>:null}
+              <div style={{fontSize:11,fontWeight:700,textTransform:"uppercase",color:"var(--muted)",marginBottom:8,letterSpacing:".05em"}}>{isPartner?"Partnership Angle":"Pain Point"}:</div>
+              <div style={{fontSize:14,background:"var(--surface)",padding:12,borderRadius:8,border:"1px solid var(--border)",marginBottom:24,lineHeight:1.5}}>"{s.painPt}"</div>
+              {lead.linkedin?<a href={lead.linkedin} target="_blank" rel="noreferrer" style={{textDecoration:"none"}}><button className="btn-secondary" style={{width:"100%",marginBottom:12,padding:"12px",background:"rgba(10,102,194,.1)",color:"#0A66C2",borderColor:"rgba(10,102,194,.3)"}}>🔗 Search LinkedIn</button></a>:null}
+              <button className="btn-secondary" style={{width:"100%"}} onClick={onClear}>Clear Selection</button>
+            </div>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:24}}>
+            {/* LinkedIn DM */}
+            <div style={{background:"var(--surface)",border:"1px solid var(--border)",borderRadius:16,overflow:"hidden"}}>
+              <div style={{background:"var(--card)",padding:"16px 20px",borderBottom:"1px solid var(--border)",display:"flex",justifyContent:"space-between",alignItems:"center"}}><div style={{fontWeight:800,color:"#0A66C2"}}>📩 LinkedIn Connect DM</div><CopyBtn text={dm}/></div>
+              <div style={{padding:"16px 20px"}}><textarea readOnly value={dm} style={{width:"100%",height:180,background:"var(--bg)",border:"1px solid var(--border)",borderRadius:8,padding:16,fontSize:14,color:"var(--text)",fontFamily:"inherit",resize:"none",lineHeight:1.5}}/></div>
+            </div>
+            {/* Voice Note */}
+            <div style={{background:"var(--surface)",border:"1px solid var(--border)",borderRadius:16,overflow:"hidden"}}>
+              <div style={{background:"var(--card)",padding:"16px 20px",borderBottom:"1px solid var(--border)",display:"flex",justifyContent:"space-between",alignItems:"center"}}><div style={{fontWeight:800,color:"#10B981"}}>🎙️ Voice Note Script</div><CopyBtn text={vn}/></div>
+              <div style={{padding:"16px 20px"}}><textarea readOnly value={vn} style={{width:"100%",height:240,background:"var(--bg)",border:"1px solid var(--border)",borderRadius:8,padding:16,fontSize:14,color:"var(--text)",fontFamily:"inherit",resize:"none",lineHeight:1.5}}/></div>
+            </div>
+            {/* 4-Step Nurture */}
+            <div style={{background:"var(--surface)",border:"1px solid var(--border)",borderRadius:16,overflow:"hidden"}}>
+              <div style={{background:"var(--card)",padding:"16px 20px",borderBottom:"1px solid var(--border)",display:"flex",justifyContent:"space-between",alignItems:"center"}}><div style={{fontWeight:800,color:"var(--accent)"}}>📧 4-Step Nurture Campaign</div><CopyBtn text={nurture} label="Copy Entire Sequence"/></div>
+              <div style={{padding:"16px 20px"}}><textarea readOnly value={nurture} style={{width:"100%",height:500,background:"var(--bg)",border:"1px solid var(--border)",borderRadius:8,padding:16,fontSize:14,color:"var(--text)",fontFamily:"inherit",resize:"none",lineHeight:1.6}}/></div>
+            </div>
+          </div>
+        </div>
+      );
+    }
 
-function updateSessionTime(){
-if(!currentSession)return;
-const r=Math.max(0,currentSession.exp-Date.now());
-if(r<=0){logout();return;}
-document.getElementById("session-time").textContent=Math.floor(r/3600000)+"h "+Math.floor((r%3600000)/60000)+"m";
-}
+    /* ═══ LEAD TABLE ═══ */
+    function LeadTable({leads,segments,onSelectLead,onUpdateStatus,currentPage,setCurrentPage}){
+      const perPage=100;
+      const start=(currentPage-1)*perPage;
+      const page=leads.slice(start,start+perPage);
+      const totalPages=Math.ceil(leads.length/perPage);
+      return(
+        <div style={{background:"var(--card)",border:"1px solid var(--border)",borderRadius:16,overflow:"hidden",display:"flex",flexDirection:"column"}}>
+          <table className="desktop-table"><thead><tr style={{borderBottom:"1px solid var(--border)",backgroundColor:"var(--surface)",color:"var(--muted)",fontSize:12,textTransform:"uppercase"}}>
+            <th style={{padding:"16px 24px",textAlign:"left"}}>Prospect</th><th style={{padding:"16px 24px",textAlign:"left"}}>Location</th><th style={{padding:"16px 24px",textAlign:"left"}}>Website</th><th style={{padding:"16px 24px",textAlign:"left"}}>Segment</th><th style={{padding:"16px 24px",textAlign:"left"}}>Status</th><th style={{padding:"16px 24px",textAlign:"right"}}>Actions</th>
+          </tr></thead><tbody>
+          {page.map((ld,i)=>{const seg=segments[ld.segment]||segments.general||{label:"Other",color:"#6366F1",icon:"📋"};return(
+            <tr key={i} style={{borderBottom:"1px solid var(--border)",transition:"background .2s"}} onMouseEnter={e=>e.currentTarget.style.background="var(--surface)"} onMouseLeave={e=>e.currentTarget.style.background="transparent"}>
+              <td style={{padding:"16px 24px"}}><div style={{fontWeight:700,fontSize:15}}>{ld.name}</div><div style={{color:"var(--muted)",fontSize:13,marginTop:4}}>{ld.title} @ <strong>{ld.company}</strong></div></td>
+              <td style={{padding:"16px 24px"}}><div style={{color:"var(--text)",fontSize:14}}>📍 {ld.location||"Global"}</div></td>
+              <td style={{padding:"16px 24px"}}>{ld.website?<a href={ld.website.startsWith('http')?ld.website:`https://${ld.website}`} target="_blank" rel="noreferrer" style={{color:"var(--accent)",textDecoration:"none",fontSize:13,fontWeight:600}}>🌐 {ld.website.replace(/^https?:\/\//,'').replace(/\/$/,'').substring(0,30)}</a>:null}</td>
+              <td style={{padding:"16px 24px"}}><div className="status-badge" style={{background:seg.color+"15",color:seg.color}}>{seg.icon} {seg.label}</div></td>
+              <td style={{padding:"16px 24px"}}><select value={ld.status} onChange={e=>onUpdateStatus(ld.id,e.target.value)} style={{padding:"6px 12px",background:ld.status==="New"?"var(--surface)":ld.status==="Contacted"?"rgba(16,185,129,.1)":"rgba(59,130,246,.1)",color:ld.status==="New"?"var(--muted)":ld.status==="Contacted"?"#10B981":"#3B82F6",border:"1px solid var(--border)",borderRadius:8,outline:"none",fontSize:12,fontWeight:700,cursor:"pointer"}}><option value="New">New</option><option value="Contacted">Contacted ✓</option><option value="In Progress">In Progress</option><option value="Converted">Converted 💰</option><option value="Rejected">Rejected</option></select></td>
+              <td style={{padding:"16px 24px",textAlign:"right"}}><div style={{display:"flex",gap:8,justifyContent:"flex-end"}}>
+                {ld.email?<a href={`mailto:${ld.email}`} target="_blank" rel="noreferrer" style={{textDecoration:"none"}}><button className="btn-secondary" style={{padding:"8px 12px",background:"rgba(245,158,11,.1)",color:"#F59E0B",borderColor:"rgba(245,158,11,.3)",fontSize:12}}>📧</button></a>:null}
+                {ld.linkedin?<a href={ld.linkedin} target="_blank" rel="noreferrer" style={{textDecoration:"none"}}><button className="btn-secondary" style={{padding:"8px 12px",background:"rgba(10,102,194,.1)",color:"#0A66C2",borderColor:"rgba(10,102,194,.3)",fontSize:12}}>🔗</button></a>:null}
+                <button className="btn-primary" style={{padding:"8px 16px",fontSize:12}} onClick={()=>onSelectLead(ld)}>Write Scripts</button>
+              </div></td>
+            </tr>)})}
+          </tbody></table>
+          <div className="mobile-cards">{page.map((ld,i)=>{const seg=segments[ld.segment]||segments.general||{label:"Other",color:"#6366F1",icon:"📋"};return(
+            <div key={i} className="mobile-card">
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}><div className="status-badge" style={{background:seg.color+"15",color:seg.color}}>{seg.icon} {seg.label}</div></div>
+              <div style={{fontWeight:800,fontSize:18,marginBottom:4}}>{ld.name}</div>
+              <div style={{color:"var(--muted)",fontSize:14,marginBottom:12}}>{ld.title} @ <strong>{ld.company}</strong></div>
+              <button className="btn-primary" style={{width:"100%",padding:"12px",fontSize:13}} onClick={()=>{onSelectLead(ld);window.scrollTo(0,0)}}>Write Scripts</button>
+            </div>)})}</div>
+          <div className="pagination-bar">
+            <div style={{color:"var(--muted)",fontSize:13}}>Showing <strong style={{color:"var(--text)"}}>{start+1}</strong> to <strong style={{color:"var(--text)"}}>{Math.min(start+perPage,leads.length)}</strong> of <strong style={{color:"var(--text)"}}>{leads.length.toLocaleString()}</strong></div>
+            <div><button className="btn-secondary" style={{padding:"8px 16px"}} disabled={currentPage===1} onClick={()=>setCurrentPage(p=>p-1)}>Prev</button><span style={{fontSize:13,color:"var(--text)",fontWeight:700,padding:"0 12px"}}>{currentPage}/{totalPages||1}</span><button className="btn-secondary" style={{padding:"8px 16px"}} disabled={currentPage>=totalPages} onClick={()=>setCurrentPage(p=>p+1)}>Next</button></div>
+          </div>
+        </div>
+      );
+    }
 
-function logout(){
-sessionStorage.removeItem("aia_s");clearInterval(sessionInterval);currentSession=null;
-document.getElementById("main-app").classList.add("hidden");document.getElementById("auth-gate").classList.remove("hidden");
-document.getElementById("pin-input").value="";location.reload();
-}
+    /* ═══ MAIN APP ═══ */
+    function App() {
+      const [view,setView]=useState("clients");
+      const [clientLeads,setClientLeads]=useState([]);
+      const [partnerLeads,setPartnerLeads]=useState([]);
+      const [filteredClients,setFilteredClients]=useState([]);
+      const [filteredPartners,setFilteredPartners]=useState([]);
+      const [filterSeg,setFilterSeg]=useState("all");
+      const [activeLead,setActiveLead]=useState(null);
+      const [activeTrack,setActiveTrack]=useState("clients");
+      const [clientPage,setClientPage]=useState(1);
+      const [partnerPage,setPartnerPage]=useState(1);
+      const [loading,setLoading]=useState(true);
 
-// ═══ NAV ═══
-const NAVS=[
-{id:"dashboard",label:"Dashboard",icon:"◉"},{id:"icp",label:"ICP Profiles",icon:"◎"},
-{id:"leadgen",label:"Lead Gen",icon:"▸"},{id:"outreach",label:"Outreach",icon:"◆"},
-{id:"followup",label:"Follow-Up",icon:"↻"},{id:"partners",label:"Partners",icon:"⬡"},
-{id:"offers",label:"Offers",icon:"★"},{id:"pricing",label:"Pricing",icon:"◈"},
-{id:"cadence",label:"Cadence",icon:"▤"}
-];
+      const detectClientSegment=(industry)=>{const i=(industry||"").toLowerCase();if(i.includes("saas")||i.includes("cloud")||i.includes("ai")||i.includes("dev")||i.includes("cyber")||i.includes("security"))return"saas";if(i.includes("ecom")||i.includes("commerce"))return"ecom";if(i.includes("health")||i.includes("medical"))return"healthcare";if(i.includes("fintech")||i.includes("finance"))return"fintech";if(i.includes("agency")||i.includes("marketing"))return"agency";if(i.includes("hr")||i.includes("people"))return"hrtech";if(i.includes("real estate")||i.includes("proptech"))return"realestate";if(i.includes("logistics")||i.includes("supply"))return"logistics";if(i.includes("consult"))return"consulting";if(i.includes("edtech")||i.includes("education"))return"edtech";if(i.includes("b2b")||i.includes("service"))return"b2b";return"general"};
+      const detectPartnerSegment=(category)=>{const c=(category||"").toLowerCase();if(c.includes("bank")||c.includes("financ"))return"bank";if(c.includes("airline")||c.includes("aviation"))return"airline";if(c.includes("hotel")||c.includes("hospitality"))return"hotel";if(c.includes("construct")||c.includes("real estate"))return"construction";if(c.includes("tourism")||c.includes("govt")||c.includes("investment")||c.includes("ministry"))return"tourism";return"general"};
 
-function buildNav(){
-document.getElementById("nav").innerHTML=NAVS.map(n=>
-`<button class="nav-btn ${n.id===currentView?"active":""}" onclick="navigate('${n.id}')"><span style="margin-right:4px">${n.icon}</span>${n.label}</button>`
-).join("");
-}
+      const parseCSV=(file,isPartner,cb)=>{Papa.parse(file,{header:true,skipEmptyLines:true,complete:function(r){const leads=[];r.data.forEach((row,i)=>{let name=row.Name||row["First Name"]?`${row["First Name"]||""} ${row["Last Name"]||""}`.trim():row.name;if(!name)name="Unknown";const title=row.Title||row.title||row["Job Title"]||"";const company=row.Company||row.company||row["Company Name"]||row.Organization||"";const location=row.Location||row.location||row["Company Location"]||row.Country||"Global";const website=row.Website||row.website||row["Company URL"]||row["Company Url"]||"";const linkedin=row.LinkedIn||row["LinkedIn Url"]||row["LinkedIn URL"]||row["Person Linkedin Url"]||row.linkedin||"";const email=row.Email||row.email||row["Person Email"]||"";const industry=row.Industry||row.industry||row.Category||row.category||"";const segment=isPartner?detectPartnerSegment(industry||row.Category||""):detectClientSegment(industry);leads.push({id:`csv-${Date.now()}-${i}`,name,title,company,location,website,linkedin,email,segment,status:row.Status||"New"})});cb(leads)}})};
 
-function navigate(v){currentView=v;buildNav();renderView()}
+      const handleUpload=(e,isPartner)=>{const file=e.target.files[0];if(!file)return;parseCSV(file,isPartner,(leads)=>{if(isPartner){setPartnerLeads(prev=>{const map=new Map();prev.forEach(l=>map.set(l.name.toLowerCase()+"-"+l.company.toLowerCase(),l));leads.forEach(l=>{const k=l.name.toLowerCase()+"-"+l.company.toLowerCase();if(!map.has(k))map.set(k,l)});return Array.from(map.values())});setFilterSeg("all")}else{setClientLeads(prev=>{const base=prev.some(l=>!l.id.startsWith('csv-'))?[]:prev;const map=new Map();base.forEach(l=>map.set(l.name.toLowerCase()+"-"+l.company.toLowerCase(),l));leads.forEach(l=>{const k=l.name.toLowerCase()+"-"+l.company.toLowerCase();if(!map.has(k))map.set(k,l)});return Array.from(map.values())});setFilterSeg("all")}})};
 
-// ═══ SEGMENT DATA ═══
-const SEGS={
-saas:{label:"SaaS",tag:"$1M–$20M ARR",color:"var(--sa)",hex:"#10B981",
-titles:["Founder / Co-Founder","Head of Operations","VP Customer Success","COO"],
-profile:["Venture-backed SaaS, Seed to Series B","Team size: 10–100 employees","Product in market, growing user base","Increasing support volume"],
-pain:["Customer support backlog → rising churn","Founder bottleneck in operations","Poor onboarding experience","Burn rate pressure from investors","Hiring delays blocking growth"],
-triggers:["Churn increasing","Support response times slipping","Recently raised funding","Job postings for support/ops/CS roles","Founder still in day-to-day ops"],
-angle:"Performance + Scalability",hook:"Deploy a 3-person execution team that cuts support backlog and improves retention within 30 days."},
-ecom:{label:"E-Commerce",tag:"$1M–$50M Revenue",color:"var(--ec)",hex:"#F59E0B",
-titles:["Founder / Owner","Head of Operations","E-commerce Manager"],
-profile:["E-commerce brands (Shopify, Amazon, DTC)","Team size: 5–50","Revenue tied to ads + seasons","Lean teams, heavy outsourcing already"],
-pain:["Customer service overwhelm","Refunds and chargebacks increasing","Logistics and order management issues","Founder burnout","No scalable support systems"],
-triggers:["Sales spike they can't handle","Negative reviews citing slow support","Hiring locally too expensive","Heavy ad spend (Meta Ad Library)","Publicly discussing scaling pain"],
-angle:"Speed + Cost Relief",hook:"Replace 1 local hire with 3 specialized roles — support, admin, ops — at a fraction of the cost."},
-healthcare:{label:"Healthcare",tag:"Admin & Telehealth",color:"var(--hc)",hex:"#8B5CF6",
-titles:["Practice Owner","Operations Manager","Clinic Director","Telehealth Founder"],
-profile:["Healthcare admin & telehealth companies","Team size: 10–200","High admin-to-revenue ratio","Regulated environment, compliance matters"],
-pain:["Scheduling inefficiencies","Administrative overload","Patient communication gaps","Staff burnout","Can't scale without expensive local hires"],
-triggers:["Staff shortages (posted or discussed)","Rising labor costs","Patient complaints or delays","Admin/scheduling job postings","Expansion announcements"],
-angle:"Reliability + Operational Stability",hook:"Reduce admin overload so clinical staff can focus on patient care — deployed in 48 hours."}
-};
+      const downloadCSV=(leads,filename)=>{const h=["Name","Title","Company","Location","Email","LinkedIn","Website","Segment","Status"];const rows=leads.map(l=>[l.name,l.title,l.company,l.location,l.email,l.linkedin,l.website,l.segment,l.status].map(v=>`"${(v||"").replace(/"/g,'""')}"`).join(","));const csv=[h.join(","),...rows].join("\n");const blob=new Blob([csv],{type:"text/csv"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=filename;a.click()};
 
-function segSelector(){
-return `<div class="seg-sel">${Object.entries(SEGS).map(([k,s])=>
-`<button class="seg-btn ${k===currentSeg?"active":""}" style="${k===currentSeg?`border-color:${s.hex};color:${s.hex};background:${s.hex}12`:""}" onclick="setSeg('${k}')">
-<div>${s.label}</div><div class="seg-tag">${s.tag}</div></button>`
-).join("")}</div>`;
-}
-function setSeg(s){currentSeg=s;renderView()}
+      const updateStatus=(leads,setLeads,id,status)=>{setLeads(prev=>prev.map(l=>l.id===id?{...l,status}:l))};
 
-// ═══ PROMPTS ═══
-function leadGenPrompt(k){const s=SEGS[k];const sz=k==="saas"?"ARR Range":k==="ecom"?"Revenue Range":"Team Size";
-return`You are a B2B lead generation research agent. Find real, verifiable professionals matching the ICP below.\n\nTARGET TITLES (decision-makers only):\n${s.titles.map(t=>"- "+t).join("\n")}\n\nBUYING TRIGGERS:\n${s.triggers.map(t=>"- "+t).join("\n")}\n\nPAIN POINTS:\n${s.pain.map(p=>"- "+p).join("\n")}\n\nOUTPUT FORMAT:\n| Name | Title | Company | ${sz} | Location | Email | Phone (if public) | LinkedIn Profile | Why They Fit | Source |\n\nQUALITY RULES:\n- Every lead must be a real person with a verifiable LinkedIn profile\n- \"Why They Fit\" must reference a specific signal\n- Minimum 10 leads per batch\n- Quality over quantity`;}
+      useEffect(()=>{fetch('aia_target_leads.csv').then(r=>{if(!r.ok)throw new Error();return r.text()}).then(t=>{const file=new File([t],"leads.csv",{type:"text/csv"});parseCSV(file,false,(leads)=>{setClientLeads(leads);setLoading(false)})}).catch(()=>{setClientLeads(generateMockClients());setLoading(false)});},[]);
 
-function outreachPrompt(k){const s=SEGS[k];
-return`You are an outreach copywriter for a premium remote operations company. Write personalized outreach for ${s.label} decision-makers.\n\nSENDER: Ashley Cleveland — Ashley in Afrika / BrandUp Global Talent\nPositioning: \"I help scaling SaaS, e-commerce, and healthcare companies buy back their time and protect revenue through plug-and-play execution systems.\"\n\nLEAD DATA: [PASTE VALIDATED LEAD ROW HERE]\n\nRULES:\n1. Open with THEIR company — never about Ashley\n2. Reference the signal from \"Why They Fit\"\n3. LinkedIn DMs under 90 words / Emails under 150 words\n4. End with exactly ONE clear CTA\n5. Never use: \"I'd love to\", \"just reaching out\", \"hope this finds you well\"\n\nWRITE 3 VERSIONS:\nVERSION A — LinkedIn Connection Request Note (under 300 chars)\nVERSION B — LinkedIn Follow-Up DM (under 90 words)\nVERSION C — Cold Email (under 150 words, include subject line)`;}
+      useEffect(()=>{const segs=view==="clients"?CLIENT_SEGMENTS:PARTNER_SEGMENTS;const leads=view==="clients"?clientLeads:partnerLeads;if(filterSeg==="all")view==="clients"?setFilteredClients(leads):setFilteredPartners(leads);else view==="clients"?setFilteredClients(leads.filter(l=>l.segment===filterSeg)):setFilteredPartners(leads.filter(l=>l.segment===filterSeg))},[filterSeg,clientLeads,partnerLeads,view]);
 
-function followUpPrompt(k){const s=SEGS[k];const tones={saas:"metrics-driven, direct",ecom:"fast, ROI-focused",healthcare:"professional, trust-building"};
-return`You are a follow-up outreach copywriter. Write 4 follow-up messages for a non-responsive B2B lead.\n\nSENDER: Ashley Cleveland — Ashley in Afrika\nSEGMENT: ${s.label}\nLEAD: [PASTE LEAD NAME, COMPANY, ORIGINAL OUTREACH]\n\nRULES:\n1. Never repeat the initial pitch\n2. Each introduces a NEW angle:\n   - Follow-Up 1 (Day 3): Insight or stat\n   - Follow-Up 2 (Day 7): Case study or before/after\n   - Follow-Up 3 (Day 14): Free offer (audit/diagnostic)\n   - Breakup (Day 21): Respectful close\n3. Under 75 words each\n4. Tone: ${tones[k]}\n5. Each ends with ONE low-friction CTA`;}
+      useEffect(()=>{setFilterSeg("all");setActiveLead(null)},[view]);
 
-function partnerPrompt(k){const s=SEGS[k];
-return`You are a strategic partnership research agent. Identify potential brand partners for Ashley Cleveland (Ashley in Afrika) in the ${s.label} space.\n\nTARGET PARTNER TYPES:\n1. Complementary service providers\n2. Industry influencers\n3. Podcasts, newsletters, communities\n4. Non-competing founders serving same ICP\n5. Event organizers\n\nOUTPUT FORMAT:\n| Partner Name | Type | Platform | Audience Size | Why They Align | Partnership Opportunity | Contact / Link |\n\nMinimum 10 partners per batch. All must be verifiable.`;}
+      if(loading)return<div style={{height:"100vh",display:"flex",alignItems:"center",justifyContent:"center",background:"var(--bg)"}}><div style={{textAlign:"center"}}><div style={{fontSize:48,marginBottom:16}}>🚀</div><h2 style={{margin:"0 0 8px"}}>Initializing Pipeline</h2><p style={{color:"var(--muted)"}}>Loading leads...</p></div></div>;
 
-// ═══ COPY FUNCTION ═══
-function copyPrompt(id){
-const el=document.getElementById(id);const btn=document.getElementById("btn-"+id);
-navigator.clipboard.writeText(el.textContent);btn.textContent="✓ Copied";btn.classList.add("copied");
-setTimeout(()=>{btn.textContent="Copy Prompt";btn.classList.remove("copied")},2000);
-}
+      const currentLeads=view==="clients"?filteredClients:filteredPartners;
+      const currentSegs=view==="clients"?CLIENT_SEGMENTS:PARTNER_SEGMENTS;
+      const isOutreach=view==="client-outreach"||view==="partner-outreach";
 
-// ═══ TOGGLE PROMPT ═══
-function togglePrompt(id){
-const el=document.getElementById(id);el.classList.toggle("hidden");
-const arrow=document.getElementById("arrow-"+id);arrow.classList.toggle("open");
-}
+      return(
+        <div className="app-container">
+          <div className="sidebar">
+            <div className="sidebar-header">
+              <div style={{background:view.includes("partner")?"var(--gradient2)":"var(--gradient)",width:40,height:40,borderRadius:12,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:20,marginBottom:16}}>A</div>
+              <div style={{fontSize:18,fontWeight:800}}>Ashley in Afrika</div>
+              <div style={{fontSize:11,color:"var(--muted)",textTransform:"uppercase",letterSpacing:".1em"}}>Outreach Command Center v3</div>
+            </div>
+            <div className="sidebar-nav">
+              <div className="nav-item" onClick={()=>setView("clients")} style={{background:view==="clients"?"var(--card)":"transparent",color:view==="clients"?"var(--text)":"var(--muted)",fontWeight:view==="clients"?700:500}}>
+                <span style={{fontSize:18}}>📁</span> BrandUp Clients <span style={{marginLeft:"auto",fontSize:11,background:"var(--border)",padding:"2px 8px",borderRadius:100}}>{clientLeads.length}</span>
+              </div>
+              <div className="nav-item" onClick={()=>setView("client-outreach")} style={{background:view==="client-outreach"?"var(--card)":"transparent",color:view==="client-outreach"?"var(--text)":"var(--muted)",fontWeight:view==="client-outreach"?700:500}}>
+                <span style={{fontSize:18}}>⚡</span> Client Outreach
+              </div>
+              <div className="nav-divider"/>
+              <div className="nav-item" onClick={()=>setView("partners")} style={{background:view==="partners"?"var(--card)":"transparent",color:view==="partners"?"var(--text)":"var(--muted)",fontWeight:view==="partners"?700:500}}>
+                <span style={{fontSize:18}}>🌍</span> Brand Partners <span style={{marginLeft:"auto",fontSize:11,background:"var(--border)",padding:"2px 8px",borderRadius:100}}>{partnerLeads.length}</span>
+              </div>
+              <div className="nav-item" onClick={()=>setView("partner-outreach")} style={{background:view==="partner-outreach"?"var(--card)":"transparent",color:view==="partner-outreach"?"var(--text)":"var(--muted)",fontWeight:view==="partner-outreach"?700:500}}>
+                <span style={{fontSize:18}}>🤝</span> Partner Outreach
+              </div>
+            </div>
+          </div>
 
-// ═══ RENDER VIEWS ═══
-const OFFERS=[
-{name:"Replace 1 Hire With 3 Roles",type:"Outreach",color:"var(--sa)"},{name:"Founder Bottleneck Diagnostic",type:"Lead Magnet",color:"var(--ec)"},
-{name:"48-Hour Team Deployment",type:"Conversion",color:"var(--hc)"},{name:"Revenue Leak Audit",type:"Lead Magnet",color:"var(--ec)"},
-{name:"Before vs After Team Structure",type:"Content",color:"var(--bl)"},{name:"Done-For-You Ops Stack",type:"Core Offer",color:"var(--ac)"},
-{name:"AI + Human Team Positioning",type:"Authority",color:"var(--pk)"},{name:"Pipeline Recovery Campaign",type:"Outreach",color:"var(--sa)"},
-{name:"Scale Without Hiring Locally",type:"Webinar",color:"var(--sa)"},{name:"First Hire Guarantee",type:"Risk Reversal",color:"var(--hc)"}
-];
+          <div className="content-area">
+            {/* ═══ CLIENT DATABASE ═══ */}
+            {view==="clients"&&(
+              <div className="animate-up">
+                <div className="page-header">
+                  <div><h1 style={{fontSize:36,margin:"0 0 8px"}}>Dream List — BrandUp Clients</h1><p style={{color:"var(--muted)",margin:0,fontSize:16}}>ICP targets for Ashley's remote talent offer</p></div>
+                  <div style={{display:"flex",gap:12,alignItems:"center",flexWrap:"wrap",justifyContent:"flex-end"}}>
+                    <label className="btn-secondary" style={{padding:"12px 20px",cursor:"pointer",display:"flex",alignItems:"center",gap:8,borderColor:"var(--accent)",color:"var(--accent)"}}><input type="file" accept=".csv" style={{display:"none"}} onChange={e=>handleUpload(e,false)}/><span>📥 Upload CSV</span></label>
+                    <button onClick={()=>downloadCSV(filteredClients,`aia_clients_${new Date().toISOString().slice(0,10)}.csv`)} className="btn-secondary" style={{padding:"12px 20px",borderColor:"#10B981",color:"#10B981"}}>📤 Download</button>
+                    <select value={filterSeg} onChange={e=>{setFilterSeg(e.target.value);setClientPage(1)}} style={{padding:"12px 16px",background:"var(--card)",border:"1px solid var(--border)",borderRadius:12,color:"var(--text)",outline:"none",fontSize:14}}><option value="all">All ({clientLeads.length})</option>{Object.entries(CLIENT_SEGMENTS).map(([k,s])=><option key={k} value={k}>{s.icon} {s.label}</option>)}</select>
+                  </div>
+                </div>
+                <LeadTable leads={filteredClients} segments={CLIENT_SEGMENTS} onSelectLead={ld=>{setActiveLead(ld);setActiveTrack("clients");setView("client-outreach")}} onUpdateStatus={(id,st)=>updateStatus(clientLeads,setClientLeads,id,st)} currentPage={clientPage} setCurrentPage={setClientPage}/>
+              </div>
+            )}
 
-const TIERS=[
-{name:"Execution Pod",price:"$8K–$12K/mo",roles:"2–3 roles",desc:"Support + Admin + Ops",color:"var(--sa)"},
-{name:"Growth Ops Team",price:"$15K–$30K/mo",roles:"4–6 roles",desc:"Support + Data + Reporting + Ops Coordination",color:"var(--ec)"},
-{name:"Revenue Protection Partner",price:"$35K–$75K/mo",roles:"Full ops layer",desc:"Team + Systems + Performance Tracking",color:"var(--hc)"}
-];
+            {/* ═══ PARTNER DATABASE ═══ */}
+            {view==="partners"&&(
+              <div className="animate-up">
+                <div className="page-header">
+                  <div><h1 style={{fontSize:36,margin:"0 0 8px"}}>Brand Partners — Ashley in Afrika</h1><p style={{color:"var(--muted)",margin:0,fontSize:16}}>African banks, hotels, airlines, construction, tourism & govt agencies</p></div>
+                  <div style={{display:"flex",gap:12,alignItems:"center",flexWrap:"wrap",justifyContent:"flex-end"}}>
+                    <label className="btn-secondary" style={{padding:"12px 20px",cursor:"pointer",display:"flex",alignItems:"center",gap:8,borderColor:"#F59E0B",color:"#F59E0B"}}><input type="file" accept=".csv" style={{display:"none"}} onChange={e=>handleUpload(e,true)}/><span>📥 Upload Partners CSV</span></label>
+                    <button onClick={()=>downloadCSV(filteredPartners,`aia_partners_${new Date().toISOString().slice(0,10)}.csv`)} className="btn-secondary" style={{padding:"12px 20px",borderColor:"#10B981",color:"#10B981"}}>📤 Download</button>
+                    <select value={filterSeg} onChange={e=>{setFilterSeg(e.target.value);setPartnerPage(1)}} style={{padding:"12px 16px",background:"var(--card)",border:"1px solid var(--border)",borderRadius:12,color:"var(--text)",outline:"none",fontSize:14}}><option value="all">All ({partnerLeads.length})</option>{Object.entries(PARTNER_SEGMENTS).map(([k,s])=><option key={k} value={k}>{s.icon} {s.label}</option>)}</select>
+                  </div>
+                </div>
+                {partnerLeads.length===0?(
+                  <div style={{textAlign:"center",padding:"60px 20px",border:"1px dashed var(--border)",borderRadius:16,color:"var(--muted)",background:"var(--card)"}}><div style={{fontSize:48,marginBottom:16}}>🌍</div><h3 style={{margin:"0 0 8px"}}>No Brand Partners Loaded</h3><p style={{margin:0,maxWidth:400,marginLeft:"auto",marginRight:"auto"}}>Upload a CSV with your Brand Partners Dream 100 list (African banks, hotels, airlines, construction, tourism ministries).</p></div>
+                ):(<LeadTable leads={filteredPartners} segments={PARTNER_SEGMENTS} onSelectLead={ld=>{setActiveLead(ld);setActiveTrack("partners");setView("partner-outreach")}} onUpdateStatus={(id,st)=>updateStatus(partnerLeads,setPartnerLeads,id,st)} currentPage={partnerPage} setCurrentPage={setPartnerPage}/>)}
+              </div>
+            )}
 
-const CADENCE=[
-{touch:"Initial",day:"Day 0",channel:"LinkedIn / Email",purpose:"Open the door"},
-{touch:"Follow-Up 1",day:"Day 3",channel:"Same channel",purpose:"Soft bump + new angle"},
-{touch:"Follow-Up 2",day:"Day 7",channel:"Alt channel",purpose:"Cross-channel value"},
-{touch:"Follow-Up 3",day:"Day 14",channel:"Email",purpose:"Case study / audit offer"},
-{touch:"Breakup",day:"Day 21",channel:"Email",purpose:"Close loop respectfully"}
-];
+            {/* ═══ CLIENT OUTREACH ═══ */}
+            {view==="client-outreach"&&(
+              <div className="animate-up">
+                <h1 style={{fontSize:32,margin:"0 0 8px"}}>Client Outreach Engine</h1>
+                <p style={{color:"var(--muted)",margin:"0 0 32px",fontSize:16}}>LinkedIn DM + Voice Note + 4-Step Nurture for BrandUp clients</p>
+                {activeLead&&activeTrack==="clients"?<OutreachPanel lead={activeLead} track="clients" onClear={()=>setActiveLead(null)}/>:(
+                  <div style={{textAlign:"center",padding:"60px 20px",border:"1px dashed var(--border)",borderRadius:16,color:"var(--muted)",background:"var(--card)"}}><div style={{fontSize:48,marginBottom:16}}>🎯</div><h3 style={{margin:"0 0 8px"}}>No Client Selected</h3><p style={{margin:0,maxWidth:400,marginLeft:"auto",marginRight:"auto"}}>Go to BrandUp Clients and click "Write Scripts" on any lead.</p><button className="btn-primary" style={{marginTop:24,padding:"12px 24px"}} onClick={()=>setView("clients")}>Browse Clients</button></div>
+                )}
+              </div>
+            )}
 
-function promptCard(title,subtitle,promptText,color,pid){
-return`<div class="card"><div class="card-header" onclick="togglePrompt('${pid}')">
-<div><div style="display:flex;align-items:center;gap:8px"><div class="card-dot" style="background:${color};box-shadow:0 0 6px ${color}55"></div><span class="card-title">${title}</span></div>
-${subtitle?`<div class="card-subtitle">${subtitle}</div>`:""}</div>
-<span class="card-arrow" id="arrow-${pid}">▾</span></div>
-<div class="card-body hidden" id="${pid}">
-<div class="prompt-box" id="text-${pid}">${promptText.replace(/\n/g,"\n")}</div>
-<button class="copy-btn" id="btn-text-${pid}" onclick="copyPrompt('text-${pid}')">Copy Prompt</button>
-</div></div>`;
-}
+            {/* ═══ PARTNER OUTREACH ═══ */}
+            {view==="partner-outreach"&&(
+              <div className="animate-up">
+                <h1 style={{fontSize:32,margin:"0 0 8px"}}>Partner Outreach Engine</h1>
+                <p style={{color:"var(--muted)",margin:"0 0 32px",fontSize:16}}>LinkedIn DM + Voice Note + 4-Step Partnership Nurture</p>
+                {activeLead&&activeTrack==="partners"?<OutreachPanel lead={activeLead} track="partners" onClear={()=>setActiveLead(null)}/>:(
+                  <div style={{textAlign:"center",padding:"60px 20px",border:"1px dashed var(--border)",borderRadius:16,color:"var(--muted)",background:"var(--card)"}}><div style={{fontSize:48,marginBottom:16}}>🌍</div><h3 style={{margin:"0 0 8px"}}>No Partner Selected</h3><p style={{margin:0,maxWidth:400,marginLeft:"auto",marginRight:"auto"}}>Go to Brand Partners and click "Write Scripts" on any partner.</p><button className="btn-primary" style={{marginTop:24,padding:"12px 24px"}} onClick={()=>setView("partners")}>Browse Partners</button></div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
 
-function renderView(){
-const s=SEGS[currentSeg];const ct=document.getElementById("content");
-let h="";
-
-if(currentView==="dashboard"){
-h+=currentSession&&currentSession.role==="admin"?`<div class="admin-panel"><div class="admin-title">Admin — Team Access Codes</div>
-<div style="font-size:10px;color:var(--mt);margin-bottom:8px">Share codes securely. Change in source before deploy.</div>
-${AUTH.users.map(u=>`<div class="admin-row"><div><span class="admin-name">${u.name}</span>
-<span style="font-size:8px;font-weight:700;margin-left:6px;padding:1px 5px;border-radius:3px;background:${u.role==="admin"?"rgba(245,166,35,.1)":"rgba(16,185,129,.1)"};color:${u.role==="admin"?"var(--ac)":"var(--sc)"};border:1px solid ${u.role==="admin"?"rgba(245,166,35,.2)":"rgba(16,185,129,.2)"};text-transform:uppercase">${u.role}</span></div>
-<code class="admin-code">${u.pin}</code></div>`).join("")}</div>`:"";
-
-h+=`<div class="section-title">System Overview</div><div class="section-sub">Full outreach ecosystem for Ashley in Afrika — ICP clients + brand partners</div>
-<div class="stat-grid">${[{l:"ICP Segments",v:"3",c:"var(--sa)"},{l:"Agent Prompts",v:"12",c:"var(--ec)"},{l:"Offer Angles",v:"10",c:"var(--hc)"},{l:"Pricing Tiers",v:"3",c:"var(--bl)"}].map(s=>`<div class="stat-card"><div class="stat-value" style="color:${s.c}">${s.v}</div><div class="stat-label">${s.l}</div></div>`).join("")}</div>
-<div style="font-size:11px;font-weight:700;color:var(--ac);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px">Quick Actions</div>
-${[{l:"Generate Leads",d:"Run Lead Gen Agent for any segment",n:"leadgen",c:"var(--sa)"},{l:"Write Outreach",d:"Personalized DM/email per lead",n:"outreach",c:"var(--ec)"},{l:"Follow-Up Sequence",d:"4-touch sequence for non-responders",n:"followup",c:"var(--hc)"},{l:"Find Partners",d:"Brand partner & collab research",n:"partners",c:"var(--pk)"}].map(a=>`<div class="action-item" onclick="navigate('${a.n}')"><div class="action-dot" style="background:${a.c}"></div><div style="flex:1"><div class="action-title">${a.l}</div><div class="action-desc">${a.d}</div></div><span class="action-arrow">→</span></div>`).join("")}
-<div class="pos-box"><div class="pos-label">Positioning</div><div class="pos-text">"I help scaling SaaS, e-commerce, and healthcare companies buy back their time and protect their revenue through plug-and-play execution systems that remove bottlenecks without adding headcount chaos."</div></div>`;
-}
-
-else if(currentView==="icp"){
-h+=`<div class="section-title">ICP Profiles</div><div class="section-sub">Select a segment to view full buyer profile from the MDPC</div>${segSelector()}
-<div class="icp-grid">${[{t:"Target Titles",items:s.titles,icon:"👤"},{t:"Company Profile",items:s.profile,icon:"🏢"},{t:"Pain Points",items:s.pain,icon:"🔥"},{t:"Buying Triggers",items:s.triggers,icon:"⚡"}].map(b=>`<div class="icp-block"><div class="icp-block-title" style="color:${s.hex}">${b.icon} ${b.t}</div>${b.items.map(i=>`<div class="icp-item">• ${i}</div>`).join("")}</div>`).join("")}
-<div class="icp-full" style="background:${s.hex}0A;border:1px solid ${s.hex}33"><div style="flex:1"><div class="icp-block-title" style="color:${s.hex}">Outreach Angle</div><div style="font-size:12px;font-weight:600">${s.angle}</div></div><div style="flex:2"><div class="icp-block-title" style="color:${s.hex}">Offer Hook</div><div style="font-size:11px;color:var(--mt);line-height:1.5">${s.hook}</div></div></div></div>`;
-}
-
-else if(currentView==="leadgen"){
-h+=`<div class="section-title">Lead Generation Agent</div><div class="section-sub">Select segment → Copy prompt → Paste into Claude/ChatGPT → Get structured lead list</div>${segSelector()}
-${promptCard("Lead Gen — "+s.label,"Signal-based ICP lead sourcing prompt",leadGenPrompt(currentSeg),s.hex,"lg-prompt")}
-<div class="flow-box"><div class="flow-label" style="color:var(--bl)">Output → Next Step</div><div class="flow-text">1. Paste leads into Google Sheets → Raw Leads tab<br>2. Zapier creates Asana task + Slack alert<br>3. Run Validation Agent on batch<br>4. Move validated leads → Outreach Agent</div></div>`;
-}
-
-else if(currentView==="outreach"){
-h+=`<div class="section-title">Outreach Personalization Agent</div><div class="section-sub">Generates 3 versions per lead: LinkedIn connect note, follow-up DM, cold email</div>${segSelector()}
-${promptCard("Outreach — "+s.label,"Personalized DM + email copy per validated lead",outreachPrompt(currentSeg),s.hex,"or-prompt")}`;
-}
-
-else if(currentView==="followup"){
-h+=`<div class="section-title">Follow-Up Sequence Agent</div><div class="section-sub">4-touch follow-up sequence for non-responders — Day 3, 7, 14, 21</div>${segSelector()}
-${promptCard("Follow-Up — "+s.label,"4-message sequence with escalating value",followUpPrompt(currentSeg),s.hex,"fu-prompt")}
-<div style="margin-top:12px"><div style="font-size:10px;font-weight:700;color:var(--ac);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px">Cadence Map</div>
-${CADENCE.map((c,i)=>`<div class="followup-item"><div class="followup-badge" style="background:${s.hex}15;color:${s.hex}">${c.day.replace("Day ","D")}</div><div style="flex:1"><div class="followup-title">${c.touch}</div><div class="followup-desc">${c.purpose}</div></div><div class="followup-channel">${c.channel}</div></div>`).join("")}</div>`;
-}
-
-else if(currentView==="partners"){
-h+=`<div class="section-title">Brand Partner Agent</div><div class="section-sub">Find strategic partners, podcast opportunities, and collaborators per segment</div>${segSelector()}
-${promptCard("Partner Research — "+s.label,"Complementary services, influencers, podcasts, events",partnerPrompt(currentSeg),"var(--pk)","bp-prompt")}
-<div class="partner-box"><div class="partner-label">Partner Types to Find</div>
-${["Complementary service providers (HR tech, PM tools, ops consultants)","Industry influencers discussing operations & scaling","Podcasts, newsletters, communities in the vertical","Non-competing founders serving the same ICP","Event organizers and conference hosts"].map((t,i)=>`<div class="partner-item">${i+1}. ${t}</div>`).join("")}</div>`;
-}
-
-else if(currentView==="offers"){
-h+=`<div class="section-title">10 Offer Angles</div><div class="section-sub">From the MDPC — mapped to engine type and segment applicability</div>
-${OFFERS.map((o,i)=>`<div class="offer-item"><div class="offer-num">${i+1}</div><div class="offer-name">${o.name}</div><span class="offer-badge" style="background:${o.color}15;color:${o.color};border:1px solid ${o.color}33">${o.type}</span></div>`).join("")}`;
-}
-
-else if(currentView==="pricing"){
-h+=`<div class="section-title">Pricing Tiers</div><div class="section-sub">Premium positioning — sell capacity + outcomes, not per VA</div>
-${TIERS.map((t,i)=>`<div class="tier-card" style="border:1.5px solid ${t.color}33"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px"><div><div class="tier-label" style="color:${t.color}">Tier ${i+1}</div><div class="tier-name">${t.name}</div></div><div class="tier-price" style="color:${t.color}">${t.price}</div></div><div class="tier-desc">${t.roles} — ${t.desc}</div></div>`).join("")}
-<div style="background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:12px;margin-top:8px"><div style="font-size:10px;font-weight:700;color:var(--ac);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px">+ Setup / Strategy Fee</div><div style="font-size:12px;font-weight:700">$5K–$15K one-time</div><div style="font-size:10px;color:var(--mt);margin-top:2px">Workflow design + role mapping + onboarding architecture</div></div>`;
-}
-
-else if(currentView==="cadence"){
-h+=`<div class="section-title">Outreach Cadence Map</div><div class="section-sub">Full touchpoint sequence — initial through breakup</div>
-<div style="position:relative;padding-left:20px"><div style="position:absolute;left:9px;top:14px;bottom:14px;width:2px;background:linear-gradient(180deg,var(--sa),var(--ec),var(--hc),var(--dm));border-radius:1px"></div>
-${CADENCE.map((c,i)=>{const colors=["var(--sa)","var(--sa)","var(--ec)","var(--hc)","var(--dm)"];return`<div class="cadence-item"><div class="cadence-dot" style="border-color:${colors[i]};box-shadow:0 0 8px ${colors[i]}44"></div><div style="background:var(--cd);border:1px solid var(--bd);border-radius:8px;padding:12px 14px;flex:1"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><span style="font-weight:700;font-size:12px">${c.touch}</span><span style="font-size:10px;font-weight:700;color:${colors[i]}">${c.day}</span></div><div style="font-size:11px;color:var(--mt)">${c.purpose}</div><div style="font-size:10px;color:var(--dm);margin-top:4px">Channel: ${c.channel}</div></div></div>`}).join("")}</div>`;
-}
-
-ct.innerHTML=h;
-}
-
-// ═══ INIT ═══
-window.addEventListener("DOMContentLoaded",init);
-</script>
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
 </body>
 </html>
