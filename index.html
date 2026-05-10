@@ -237,11 +237,13 @@
               <h2 style={{margin:"0 0 4px 0",fontSize:24}}>{lead.name}</h2>
               <div style={{color:"var(--muted)",fontSize:14}}>{lead.title}</div>
               <div style={{color:"var(--muted)",fontSize:14,marginBottom:4}}>{lead.company}</div>
-              <div style={{color:"var(--muted)",fontSize:13,marginBottom:4}}>📍 {lead.location||"Global"}</div>
-              {lead.website?<div style={{fontSize:13,marginBottom:24}}><a href={lead.website.startsWith('http')?lead.website:`https://${lead.website}`} target="_blank" rel="noreferrer" style={{color:"var(--accent)",textDecoration:"none",fontWeight:600}}>🌐 {lead.website.replace(/^https?:\/\//,'')}</a></div>:null}
+              <div style={{color:"var(--muted)",fontSize:13,marginBottom:8}}>📍 {lead.location||"Global"}</div>
+              {lead.website?<div style={{marginBottom:6}}><a href={lead.website.startsWith('http')?lead.website:`https://${lead.website}`} target="_blank" rel="noreferrer" style={{color:"var(--accent)",textDecoration:"none",fontSize:13,fontWeight:600}}>🌐 {lead.website.replace(/^https?:\/\/(www\.)?/,'').replace(/\/$/,'').substring(0,35)}</a></div>:null}
+              {lead.email?<div style={{marginBottom:6}}><a href={`mailto:${lead.email}`} style={{color:"#F59E0B",textDecoration:"none",fontSize:13,fontWeight:600}}>📧 {lead.email}</a></div>:null}
+              {lead.linkedin?<div style={{marginBottom:16}}><a href={lead.linkedin.startsWith('http')?lead.linkedin:`https://${lead.linkedin}`} target="_blank" rel="noreferrer" style={{color:"#0A66C2",textDecoration:"none",fontSize:13,fontWeight:600}}>🔗 {lead.linkedin.replace(/^https?:\/\/(www\.)?/,'').replace(/\/$/,'').substring(0,35)}</a></div>:null}
               <div style={{fontSize:11,fontWeight:700,textTransform:"uppercase",color:"var(--muted)",marginBottom:8,letterSpacing:".05em"}}>{isPartner?"Partnership Angle":"Pain Point"}:</div>
               <div style={{fontSize:14,background:"var(--surface)",padding:12,borderRadius:8,border:"1px solid var(--border)",marginBottom:24,lineHeight:1.5}}>"{s.painPt}"</div>
-              {lead.linkedin?<a href={lead.linkedin} target="_blank" rel="noreferrer" style={{textDecoration:"none"}}><button className="btn-secondary" style={{width:"100%",marginBottom:12,padding:"12px",background:"rgba(10,102,194,.1)",color:"#0A66C2",borderColor:"rgba(10,102,194,.3)"}}>🔗 Search LinkedIn</button></a>:null}
+              {lead.linkedin?<a href={lead.linkedin.startsWith('http')?lead.linkedin:`https://${lead.linkedin}`} target="_blank" rel="noreferrer" style={{textDecoration:"none"}}><button className="btn-secondary" style={{width:"100%",marginBottom:12,padding:"12px",background:"rgba(10,102,194,.1)",color:"#0A66C2",borderColor:"rgba(10,102,194,.3)"}}>🔗 Open LinkedIn Profile</button></a>:null}
               <button className="btn-secondary" style={{width:"100%"}} onClick={onClear}>Clear Selection</button>
             </div>
           </div>
@@ -266,13 +268,20 @@
       );
     }
 
-    /* ═══ EDITABLE FIELD ═══ */
+    /* ═══ EDITABLE FIELD WITH CLICKABLE LINKS ═══ */
     function EditField({value,placeholder,onSave,type="text"}){
       const[editing,setEditing]=useState(false);
       const[val,setVal]=useState(value||"");
       useEffect(()=>{setVal(value||"")},[value]);
-      if(!editing)return <span onClick={()=>setEditing(true)} style={{cursor:"pointer",color:val?"var(--accent)":"var(--muted)",fontSize:13,fontWeight:val?600:400,textDecoration:val?"none":"none",borderBottom:"1px dashed "+(val?"transparent":"var(--border)"),paddingBottom:1}}>{val?`${type==="url"?"🌐":"📧"} ${val.replace(/^https?:\/\//,'').substring(0,28)}`:`+ Add ${placeholder}`}</span>;
-      return <input autoFocus value={val} onChange={e=>setVal(e.target.value)} onBlur={()=>{setEditing(false);onSave(val)}} onKeyDown={e=>{if(e.key==="Enter"){setEditing(false);onSave(val)}}} placeholder={placeholder} style={{padding:"4px 8px",background:"var(--bg)",border:"1px solid var(--accent)",borderRadius:6,color:"var(--text)",fontSize:12,width:"100%",outline:"none",fontFamily:"inherit"}} />;
+      if(editing)return <input autoFocus value={val} onChange={e=>setVal(e.target.value)} onBlur={()=>{setEditing(false);onSave(val)}} onKeyDown={e=>{if(e.key==="Enter"){setEditing(false);onSave(val)}if(e.key==="Escape"){setEditing(false);setVal(value||"")}}} placeholder={placeholder} style={{padding:"4px 8px",background:"var(--bg)",border:"1px solid var(--accent)",borderRadius:6,color:"var(--text)",fontSize:12,width:"100%",outline:"none",fontFamily:"inherit"}} />;
+      if(!val)return <span onClick={()=>setEditing(true)} style={{cursor:"pointer",color:"var(--muted)",fontSize:12,fontWeight:400,borderBottom:"1px dashed var(--border)",paddingBottom:1}}>+ Add {placeholder}</span>;
+      const href=type==="email"?`mailto:${val}`:val.startsWith("http")?val:`https://${val}`;
+      const icon=type==="email"?"📧":val.includes("linkedin")?"🔗":"🌐";
+      const display=val.replace(/^https?:\/\/(www\.)?/,'').replace(/\/$/,'').substring(0,28);
+      return <span style={{display:"flex",alignItems:"center",gap:4}}>
+        <a href={href} target="_blank" rel="noreferrer" style={{color:type==="email"?"#F59E0B":val.includes("linkedin")?"#0A66C2":"var(--accent)",textDecoration:"none",fontSize:12,fontWeight:600}} onClick={e=>e.stopPropagation()}>{icon} {display}</a>
+        <button onClick={e=>{e.stopPropagation();setEditing(true)}} style={{background:"none",border:"none",color:"var(--muted)",cursor:"pointer",fontSize:10,padding:"2px 4px",opacity:0.5}}>✎</button>
+      </span>;
     }
 
     /* ═══ LEAD TABLE ═══ */
