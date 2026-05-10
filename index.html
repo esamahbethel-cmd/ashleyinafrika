@@ -9,6 +9,7 @@
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+  <script src="partners_data.js"></script>
   <style>
     :root {
       --bg: #05050A; --surface: #0A0D14; --card: #121622; --border: #1F2538;
@@ -265,8 +266,17 @@
       );
     }
 
+    /* ═══ EDITABLE FIELD ═══ */
+    function EditField({value,placeholder,onSave,type="text"}){
+      const[editing,setEditing]=useState(false);
+      const[val,setVal]=useState(value||"");
+      useEffect(()=>{setVal(value||"")},[value]);
+      if(!editing)return <span onClick={()=>setEditing(true)} style={{cursor:"pointer",color:val?"var(--accent)":"var(--muted)",fontSize:13,fontWeight:val?600:400,textDecoration:val?"none":"none",borderBottom:"1px dashed "+(val?"transparent":"var(--border)"),paddingBottom:1}}>{val?`${type==="url"?"🌐":"📧"} ${val.replace(/^https?:\/\//,'').substring(0,28)}`:`+ Add ${placeholder}`}</span>;
+      return <input autoFocus value={val} onChange={e=>setVal(e.target.value)} onBlur={()=>{setEditing(false);onSave(val)}} onKeyDown={e=>{if(e.key==="Enter"){setEditing(false);onSave(val)}}} placeholder={placeholder} style={{padding:"4px 8px",background:"var(--bg)",border:"1px solid var(--accent)",borderRadius:6,color:"var(--text)",fontSize:12,width:"100%",outline:"none",fontFamily:"inherit"}} />;
+    }
+
     /* ═══ LEAD TABLE ═══ */
-    function LeadTable({leads,segments,onSelectLead,onUpdateStatus,currentPage,setCurrentPage}){
+    function LeadTable({leads,segments,onSelectLead,onUpdateStatus,onUpdateField,currentPage,setCurrentPage}){
       const perPage=100;
       const start=(currentPage-1)*perPage;
       const page=leads.slice(start,start+perPage);
@@ -274,27 +284,30 @@
       return(
         <div style={{background:"var(--card)",border:"1px solid var(--border)",borderRadius:16,overflow:"hidden",display:"flex",flexDirection:"column"}}>
           <table className="desktop-table"><thead><tr style={{borderBottom:"1px solid var(--border)",backgroundColor:"var(--surface)",color:"var(--muted)",fontSize:12,textTransform:"uppercase"}}>
-            <th style={{padding:"16px 24px",textAlign:"left"}}>Prospect</th><th style={{padding:"16px 24px",textAlign:"left"}}>Location</th><th style={{padding:"16px 24px",textAlign:"left"}}>Website</th><th style={{padding:"16px 24px",textAlign:"left"}}>Segment</th><th style={{padding:"16px 24px",textAlign:"left"}}>Status</th><th style={{padding:"16px 24px",textAlign:"right"}}>Actions</th>
+            <th style={{padding:"16px 24px",textAlign:"left"}}>Prospect</th><th style={{padding:"16px 24px",textAlign:"left"}}>Location</th><th style={{padding:"16px 24px",textAlign:"left"}}>Website</th><th style={{padding:"16px 24px",textAlign:"left"}}>LinkedIn</th><th style={{padding:"16px 24px",textAlign:"left"}}>Segment</th><th style={{padding:"16px 24px",textAlign:"left"}}>Status</th><th style={{padding:"16px 24px",textAlign:"right"}}>Actions</th>
           </tr></thead><tbody>
           {page.map((ld,i)=>{const seg=segments[ld.segment]||segments.general||{label:"Other",color:"#6366F1",icon:"📋"};return(
-            <tr key={i} style={{borderBottom:"1px solid var(--border)",transition:"background .2s"}} onMouseEnter={e=>e.currentTarget.style.background="var(--surface)"} onMouseLeave={e=>e.currentTarget.style.background="transparent"}>
-              <td style={{padding:"16px 24px"}}><div style={{fontWeight:700,fontSize:15}}>{ld.name}</div><div style={{color:"var(--muted)",fontSize:13,marginTop:4}}>{ld.title} @ <strong>{ld.company}</strong></div></td>
-              <td style={{padding:"16px 24px"}}><div style={{color:"var(--text)",fontSize:14}}>📍 {ld.location||"Global"}</div></td>
-              <td style={{padding:"16px 24px"}}>{ld.website?<a href={ld.website.startsWith('http')?ld.website:`https://${ld.website}`} target="_blank" rel="noreferrer" style={{color:"var(--accent)",textDecoration:"none",fontSize:13,fontWeight:600}}>🌐 {ld.website.replace(/^https?:\/\//,'').replace(/\/$/,'').substring(0,30)}</a>:null}</td>
-              <td style={{padding:"16px 24px"}}><div className="status-badge" style={{background:seg.color+"15",color:seg.color}}>{seg.icon} {seg.label}</div></td>
-              <td style={{padding:"16px 24px"}}><select value={ld.status} onChange={e=>onUpdateStatus(ld.id,e.target.value)} style={{padding:"6px 12px",background:ld.status==="New"?"var(--surface)":ld.status==="Contacted"?"rgba(16,185,129,.1)":"rgba(59,130,246,.1)",color:ld.status==="New"?"var(--muted)":ld.status==="Contacted"?"#10B981":"#3B82F6",border:"1px solid var(--border)",borderRadius:8,outline:"none",fontSize:12,fontWeight:700,cursor:"pointer"}}><option value="New">New</option><option value="Contacted">Contacted ✓</option><option value="In Progress">In Progress</option><option value="Converted">Converted 💰</option><option value="Rejected">Rejected</option></select></td>
-              <td style={{padding:"16px 24px",textAlign:"right"}}><div style={{display:"flex",gap:8,justifyContent:"flex-end"}}>
-                {ld.email?<a href={`mailto:${ld.email}`} target="_blank" rel="noreferrer" style={{textDecoration:"none"}}><button className="btn-secondary" style={{padding:"8px 12px",background:"rgba(245,158,11,.1)",color:"#F59E0B",borderColor:"rgba(245,158,11,.3)",fontSize:12}}>📧</button></a>:null}
-                {ld.linkedin?<a href={ld.linkedin} target="_blank" rel="noreferrer" style={{textDecoration:"none"}}><button className="btn-secondary" style={{padding:"8px 12px",background:"rgba(10,102,194,.1)",color:"#0A66C2",borderColor:"rgba(10,102,194,.3)",fontSize:12}}>🔗</button></a>:null}
-                <button className="btn-primary" style={{padding:"8px 16px",fontSize:12}} onClick={()=>onSelectLead(ld)}>Write Scripts</button>
-              </div></td>
+            <tr key={ld.id||i} style={{borderBottom:"1px solid var(--border)",transition:"background .2s"}} onMouseEnter={e=>e.currentTarget.style.background="var(--surface)"} onMouseLeave={e=>e.currentTarget.style.background="transparent"}>
+              <td style={{padding:"12px 24px"}}><div style={{fontWeight:700,fontSize:15}}>{ld.name}</div><div style={{color:"var(--muted)",fontSize:13,marginTop:2}}>{ld.title} @ <strong>{ld.company}</strong></div><div style={{marginTop:4}}><EditField value={ld.email} placeholder="Email" type="email" onSave={v=>onUpdateField(ld.id,"email",v)}/></div></td>
+              <td style={{padding:"12px 24px"}}><div style={{color:"var(--text)",fontSize:13}}>📍 {ld.location||"Global"}</div></td>
+              <td style={{padding:"12px 24px"}}><EditField value={ld.website} placeholder="Website URL" type="url" onSave={v=>onUpdateField(ld.id,"website",v)}/></td>
+              <td style={{padding:"12px 24px"}}><EditField value={ld.linkedin} placeholder="LinkedIn URL" type="url" onSave={v=>onUpdateField(ld.id,"linkedin",v)}/></td>
+              <td style={{padding:"12px 24px"}}><div className="status-badge" style={{background:seg.color+"15",color:seg.color,fontSize:10}}>{seg.icon} {seg.label}</div></td>
+              <td style={{padding:"12px 24px"}}><select value={ld.status} onChange={e=>onUpdateStatus(ld.id,e.target.value)} style={{padding:"6px 12px",background:ld.status==="New"?"var(--surface)":ld.status==="Contacted"?"rgba(16,185,129,.1)":ld.status==="Converted"?"rgba(245,158,11,.1)":"rgba(59,130,246,.1)",color:ld.status==="New"?"var(--muted)":ld.status==="Contacted"?"#10B981":ld.status==="Converted"?"#F59E0B":"#3B82F6",border:"1px solid var(--border)",borderRadius:8,outline:"none",fontSize:12,fontWeight:700,cursor:"pointer"}}><option value="New">New</option><option value="Contacted">Contacted ✓</option><option value="In Progress">In Progress ⏳</option><option value="Converted">Converted 💰</option><option value="Rejected">Rejected</option></select></td>
+              <td style={{padding:"12px 24px",textAlign:"right"}}><button className="btn-primary" style={{padding:"8px 16px",fontSize:12}} onClick={()=>onSelectLead(ld)}>Write Scripts</button></td>
             </tr>)})}
           </tbody></table>
           <div className="mobile-cards">{page.map((ld,i)=>{const seg=segments[ld.segment]||segments.general||{label:"Other",color:"#6366F1",icon:"📋"};return(
-            <div key={i} className="mobile-card">
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}><div className="status-badge" style={{background:seg.color+"15",color:seg.color}}>{seg.icon} {seg.label}</div></div>
+            <div key={ld.id||i} className="mobile-card">
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}><div className="status-badge" style={{background:seg.color+"15",color:seg.color}}>{seg.icon} {seg.label}</div><select value={ld.status} onChange={e=>onUpdateStatus(ld.id,e.target.value)} style={{padding:"4px 8px",background:"var(--card)",color:"var(--muted)",border:"1px solid var(--border)",borderRadius:6,fontSize:11,fontWeight:700,cursor:"pointer"}}><option value="New">New</option><option value="Contacted">Contacted ✓</option><option value="In Progress">In Progress</option><option value="Converted">Converted 💰</option><option value="Rejected">Rejected</option></select></div>
               <div style={{fontWeight:800,fontSize:18,marginBottom:4}}>{ld.name}</div>
-              <div style={{color:"var(--muted)",fontSize:14,marginBottom:12}}>{ld.title} @ <strong>{ld.company}</strong></div>
+              <div style={{color:"var(--muted)",fontSize:14,marginBottom:4}}>{ld.title} @ <strong>{ld.company}</strong></div>
+              <div style={{color:"var(--muted)",fontSize:13,marginBottom:8}}>📍 {ld.location}</div>
+              <div style={{display:"flex",flexDirection:"column",gap:6,marginBottom:12}}>
+                <EditField value={ld.website} placeholder="Website URL" type="url" onSave={v=>onUpdateField(ld.id,"website",v)}/>
+                <EditField value={ld.linkedin} placeholder="LinkedIn URL" type="url" onSave={v=>onUpdateField(ld.id,"linkedin",v)}/>
+                <EditField value={ld.email} placeholder="Email" type="email" onSave={v=>onUpdateField(ld.id,"email",v)}/>
+              </div>
               <button className="btn-primary" style={{width:"100%",padding:"12px",fontSize:13}} onClick={()=>{onSelectLead(ld);window.scrollTo(0,0)}}>Write Scripts</button>
             </div>)})}</div>
           <div className="pagination-bar">
@@ -303,6 +316,16 @@
           </div>
         </div>
       );
+    }
+
+    /* ═══ STORAGE HELPERS ═══ */
+    function saveData(key,data){try{localStorage.setItem(key,JSON.stringify(data))}catch(e){console.warn("Storage full",e)}}
+    function loadData(key){try{const d=localStorage.getItem(key);return d?JSON.parse(d):null}catch(e){return null}}
+
+    /* ═══ LOAD EMBEDDED PARTNERS ═══ */
+    function loadEmbeddedPartners(){
+      if(typeof EMBEDDED_PARTNERS==="undefined")return[];
+      return EMBEDDED_PARTNERS.map((p,i)=>({id:p.id||`bp-${i}`,name:p.n,title:p.t,company:p.c,location:p.l,website:p.w||"",linkedin:p.li||"",email:p.e||"",segment:p.seg,status:p.s||"New",signal:p.sig||"",reason:p.r||""}));
     }
 
     /* ═══ MAIN APP ═══ */
@@ -320,19 +343,35 @@
       const [loading,setLoading]=useState(true);
 
       const detectClientSegment=(industry)=>{const i=(industry||"").toLowerCase();if(i.includes("saas")||i.includes("cloud")||i.includes("ai")||i.includes("dev")||i.includes("cyber")||i.includes("security"))return"saas";if(i.includes("ecom")||i.includes("commerce"))return"ecom";if(i.includes("health")||i.includes("medical"))return"healthcare";if(i.includes("fintech")||i.includes("finance"))return"fintech";if(i.includes("agency")||i.includes("marketing"))return"agency";if(i.includes("hr")||i.includes("people"))return"hrtech";if(i.includes("real estate")||i.includes("proptech"))return"realestate";if(i.includes("logistics")||i.includes("supply"))return"logistics";if(i.includes("consult"))return"consulting";if(i.includes("edtech")||i.includes("education"))return"edtech";if(i.includes("b2b")||i.includes("service"))return"b2b";return"general"};
-      const detectPartnerSegment=(category)=>{const c=(category||"").toLowerCase();if(c.includes("bank")||c.includes("financ"))return"bank";if(c.includes("airline")||c.includes("aviation"))return"airline";if(c.includes("hotel")||c.includes("hospitality"))return"hotel";if(c.includes("construct")||c.includes("real estate"))return"construction";if(c.includes("tourism")||c.includes("govt")||c.includes("investment")||c.includes("ministry"))return"tourism";return"general"};
+      const detectPartnerSegment=(category)=>{const c=(category||"").toLowerCase();if(c.includes("bank")||c.includes("financ")||c.includes("fintech"))return"bank";if(c.includes("airline")||c.includes("aviation")||c.includes("travel")||c.includes("reloc"))return"airline";if(c.includes("hotel")||c.includes("hospitality")||c.includes("fashion")||c.includes("lifestyle"))return"hotel";if(c.includes("construct")||c.includes("real estate")||c.includes("property"))return"construction";if(c.includes("tourism")||c.includes("govt")||c.includes("investment")||c.includes("ministry")||c.includes("diaspora")||c.includes("community"))return"tourism";if(c.includes("business")||c.includes("education")||c.includes("legal")||c.includes("professional"))return"general";return"general"};
 
-      const parseCSV=(file,isPartner,cb)=>{Papa.parse(file,{header:true,skipEmptyLines:true,complete:function(r){const leads=[];r.data.forEach((row,i)=>{let name=row.Name||row["First Name"]?`${row["First Name"]||""} ${row["Last Name"]||""}`.trim():row.name;if(!name)name="Unknown";const title=row.Title||row.title||row["Job Title"]||"";const company=row.Company||row.company||row["Company Name"]||row.Organization||"";const location=row.Location||row.location||row["Company Location"]||row.Country||"Global";const website=row.Website||row.website||row["Company URL"]||row["Company Url"]||"";const linkedin=row.LinkedIn||row["LinkedIn Url"]||row["LinkedIn URL"]||row["Person Linkedin Url"]||row.linkedin||"";const email=row.Email||row.email||row["Person Email"]||"";const industry=row.Industry||row.industry||row.Category||row.category||"";const segment=isPartner?detectPartnerSegment(industry||row.Category||""):detectClientSegment(industry);leads.push({id:`csv-${Date.now()}-${i}`,name,title,company,location,website,linkedin,email,segment,status:row.Status||"New"})});cb(leads)}})};
+      const parseCSV=(file,isPartner,cb)=>{Papa.parse(file,{header:true,skipEmptyLines:true,complete:function(r){const leads=[];r.data.forEach((row,i)=>{let name=row.Name||row["First Name"]?`${row["First Name"]||""} ${row["Last Name"]||""}`.trim():row.name;if(!name)name="Unknown";const title=row.Title||row.title||row["Job Title"]||"";const company=row.Company||row.company||row["Company Name"]||row.Organization||"";const location=row.Location||row.location||row["Company Location"]||row.Country||"Global";const website=row.Website||row.website||row["Company URL"]||row["Company Url"]||"";const linkedin=row.LinkedIn||row["LinkedIn Url"]||row["LinkedIn URL"]||row["Person Linkedin Url"]||row.linkedin||"";const email=row.Email||row.email||row["Person Email"]||"";const industry=row.Industry||row.industry||row.Category||row.category||"";const segment=isPartner?detectPartnerSegment(industry||row.Category||""):detectClientSegment(industry);leads.push({id:`csv-${Date.now()}-${i}`,name,title,company,location,website,linkedin,email,segment,status:row.Status||"New",signal:row["Hiring Signal"]||row.signal||"",reason:row["Reason This Is a Strong Lead"]||row.reason||""})});cb(leads)}})};
 
-      const handleUpload=(e,isPartner)=>{const file=e.target.files[0];if(!file)return;parseCSV(file,isPartner,(leads)=>{if(isPartner){setPartnerLeads(prev=>{const map=new Map();prev.forEach(l=>map.set(l.name.toLowerCase()+"-"+l.company.toLowerCase(),l));leads.forEach(l=>{const k=l.name.toLowerCase()+"-"+l.company.toLowerCase();if(!map.has(k))map.set(k,l)});return Array.from(map.values())});setFilterSeg("all")}else{setClientLeads(prev=>{const base=prev.some(l=>!l.id.startsWith('csv-'))?[]:prev;const map=new Map();base.forEach(l=>map.set(l.name.toLowerCase()+"-"+l.company.toLowerCase(),l));leads.forEach(l=>{const k=l.name.toLowerCase()+"-"+l.company.toLowerCase();if(!map.has(k))map.set(k,l)});return Array.from(map.values())});setFilterSeg("all")}})};
+      /* ═══ SAVE TO LOCALSTORAGE ON EVERY CHANGE ═══ */
+      useEffect(()=>{if(clientLeads.length>0)saveData("aia_clients",clientLeads)},[clientLeads]);
+      useEffect(()=>{if(partnerLeads.length>0)saveData("aia_partners",partnerLeads)},[partnerLeads]);
 
-      const downloadCSV=(leads,filename)=>{const h=["Name","Title","Company","Location","Email","LinkedIn","Website","Segment","Status"];const rows=leads.map(l=>[l.name,l.title,l.company,l.location,l.email,l.linkedin,l.website,l.segment,l.status].map(v=>`"${(v||"").replace(/"/g,'""')}"`).join(","));const csv=[h.join(","),...rows].join("\n");const blob=new Blob([csv],{type:"text/csv"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=filename;a.click()};
+      const handleUpload=(e,isPartner)=>{const file=e.target.files[0];if(!file)return;parseCSV(file,isPartner,(leads)=>{if(isPartner){setPartnerLeads(prev=>{const map=new Map();prev.forEach(l=>map.set((l.company||l.name).toLowerCase(),l));leads.forEach(l=>{const k=(l.company||l.name).toLowerCase();if(!map.has(k))map.set(k,l);else{const existing=map.get(k);map.set(k,{...existing,...l,status:existing.status!=="New"?existing.status:l.status,website:existing.website||l.website,linkedin:existing.linkedin||l.linkedin,email:existing.email||l.email})}});return Array.from(map.values())});setFilterSeg("all")}else{setClientLeads(prev=>{const base=prev.some(l=>!l.id.startsWith('csv-'))?[]:prev;const map=new Map();base.forEach(l=>map.set((l.company||l.name).toLowerCase(),l));leads.forEach(l=>{const k=(l.company||l.name).toLowerCase();if(!map.has(k))map.set(k,l)});return Array.from(map.values())});setFilterSeg("all")}})};
 
-      const updateStatus=(leads,setLeads,id,status)=>{setLeads(prev=>prev.map(l=>l.id===id?{...l,status}:l))};
+      const downloadCSV=(leads,filename)=>{const h=["Name","Title","Company","Location","Email","LinkedIn","Website","Segment","Status","Signal","Reason"];const rows=leads.map(l=>[l.name,l.title,l.company,l.location,l.email,l.linkedin,l.website,l.segment,l.status,l.signal||"",l.reason||""].map(v=>`"${(v||"").replace(/"/g,'""')}"`).join(","));const csv=[h.join(","),...rows].join("\n");const blob=new Blob([csv],{type:"text/csv"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=filename;a.click()};
 
-      useEffect(()=>{fetch('aia_target_leads.csv').then(r=>{if(!r.ok)throw new Error();return r.text()}).then(t=>{const file=new File([t],"leads.csv",{type:"text/csv"});parseCSV(file,false,(leads)=>{setClientLeads(leads);setLoading(false)})}).catch(()=>{setClientLeads(generateMockClients());setLoading(false)});},[]);
+      const updateStatus=(setLeads,id,status)=>{setLeads(prev=>prev.map(l=>l.id===id?{...l,status}:l))};
+      const updateField=(setLeads,id,field,value)=>{setLeads(prev=>prev.map(l=>l.id===id?{...l,[field]:value}:l))};
 
-      useEffect(()=>{fetch('aia_brand_partners_app_ready.csv').then(r=>{if(!r.ok)throw new Error();return r.text()}).then(t=>{const file=new File([t],"partners.csv",{type:"text/csv"});parseCSV(file,true,(leads)=>{setPartnerLeads(leads)})}).catch(()=>{console.log("No partner CSV on server — upload manually")});},[]);
+      const clearData=(key,setLeads)=>{if(confirm("Clear all data? This cannot be undone.")){localStorage.removeItem(key);setLeads([])}};
+
+      /* ═══ INITIAL LOAD ═══ */
+      useEffect(()=>{
+        // Load clients: localStorage first, then CSV fallback, then mock
+        const savedClients=loadData("aia_clients");
+        if(savedClients&&savedClients.length>0){setClientLeads(savedClients);setLoading(false)}
+        else{fetch('aia_target_leads.csv').then(r=>{if(!r.ok)throw new Error();return r.text()}).then(t=>{const file=new File([t],"leads.csv",{type:"text/csv"});parseCSV(file,false,(leads)=>{setClientLeads(leads);setLoading(false)})}).catch(()=>{setClientLeads(generateMockClients());setLoading(false)})}
+
+        // Load partners: localStorage first, then embedded data
+        const savedPartners=loadData("aia_partners");
+        if(savedPartners&&savedPartners.length>0){setPartnerLeads(savedPartners)}
+        else{const embedded=loadEmbeddedPartners();if(embedded.length>0){setPartnerLeads(embedded);saveData("aia_partners",embedded)}}
+      },[]);
 
       useEffect(()=>{const segs=view==="clients"?CLIENT_SEGMENTS:PARTNER_SEGMENTS;const leads=view==="clients"?clientLeads:partnerLeads;if(filterSeg==="all")view==="clients"?setFilteredClients(leads):setFilteredPartners(leads);else view==="clients"?setFilteredClients(leads.filter(l=>l.segment===filterSeg)):setFilteredPartners(leads.filter(l=>l.segment===filterSeg))},[filterSeg,clientLeads,partnerLeads,view]);
 
@@ -374,14 +413,14 @@
             {view==="clients"&&(
               <div className="animate-up">
                 <div className="page-header">
-                  <div><h1 style={{fontSize:36,margin:"0 0 8px"}}>Dream List — BrandUp Clients</h1><p style={{color:"var(--muted)",margin:0,fontSize:16}}>ICP targets for Ashley's remote talent offer</p></div>
+                  <div><h1 style={{fontSize:36,margin:"0 0 8px"}}>Dream List — BrandUp Clients</h1><p style={{color:"var(--muted)",margin:0,fontSize:16}}>ICP targets for Ashley's remote talent offer <span style={{fontSize:11,color:"#10B981"}}>✓ Auto-saved</span></p></div>
                   <div style={{display:"flex",gap:12,alignItems:"center",flexWrap:"wrap",justifyContent:"flex-end"}}>
                     <label className="btn-secondary" style={{padding:"12px 20px",cursor:"pointer",display:"flex",alignItems:"center",gap:8,borderColor:"var(--accent)",color:"var(--accent)"}}><input type="file" accept=".csv" style={{display:"none"}} onChange={e=>handleUpload(e,false)}/><span>📥 Upload CSV</span></label>
                     <button onClick={()=>downloadCSV(filteredClients,`aia_clients_${new Date().toISOString().slice(0,10)}.csv`)} className="btn-secondary" style={{padding:"12px 20px",borderColor:"#10B981",color:"#10B981"}}>📤 Download</button>
                     <select value={filterSeg} onChange={e=>{setFilterSeg(e.target.value);setClientPage(1)}} style={{padding:"12px 16px",background:"var(--card)",border:"1px solid var(--border)",borderRadius:12,color:"var(--text)",outline:"none",fontSize:14}}><option value="all">All ({clientLeads.length})</option>{Object.entries(CLIENT_SEGMENTS).map(([k,s])=><option key={k} value={k}>{s.icon} {s.label}</option>)}</select>
                   </div>
                 </div>
-                <LeadTable leads={filteredClients} segments={CLIENT_SEGMENTS} onSelectLead={ld=>{setActiveLead(ld);setActiveTrack("clients");setView("client-outreach")}} onUpdateStatus={(id,st)=>updateStatus(clientLeads,setClientLeads,id,st)} currentPage={clientPage} setCurrentPage={setClientPage}/>
+                <LeadTable leads={filteredClients} segments={CLIENT_SEGMENTS} onSelectLead={ld=>{setActiveLead(ld);setActiveTrack("clients");setView("client-outreach")}} onUpdateStatus={(id,st)=>updateStatus(setClientLeads,id,st)} onUpdateField={(id,f,v)=>updateField(setClientLeads,id,f,v)} currentPage={clientPage} setCurrentPage={setClientPage}/>
               </div>
             )}
 
@@ -389,7 +428,7 @@
             {view==="partners"&&(
               <div className="animate-up">
                 <div className="page-header">
-                  <div><h1 style={{fontSize:36,margin:"0 0 8px"}}>Brand Partners — Ashley in Afrika</h1><p style={{color:"var(--muted)",margin:0,fontSize:16}}>African banks, hotels, airlines, construction, tourism & govt agencies</p></div>
+                  <div><h1 style={{fontSize:36,margin:"0 0 8px"}}>Brand Partners — Ashley in Afrika</h1><p style={{color:"var(--muted)",margin:0,fontSize:16}}>Dream 500 brand partners <span style={{fontSize:11,color:"#10B981"}}>✓ Auto-saved</span></p></div>
                   <div style={{display:"flex",gap:12,alignItems:"center",flexWrap:"wrap",justifyContent:"flex-end"}}>
                     <label className="btn-secondary" style={{padding:"12px 20px",cursor:"pointer",display:"flex",alignItems:"center",gap:8,borderColor:"#F59E0B",color:"#F59E0B"}}><input type="file" accept=".csv" style={{display:"none"}} onChange={e=>handleUpload(e,true)}/><span>📥 Upload Partners CSV</span></label>
                     <button onClick={()=>downloadCSV(filteredPartners,`aia_partners_${new Date().toISOString().slice(0,10)}.csv`)} className="btn-secondary" style={{padding:"12px 20px",borderColor:"#10B981",color:"#10B981"}}>📤 Download</button>
@@ -398,7 +437,7 @@
                 </div>
                 {partnerLeads.length===0?(
                   <div style={{textAlign:"center",padding:"60px 20px",border:"1px dashed var(--border)",borderRadius:16,color:"var(--muted)",background:"var(--card)"}}><div style={{fontSize:48,marginBottom:16}}>🌍</div><h3 style={{margin:"0 0 8px"}}>No Brand Partners Loaded</h3><p style={{margin:0,maxWidth:400,marginLeft:"auto",marginRight:"auto"}}>Upload a CSV with your Brand Partners Dream 100 list (African banks, hotels, airlines, construction, tourism ministries).</p></div>
-                ):(<LeadTable leads={filteredPartners} segments={PARTNER_SEGMENTS} onSelectLead={ld=>{setActiveLead(ld);setActiveTrack("partners");setView("partner-outreach")}} onUpdateStatus={(id,st)=>updateStatus(partnerLeads,setPartnerLeads,id,st)} currentPage={partnerPage} setCurrentPage={setPartnerPage}/>)}
+                ):(<LeadTable leads={filteredPartners} segments={PARTNER_SEGMENTS} onSelectLead={ld=>{setActiveLead(ld);setActiveTrack("partners");setView("partner-outreach")}} onUpdateStatus={(id,st)=>updateStatus(setPartnerLeads,id,st)} onUpdateField={(id,f,v)=>updateField(setPartnerLeads,id,f,v)} currentPage={partnerPage} setCurrentPage={setPartnerPage}/>)}
               </div>
             )}
 
