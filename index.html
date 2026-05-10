@@ -332,9 +332,11 @@
 
       useEffect(()=>{fetch('aia_target_leads.csv').then(r=>{if(!r.ok)throw new Error();return r.text()}).then(t=>{const file=new File([t],"leads.csv",{type:"text/csv"});parseCSV(file,false,(leads)=>{setClientLeads(leads);setLoading(false)})}).catch(()=>{setClientLeads(generateMockClients());setLoading(false)});},[]);
 
+      useEffect(()=>{fetch('aia_brand_partners_app_ready.csv').then(r=>{if(!r.ok)throw new Error();return r.text()}).then(t=>{const file=new File([t],"partners.csv",{type:"text/csv"});parseCSV(file,true,(leads)=>{setPartnerLeads(leads)})}).catch(()=>{console.log("No partner CSV on server — upload manually")});},[]);
+
       useEffect(()=>{const segs=view==="clients"?CLIENT_SEGMENTS:PARTNER_SEGMENTS;const leads=view==="clients"?clientLeads:partnerLeads;if(filterSeg==="all")view==="clients"?setFilteredClients(leads):setFilteredPartners(leads);else view==="clients"?setFilteredClients(leads.filter(l=>l.segment===filterSeg)):setFilteredPartners(leads.filter(l=>l.segment===filterSeg))},[filterSeg,clientLeads,partnerLeads,view]);
 
-      useEffect(()=>{setFilterSeg("all");setActiveLead(null)},[view]);
+      useEffect(()=>{setFilterSeg("all");if(view==="clients"||view==="partners")setActiveLead(null)},[view]);
 
       if(loading)return<div style={{height:"100vh",display:"flex",alignItems:"center",justifyContent:"center",background:"var(--bg)"}}><div style={{textAlign:"center"}}><div style={{fontSize:48,marginBottom:16}}>🚀</div><h2 style={{margin:"0 0 8px"}}>Initializing Pipeline</h2><p style={{color:"var(--muted)"}}>Loading leads...</p></div></div>;
 
@@ -405,7 +407,7 @@
               <div className="animate-up">
                 <h1 style={{fontSize:32,margin:"0 0 8px"}}>Client Outreach Engine</h1>
                 <p style={{color:"var(--muted)",margin:"0 0 32px",fontSize:16}}>LinkedIn DM + Voice Note + 4-Step Nurture for BrandUp clients</p>
-                {activeLead&&activeTrack==="clients"?<OutreachPanel lead={activeLead} track="clients" onClear={()=>setActiveLead(null)}/>:(
+                {activeLead?<OutreachPanel lead={activeLead} track="clients" onClear={()=>{setActiveLead(null);setActiveTrack(null)}}/>:(
                   <div style={{textAlign:"center",padding:"60px 20px",border:"1px dashed var(--border)",borderRadius:16,color:"var(--muted)",background:"var(--card)"}}><div style={{fontSize:48,marginBottom:16}}>🎯</div><h3 style={{margin:"0 0 8px"}}>No Client Selected</h3><p style={{margin:0,maxWidth:400,marginLeft:"auto",marginRight:"auto"}}>Go to BrandUp Clients and click "Write Scripts" on any lead.</p><button className="btn-primary" style={{marginTop:24,padding:"12px 24px"}} onClick={()=>setView("clients")}>Browse Clients</button></div>
                 )}
               </div>
@@ -416,7 +418,7 @@
               <div className="animate-up">
                 <h1 style={{fontSize:32,margin:"0 0 8px"}}>Partner Outreach Engine</h1>
                 <p style={{color:"var(--muted)",margin:"0 0 32px",fontSize:16}}>LinkedIn DM + Voice Note + 4-Step Partnership Nurture</p>
-                {activeLead&&activeTrack==="partners"?<OutreachPanel lead={activeLead} track="partners" onClear={()=>setActiveLead(null)}/>:(
+                {activeLead?<OutreachPanel lead={activeLead} track="partners" onClear={()=>{setActiveLead(null);setActiveTrack(null)}}/>:(
                   <div style={{textAlign:"center",padding:"60px 20px",border:"1px dashed var(--border)",borderRadius:16,color:"var(--muted)",background:"var(--card)"}}><div style={{fontSize:48,marginBottom:16}}>🌍</div><h3 style={{margin:"0 0 8px"}}>No Partner Selected</h3><p style={{margin:0,maxWidth:400,marginLeft:"auto",marginRight:"auto"}}>Go to Brand Partners and click "Write Scripts" on any partner.</p><button className="btn-primary" style={{marginTop:24,padding:"12px 24px"}} onClick={()=>setView("partners")}>Browse Partners</button></div>
                 )}
               </div>
