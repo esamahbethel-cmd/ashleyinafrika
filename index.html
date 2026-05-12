@@ -99,7 +99,7 @@ const{useState,useEffect,useMemo,useCallback}=React;
 const AUTH_USERS=[
   {name:"Bethel Esamah",pin:"AIA2026BE",role:"admin"},
   {name:"Ashley Cleveland",pin:"AIA2026AC",role:"admin"},
-  {name:"Gwen L. Miñoza",pin:"AIA2026GM",role:"team"},
+  {name:"Gwen Minoza",pin:"AIA2026GM",role:"team"},
   {name:"Nailah Best",pin:"AIA2026NB",role:"team"},
 ];
 
@@ -269,20 +269,20 @@ function OutreachPanel({lead,onClose}){
   const ind=s.label.split(" /")[0].toLowerCase();
 
   const dm=sz==="scale"?
-    `Hi ${fname},\n\nNoticed ${lead.company} is scaling fast -- at that stage, the ops side almost never keeps pace with growth. Support backlogs, admin chaos, and execution gaps start costing real revenue.\n\nWe build "Done-For-You" remote execution teams for founders like you -- pre-trained, plug-in-ready, and a fraction of local hiring costs. Your team grows without the overhead.\n\nOpen to a 15-minute call to see how we'd structure a pod for ${lead.company}?`:
+    `Hi ${fname},\n\nNoticed ${lead.company} is scaling fast. At that stage, the ops side rarely keeps pace -- support backlogs, admin overload, and execution gaps start costing real revenue.\n\nAt Ashley in Afrika, we deploy pre-trained remote execution teams for founders like you -- support, admin, and ops professionals ready in 2 weeks for less than one local hire.\n\nOpen to a 15-minute call to see how we structure this for ${lead.company}?\n\nAshley Cleveland, Ashley in Afrika`:
     sz==="growth"?
-    `Hey ${fname},\n\nScaling a ${ind} company past the $1M mark usually means the founder ends up doing everything -- and the ops side becomes the bottleneck that slows the whole machine.\n\nWe drop in pre-trained remote execution teams -- support, admin, data, ops -- so you can buy back your time without the cost of local hiring.\n\nWorth a quick 10-min chat to see what a pod looks like for ${lead.company}?`:
-    `Hey ${fname},\n\nAs a ${lead.title} at ${lead.company}, I imagine you're wearing a lot of hats right now -- and the operational side is probably costing you more time than it should.\n\nWe help founders like you deploy a remote execution pod -- pre-trained team members who handle the admin, support, and ops work -- so you can focus on growth.\n\nOpen to a quick call?`;
+    `Hey ${fname},\n\nScaling a ${ind} company past $1M usually means the founder becomes the bottleneck -- doing everything, and the ops side slows everything down.\n\nWe drop in pre-trained remote execution teams -- support, admin, data ops -- so you can buy back your time without the cost of local hiring.\n\nWorth a quick 10-min chat to see what a pod looks like for ${lead.company}?`:
+    `Hey ${fname},\n\nAs a ${lead.title} at ${lead.company}, I imagine you are wearing a lot of hats right now -- and the operational side is probably costing you more time than it should.\n\nWe help founders like you deploy a remote execution pod -- pre-trained team members who handle admin, support, and ops -- so you can focus on growth.\n\nOpen to a quick call?`;
 
   const vn=sz==="scale"?
-    `[VOICE NOTE -- Peer founder tone]\n\n"Hi ${fname}, it's Ashley from Ashley in Afrika.\n\nI came across ${lead.company} and I can see you've built something impressive -- and at that scale, the ops and execution side is usually where founders start feeling the most friction.\n\nWe build pre-trained remote execution pods -- your team gets dedicated support, admin, and ops professionals who plug in fast and cost a fraction of local hiring.\n\nRecently helped a scaling ${ind} company clear a massive backlog in 30 days. Would love to show you how we'd structure something for ${lead.company}. 15 minutes this week?"\n\n[TIPS: Under 60 seconds. Energy and warmth. Lead with a compliment on what they built. End with specific ask.]`:
+    `[VOICE NOTE -- Peer founder tone]\n\n"Hi ${fname}, it is Ashley from Ashley in Afrika.\n\nI came across ${lead.company} -- really impressive what you have built. At that scale, the ops and execution side is usually where founders start feeling the most friction.\n\nWe deploy pre-trained execution pods -- dedicated support, admin, and ops professionals who plug in fast and cost a fraction of local hiring.\n\nRecently helped a scaling ${ind} company clear a massive backlog in 30 days. Would love to show you how we structure this for ${lead.company}. 15 minutes this week?"\n\n[TIPS: Under 60 seconds. Energy and warmth. Compliment what they built. End with specific ask.]`:
     sz==="growth"?
-    `[VOICE NOTE -- Friendly, direct]\n\n"Hey ${fname}, Ashley from Ashley in Afrika.\n\nI came across ${lead.company} -- really impressive what you're building in the ${ind} space.\n\nI work with founders at your stage who are scaling fast but finding that the ops side doesn't scale with them. We drop in pre-trained remote execution teams -- support, admin, and data -- so the founder can actually focus on what moves the needle.\n\nWould love to chat for 10 minutes and see if this fits. Let me know!"\n\n[TIPS: Under 60 seconds. Genuine, excited tone. Reference their industry. Soft 10-min ask.]`:
-    `[VOICE NOTE -- Warm, relatable]\n\n"Hey ${fname}, it's Ashley from Ashley in Afrika.\n\nI know the early-stage founder grind -- you're doing everything yourself and there's never enough time. We help founders like you get pre-trained remote team members who handle the execution work -- admin, support, ops -- so you can buy back your time.\n\nOne founder I worked with went from drowning in emails to having a full support function in 2 weeks. Would love to show you how. Open to a quick 10-minute call?"\n\n[TIPS: Under 60 seconds. Relatable and warm. Tell a short story. End with specific ask.]`;
+    `[VOICE NOTE -- Friendly, direct]\n\n"Hey ${fname}, Ashley from Ashley in Afrika.\n\nI came across ${lead.company} -- really impressive what you are building in the ${ind} space.\n\nI work with founders at your stage who are scaling fast but finding ops does not scale with them. We drop in pre-trained execution teams -- support, admin, data -- so the founder can focus on what moves the needle.\n\nWould love to chat 10 minutes. Let me know!"\n\n[TIPS: Under 60 seconds. Genuine, excited tone. Reference their industry.]`:
+    `[VOICE NOTE -- Warm, relatable]\n\n"Hey ${fname}, it is Ashley from Ashley in Afrika.\n\nI know the early-stage founder grind -- doing everything yourself, never enough time. We help founders like you get pre-trained remote team members who handle execution work -- admin, support, ops -- so you can buy back your time.\n\nOne founder I worked with went from drowning in emails to a full support function in 2 weeks. Want to see how? Open to a quick 10-minute call?"\n\n[TIPS: Under 60 seconds. Relatable and warm. Short story. Specific ask.]`;
 
-  const nurture=`[TOUCH 1 -- Day 1]\nSubject: Question about ops at ${lead.company}?\n\nHi ${fname},\n\nUsually when I speak with ${lead.title}s scaling a ${ind} company, their biggest bottleneck is execution capacity -- the ops, admin, and support work that piles up faster than the team can handle it.\n\nAt Ashley in Afrika, we solve this by dropping in a pre-trained, 3-person remote execution pod for less than the cost of one local US hire.\n\nWould you be open to a 10-minute chat this week to see what an ops structure looks like for ${lead.company}?\n\nBest,\nAshley Cleveland\nAshley in Afrika\n\n------\n[TOUCH 2 -- Day 3]\nSubject: Re: ops at ${lead.company}\n\nHey ${fname},\n\nQuick follow-up. We recently helped a ${ind} founder who was spending 30+ hours/week on support, admin, and execution work.\n\nBEFORE: Founder doing everything, team overwhelmed, growth stalling.\nAFTER: Remote execution pod deployed in 2 weeks. Founder freed up 25 hours/week. Company scaled 3 new clients in 30 days.\n\nIs this the kind of challenge you're dealing with at ${lead.company}?\n\n------\n[TOUCH 3 -- Day 7]\nSubject: A quick resource for ${lead.company}\n\nHi ${fname},\n\nI put together an Ops Bottleneck Audit specifically for ${ind} founders -- shows exactly where execution gaps are costing you time and revenue.\n\nWant me to send it? No call required.\n\nAshley Cleveland\n\n------\n[TOUCH 4 -- Day 14]\nSubject: Last note from me\n\nHey ${fname}, timing might not be right -- totally fine.\n\nIf ${lead.company} ever needs an execution team that deploys fast and costs less than local hiring, we'd be a strong fit.\n\nKeep us in mind.\n\nAshley Cleveland, Ashley in Afrika`;
+  const nurture=`[TOUCH 1 -- Day 1]\nSubject: Question about ops at ${lead.company}?\n\nHi ${fname},\n\nMost ${lead.title}s scaling a ${ind} company hit the same bottleneck -- execution capacity. The ops, admin, and support work piles up faster than the team can handle.\n\nAt Ashley in Afrika, we solve this by dropping in a pre-trained 3-person remote execution pod for less than the cost of one local US hire.\n\nOpen to a 10-minute call this week?\n\nAshley Cleveland, Ashley in Afrika\n\n------\n[TOUCH 2 -- Day 3]\nSubject: Re: ops at ${lead.company}\n\nHey ${fname},\n\nA ${ind} founder I recently worked with was spending 30+ hours/week on support, admin, and execution.\n\nBEFORE: Founder doing everything, team overwhelmed, growth stalling.\nAFTER: Execution pod deployed in 2 weeks. Founder freed 25 hours/week. Onboarded 3 new clients in 30 days.\n\nIs this the challenge you are facing at ${lead.company}?\n\n------\n[TOUCH 3 -- Day 7]\nSubject: A quick resource for ${lead.company}\n\nHi ${fname},\n\nI put together an Ops Bottleneck Audit for ${ind} founders -- maps exactly where execution gaps cost the most time and revenue.\n\nWant me to send it? No call required.\n\nAshley Cleveland\n\n------\n[TOUCH 4 -- Day 14]\nSubject: Last note from me\n\nHey ${fname}, timing may not be right -- totally fine.\n\nIf ${lead.company} ever needs an execution team that deploys fast for less than local hiring, we would be a strong fit.\n\nAshley Cleveland, Ashley in Afrika`;
 
-  return(
+    return(
     <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.6)",display:"flex",alignItems:"center",justifyContent:"flex-end",zIndex:200}}>
       <div style={{background:"var(--card)",width:"520px",height:"100%",overflow:"auto",padding:"24px",borderLeft:"1px solid var(--border)"}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
@@ -448,7 +448,7 @@ function ProspectDB({leads,setLeads}){
   const filtered=useMemo(()=>{
     let list=[...leads];
     if(filterSeg!=="all")list=list.filter(l=>l.segment===filterSeg);
-    if(filterSize!=="all")list=list.filter(l=>(l.size||l.sz||"sme")===filterSize);
+    if(filterSize!=="all")list=list.filter(l=>(l.size||l.sz||"startup")===filterSize);
     if(filterStage!=="all")list=list.filter(l=>(l.pipeline||"not_contacted")===filterStage);
     if(filterOverdue)list=list.filter(l=>isOverdue(l));
     if(search)list=list.filter(l=>`${l.name} ${l.company} ${l.title}`.toLowerCase().includes(search.toLowerCase()));
@@ -508,7 +508,7 @@ function ProspectDB({leads,setLeads}){
             {page_leads.map((ld)=>{
               const score=calcScore(ld);
               const seg=CLIENT_SEGMENTS[ld.segment]||CLIENT_SEGMENTS.general;
-              const sz=SIZE_TIERS[ld.size||ld.sz||"startup"]||SIZE_TIERS.startup;
+              const sz=SIZE_TIERS[ld.size||ld.sz||"startup"]||SIZE_TIERS.sme;
               const days=daysSince(ld.seqStartDate);
               const nf=nextFollowUp(ld);
               const od=isOverdue(ld)&&(ld.pipeline||"not_contacted")!=="closed"&&(ld.pipeline||"not_contacted")!=="not_interested";
@@ -591,7 +591,7 @@ function PartnerTracker({partners,setPartners}){
     <div>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",flexWrap:"wrap",gap:12,marginBottom:20}}>
         <div>
-          <div className="page-title">🌍 AIA Brand Partner Tracker</div>
+          <div className="page-title">🤝 Brand Partner Tracker</div>
           <div className="page-sub">{partners.length} partners  |  {filtered.length} shown</div>
         </div>
         <div style={{display:"flex",gap:8}}>
@@ -675,13 +675,15 @@ function PartnerTracker({partners,setPartners}){
    CONTENT LIBRARY
 ═══════════════════════════════════════════ */
 const DEFAULT_ASSETS=[
-  {id:"asset-1",name:"Ops Bottleneck Audit",type:"Lead Magnet",link:"",stage:"Touch 3 -- Follow Up",desc:"Free audit -- maps exactly where execution gaps are costing the founder time and revenue. Send after positive reply."},
-  {id:"asset-2",name:"Calendly Booking Link",type:"Booking Link",link:"https://calendly.com/ashleyinafrika",stage:"Touch 2 -- Voice Note CTA",desc:"Discovery call booking link -- embed in voice note follow-up and email CTAs"},
-  {id:"asset-3",name:"AIA Case Study -- 25 Hours/Week Freed",type:"Case Study",link:"",stage:"Touch 2 -- Follow Up",desc:"Anonymous founder (SaaS) deployed execution pod, freed 25 hours/week in 30 days and onboarded 3 new clients"},
+  {id:"asset-1",name:"Ops Bottleneck Audit",type:"Lead Magnet",link:"",stage:"Touch 3",desc:"Free audit -- maps exactly where execution gaps are costing the founder time and revenue. Send after positive reply."},
+  {id:"asset-2",name:"Calendly Booking Link",type:"Booking Link",link:"https://calendly.com/ashleyinafrika",stage:"Touch 2",desc:"Discovery call booking link -- embed in voice note follow-up and email CTAs"},
+  {id:"asset-3",name:"AIA Case Study -- 25 Hours/Week Freed",type:"Case Study",link:"",stage:"Touch 2",desc:"Anonymous founder (SaaS) deployed execution pod, freed 25 hours/week in 30 days and onboarded 3 new clients"},
   {id:"asset-4",name:"Ashley in Afrika Website",type:"Social",link:"https://ashleyinafrika.com",stage:"All",desc:"Main website -- send prospects here to validate credibility and see the offer"},
-  {id:"asset-5",name:"LinkedIn Company Page",type:"Social",link:"https://linkedin.com/company/ashleyinafrika",stage:"All",desc:"Ashley's LinkedIn -- prospects will check this before replying. Make sure it's current."},
-  {id:"asset-6",name:"BrandUp Client Testimonial Video",type:"Video",link:"",stage:"Touch 4 -- Closing",desc:"Founder testimonial video showing results from the execution pod. Use at call booking stage."},
-  {id:"asset-7",name:"Execution Pod Overview Deck",type:"Demo",link:"",stage:"Touch 4 -- Closing",desc:"One-pager or deck showing how the pod is structured, timeline, and deliverables. Send when interest is confirmed."},
+  {id:"asset-5",name:"LinkedIn Company Page",type:"Social",link:"https://linkedin.com/company/ashleyinafrika",stage:"All",desc:"Ashley LinkedIn -- prospects will check this before replying. Make sure it is current."},
+  {id:"asset-6",name:"BrandUp Client Testimonial Video",type:"Video",link:"",stage:"Touch 4",desc:"Founder testimonial video showing results from the execution pod. Use at call booking stage."},
+  {id:"asset-7",name:"Execution Pod Overview Deck",type:"Demo",link:"",stage:"Touch 4",desc:"One-pager showing how the pod is structured, timeline, and deliverables. Send when interest is confirmed."},
+];
+
 ];
 
 function ContentLibrary(){
@@ -760,19 +762,20 @@ function ContentLibrary(){
 ═══════════════════════════════════════════ */
 function FounderVoice(){
   const sections=[
-    {title:"🎯 One-Line Positioning",content:"We build pre-trained, remote execution teams for high-growth founders -- delivering world-class African talent in support, admin, and operations roles at a fraction of local hiring costs."},
-    {title:"💡 Core Value Proposition",content:"Founders scaling past $500K hit the same wall: the ops, admin, and support work doesn't scale with the business. Hiring locally is expensive and slow. Doing it yourself kills growth.\n\nAshley in Afrika solves this by deploying a pre-trained 3-person remote execution pod -- ready in 2 weeks, for less than the cost of one local US hire.\n\nThe founder gets their time back. The business gets execution capacity. Growth happens."},
-    {title:"👤 ICP -- Who We Serve",content:"High-growth founders and operators at:\n• SaaS & Cloud companies\n• FinTech startups\n• E-commerce brands\n• Healthcare tech\n• Marketing agencies\n• Real estate & PropTech\n• Consulting firms\n\nRevenue: $250K-$10M\nTeam size: 2-50 employees\nPrimary pain: Founder bottleneck -- doing everything themselves, ops overwhelm slowing growth."},
+    {title:"🎯 One-Line Positioning",content:"We build pre-trained remote execution teams for high-growth founders -- delivering world-class African talent in support, admin, and operations at a fraction of local hiring costs."},
+    {title:"💡 Core Value Proposition",content:"Founders scaling past $500K hit the same wall: ops, admin, and support work does not scale with the business. Hiring locally is expensive and slow. Doing it yourself kills growth.\n\nAshley in Afrika solves this by deploying a pre-trained 3-person remote execution pod -- ready in 2 weeks, for less than one local US hire.\n\nThe founder gets their time back. The business gets execution capacity. Growth happens."},
+    {title:"👤 ICP -- Who We Serve",content:"High-growth founders and operators at:\n- SaaS and Cloud companies\n- FinTech startups\n- E-commerce brands\n- Healthcare tech\n- Marketing agencies\n- Real estate and PropTech\n- Consulting firms\n\nRevenue: $250K-$10M\nTeam size: 2-50 employees\nPrimary pain: Founder bottleneck -- doing everything, ops overwhelm slowing growth."},
     {title:"🗣️ Tone of Voice",content:"Warm, peer-to-peer, founder-to-founder. Ashley speaks from experience -- she knows the grind.\n\nNever corporate. Never formal. Always specific to their industry and pain point.\n\nEnergy: encouraging, direct, outcome-focused. Lead with empathy, close with results."},
-    {title:"💬 Ashley's Exact Framing (Use This)",content:"'You're not hiring a VA. You're deploying a pre-trained execution pod that knows your industry, your tools, and your workflow from day one. Two weeks to launch. Less than a local hire. Built for founders who can't afford to slow down.'"},
-    {title:"🌍 The African Talent Angle",content:"Ashley in Afrika specifically sources talent from across the African continent -- world-class professionals with strong communication skills, deep work ethic, and a genuine commitment to founder success.\n\nThis is the differentiation: not just remote work -- African excellence.\n\nAlways lead with the results. The African angle adds depth, never leads."},
-    {title:"📋 Outreach Sequence",content:"Step 1: Initial curiosity DM (LinkedIn or email)\nStep 2: Voice note from Ashley upon positive response\nStep 3: Ops Bottleneck Audit sent as free resource\nStep 4: Discovery call booked via Calendly\n\nFollow-up cadence: Day 1 → Day 3 → Day 7 → Day 14"},
-    {title:"❌ What to Never Say",content:"• Never say 'virtual assistant' -- undersells the offer\n• Never lead with price\n• Never send generic outreach -- always reference their specific industry and pain\n• Never position as freelancers -- they are pre-trained execution teams\n• Never skip the specificity -- generic messages get ignored"},
+    {title:"💬 Ashley Exact Framing (Use This)",content:"You are not hiring a VA. You are deploying a pre-trained execution pod that knows your industry, your tools, and your workflow from day one. Two weeks to launch. Less than a local hire. Built for founders who cannot afford to slow down."},
+    {title:"🌍 The African Talent Angle",content:"Ashley in Afrika specifically sources talent from across the African continent -- world-class professionals with strong communication skills, deep work ethic, and genuine commitment to founder success.\n\nThis is the differentiation: not just remote work -- African excellence.\n\nAlways lead with results. The African angle adds depth, never leads."},
+    {title:"📋 Outreach Sequence",content:"Step 1: Initial curiosity DM (LinkedIn or email)\nStep 2: Voice note from Ashley upon positive response\nStep 3: Ops Bottleneck Audit sent as free resource\nStep 4: Discovery call booked via Calendly\n\nFollow-up cadence: Day 1 then Day 3 then Day 7 then Day 14"},
+    {title:"❌ What to Never Say",content:"- Never say virtual assistant -- undersells the offer\n- Never lead with price\n- Never send generic outreach -- always reference their specific industry and pain\n- Never position as freelancers -- they are pre-trained execution teams\n- Never skip specificity -- generic messages get ignored"},
   ];
+    ];
   return(
     <div>
-      <div className="page-title">📖 Ashley's Voice & Positioning Reference</div>
-      <div className="page-sub">AA reference guide -- ensures every message aligns with Ashley's brand without external guidance</div>
+      <div className="page-title">📖 Founder Voice & Positioning Reference</div>
+      <div className="page-sub">AA reference guide -- ensures every message aligns with Tim's brand without external guidance</div>
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(340px,1fr))",gap:16,marginTop:20}}>
         {sections.map(s=>(
           <div key={s.title} className="card">
@@ -790,14 +793,16 @@ function FounderVoice(){
    OBJECTION HANDLING
 ═══════════════════════════════════════════ */
 const DEFAULT_OBJECTIONS=[
-  {id:"obj-1",objection:"We already have a virtual assistant / EA",response:"What we deliver is different from a traditional VA. Our execution pods are pre-trained on your industry, tools, and workflow from day one -- no 3-month learning curve. You get 3 team members working as a coordinated unit, not a single generalist. The output quality and speed is in a different category."},
-  {id:"obj-2",objection:"How do I know the quality will be good?",response:"Every team member goes through our vetting and training program before deployment. We match based on your specific industry and tech stack. And you get a 30-day quality guarantee -- if the pod isn't performing to your standards in the first 30 days, we replace them at no cost."},
-  {id:"obj-3",objection:"I'm worried about communication and time zones",response:"Our pods are trained in async-first communication -- detailed Loom updates, clear task documentation, and proactive status reporting. Most of our founders say communication actually improves when they work with us because everything is documented. Time zone overlap is built into matching."},
-  {id:"obj-4",objection:"This seems expensive / what's the ROI?",response:"Compare it to what you're spending now -- your own time on ops work, local contractor costs, or the growth you're leaving on the table because you're in the weeds. Our pods typically cost less than one local US hire. Founders who work with us get back 15-25 hours per week within the first month."},
-  {id:"obj-5",objection:"I'm not sure I have enough work for a full team",response:"That's exactly the right size for us. Our pods are structured for founders who are scaling -- they flex with your workload and are cross-trained to cover multiple functions. You don't need to have it all figured out before we start."},
-  {id:"obj-6",objection:"I've had bad experiences with remote workers before",response:"We hear this a lot -- and it's usually because the hire wasn't properly vetted or trained for the role. Our model is different: we select for your specific industry, pre-train on your tools and workflows, and there's an AA Operations team behind every pod. You're not managing alone."},
+  {id:"obj-1",objection:"We already have a virtual assistant or EA",response:"What we deliver is different from a traditional VA. Our execution pods are pre-trained on your industry, tools, and workflow from day one -- no 3-month learning curve. You get 3 team members working as a coordinated unit, not a single generalist. The output quality and speed is in a different category."},
+  {id:"obj-2",objection:"How do I know the quality will be good?",response:"Every team member goes through our vetting and training program before deployment. We match based on your specific industry and tech stack. And you get a 30-day quality guarantee -- if the pod is not performing to your standards in the first 30 days, we replace them at no cost."},
+  {id:"obj-3",objection:"I am worried about communication and time zones",response:"Our pods are trained in async-first communication -- detailed Loom updates, clear task documentation, and proactive status reporting. Most of our founders say communication actually improves when they work with us because everything is documented. Time zone overlap is built into matching."},
+  {id:"obj-4",objection:"This seems expensive -- what is the ROI?",response:"Compare it to what you are spending now -- your own time on ops work, local contractor costs, or the growth you are leaving on the table because you are in the weeds. Our pods typically cost less than one local US hire. Founders who work with us get back 15-25 hours per week within the first month."},
+  {id:"obj-5",objection:"I am not sure I have enough work for a full team",response:"That is exactly the right size for us. Our pods are structured for founders who are scaling -- they flex with your workload and are cross-trained to cover multiple functions. You do not need to have it all figured out before we start."},
+  {id:"obj-6",objection:"I have had bad experiences with remote workers before",response:"We hear this a lot -- and it is usually because the hire was not properly vetted or trained for the role. Our model is different: we select for your specific industry, pre-train on your tools and workflows, and there is an AA Operations team behind every pod. You are not managing alone."},
   {id:"obj-7",objection:"Can I start with just one person instead of a pod?",response:"Absolutely -- we can start with a single specialist and scale to a pod as you grow. Most founders start with one focused role (support, admin, or ops) and expand once they see the impact. We build the engagement around where you are right now."},
-  {id:"obj-8",objection:"How quickly can you get someone started?",response:"Typically 2 weeks from agreement to first day. We handle sourcing, vetting, training, and onboarding. You get a simple onboarding call with us and your new team member -- and then they're running."},
+  {id:"obj-8",objection:"How quickly can you get someone started?",response:"Typically 2 weeks from agreement to first day. We handle sourcing, vetting, training, and onboarding. You get a simple onboarding call with us and your new team member -- and then they are running."},
+];
+
 ];
 
 function ObjectionLibrary(){
@@ -815,7 +820,7 @@ function ObjectionLibrary(){
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
         <div>
           <div className="page-title">🛡️ Objection Handling Library</div>
-          <div className="page-sub">Pre-approved responses -- AA can respond immediately without escalating to Ashley or EO</div>
+          <div className="page-sub">Pre-approved responses -- AA can respond immediately without escalating to Tim or EO</div>
         </div>
         <div style={{display:"flex",gap:8}}>
           <input className="input" placeholder="Search objections..." value={search} onChange={e=>setSearch(e.target.value)} style={{width:200,padding:"8px 12px",fontSize:13}}/>
@@ -869,7 +874,7 @@ function App(){
     const saved=load("aia_clients");
     if(saved&&saved.length>0){
       // Merge website URLs from embedded data
-      let merged=saved.map(l=>({...l,size:l.size||l.sz||"sme",pipeline:l.pipeline||"not_contacted"}));
+      let merged=saved.map(l=>({...l,size:l.size||l.sz||"startup",pipeline:l.pipeline||"not_contacted"}));
       if(typeof EMBEDDED_CLIENTS!=="undefined"){
         const urlMap=new Map();
         EMBEDDED_CLIENTS.forEach(p=>{if(p.w)urlMap.set((p.c||"").toLowerCase().trim(),p.w)});
@@ -877,18 +882,17 @@ function App(){
       }
       setLeads(merged);setLoading(false);
     } else if(typeof EMBEDDED_CLIENTS!=="undefined"&&EMBEDDED_CLIENTS.length>0){
-      const embedded=AIA_CLIENTS.map((p,i)=>({id:p.id||`aia-${i}`,name:p.n,title:p.t,company:p.c,location:p.l,website:p.w||"",linkedin:p.li||"",email:p.e||"",segment:p.seg,size:p.sz||"startup",status:"New",pipeline:"not_contacted",signal:p.sig||"",reason:p.r||""}));
+      const embedded=EMBEDDED_CLIENTS.map((p,i)=>({id:p.id||`aia-${i}`,name:p.n,title:p.t,company:p.c,location:p.l,website:p.w||"",linkedin:p.li||"",email:p.e||"",segment:p.seg,size:p.sz||"startup",status:"New",pipeline:"not_contacted",signal:p.sig||"",reason:p.r||""}));
       setLeads(embedded);setLoading(false);
     } else {setLoading(false)}
 
-    // Load partners -- always merge from embedded to ensure fresh data
+    // Load partners -- always sync from embedded data
     if(typeof EMBEDDED_PARTNERS!=="undefined"&&EMBEDDED_PARTNERS.length>0){
-      const embedded=EMBEDDED_PARTNERS.map((p,i)=>({id:p.id||`bp-${i}`,n:p.n,t:p.t,c:p.c,l:p.l,w:p.w||"",li:p.li||"",e:p.e||"",seg:p.seg,s:p.s||"New",sig:p.sig||"",r:p.r||"",partnerStage:"identified",audienceSize:"",collabType:"referral",nextAction:""}));
+      const embedded=EMBEDDED_PARTNERS.map((p,i)=>({id:p.id||`aia-bp-${i}`,n:p.n,t:p.t,c:p.c,l:p.l,w:p.w||"",li:p.li||"",e:p.e||"",seg:p.seg,s:p.s||"New",sig:p.sig||"",r:p.r||"",partnerStage:"identified",audienceSize:"",collabType:"referral",nextAction:""}));
       const savedP=load("aia_partners");
       if(savedP&&savedP.length>0){
-        // Merge: keep saved edits (stage, nextAction, collabType) but use embedded for core data
         const savedMap=new Map(savedP.map(p=>[p.id,p]));
-        const merged=embedded.map(ep=>{const saved=savedMap.get(ep.id);return saved?{...ep,partnerStage:saved.partnerStage||"identified",audienceSize:saved.audienceSize||"",collabType:saved.collabType||"referral",nextAction:saved.nextAction||""}:ep});
+        const merged=embedded.map(ep=>{const sv=savedMap.get(ep.id);return sv?{...ep,partnerStage:sv.partnerStage||"identified",audienceSize:sv.audienceSize||"",collabType:sv.collabType||"referral",nextAction:sv.nextAction||""}:ep});
         setPartners(merged);save("aia_partners",merged);
       } else {
         setPartners(embedded);save("aia_partners",embedded);
@@ -907,7 +911,7 @@ function App(){
     {section:"Analytics"},
     {id:"dashboard",label:"Dashboard",icon:"📊"},
     {section:"Pipeline"},
-    {id:"clients",label:"Prospects",icon:"🎯",badge:leads.length,hotBadge:overdue_count},
+    {id:"prospects",label:"Prospects",icon:"🎯",badge:leads.length,hotBadge:overdue_count},
     {id:"partners",label:"Brand Partners",icon:"🤝",badge:partners.length},
     {section:"Resources"},
     {id:"scripts",label:"Outreach Scripts",icon:"⚡"},
@@ -946,12 +950,12 @@ function App(){
       </div>
       <div className="content">
         {view==="dashboard"&&<Dashboard leads={leads} partners={partners}/>}
-        {view==="clients"&&<ProspectDB leads={leads} setLeads={setLeads}/>}
+        {view==="prospects"&&<ProspectDB leads={leads} setLeads={setLeads}/>}
         {view==="partners"&&<PartnerTracker partners={partners} setPartners={setPartners}/>}
         {view==="scripts"&&(
           <div>
-            <div className="page-title">⚡ AIA Outreach Scripts</div>
-            <div className="page-sub">Go to BrandUp Clients and click "Scripts" on any lead to generate personalized scripts</div>
+            <div className="page-title">⚡ Outreach Scripts Reference</div>
+            <div className="page-sub">Go to Prospects and click "Scripts" on any lead to generate personalized scripts</div>
             <div className="card" style={{marginTop:20}}>
               <div style={{fontWeight:700,fontSize:15,marginBottom:12}}>AIA Outreach Sequence Reference</div>
               {[
