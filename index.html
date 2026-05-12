@@ -13,12 +13,7 @@
   <script src="aia_partners_data.js"></script>
   <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#0A0A0F;--surface:#111118;--card:#16161F;--border:#1E1E2E;
-  --text:#F0F0FF;--muted:#6B6B8A;--accent:#7C3AED;--accent2:#06B6D4;
-  --green:#10B981;--amber:#F59E0B;--red:#EF4444;--blue:#3B82F6;--pink:#EC4899;
-  --gradient:linear-gradient(135deg,#7C3AED,#06B6D4);
-}
+:root{--bg:#0A0A0F;--surface:#111118;--card:#16161F;--border:#1E1E2E;--text:#F0F0FF;--muted:#6B6B8A;--accent:#7C3AED;--accent2:#06B6D4;--green:#10B981;--amber:#F59E0B;--red:#EF4444;--blue:#3B82F6;--pink:#EC4899;--gradient:linear-gradient(135deg,#7C3AED,#06B6D4)}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden}
 .app{display:flex;height:100vh;overflow:hidden}
 .sidebar{width:220px;min-width:220px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto}
@@ -42,13 +37,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);hei
 .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 .stat{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;position:relative;overflow:hidden}
 .stat::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
-.stat.gr::before{background:var(--green)}
-.stat.bl::before{background:var(--blue)}
-.stat.am::before{background:var(--amber)}
-.stat.pu::before{background:var(--accent)}
-.stat.re::before{background:var(--red)}
-.stat.cy::before{background:var(--accent2)}
-.stat.pk::before{background:var(--pink)}
+.stat.gr::before{background:var(--green)}.stat.bl::before{background:var(--blue)}.stat.am::before{background:var(--amber)}.stat.pu::before{background:var(--accent)}.stat.re::before{background:var(--red)}.stat.cy::before{background:var(--accent2)}.stat.pk::before{background:var(--pink)}
 .stat-val{font-size:30px;font-weight:800;font-family:'Outfit',sans-serif;line-height:1}
 .stat-lbl{font-size:11px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.05em}
 .stat-sub{font-size:11px;color:var(--muted);margin-top:6px}
@@ -58,7 +47,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);hei
 .btn-s:hover{background:var(--surface)}
 .btn-sm{padding:5px 10px;font-size:11px;border-radius:7px}
 .badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:700}
-.tag{padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.tag{padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
 .inp{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;width:100%}
 .inp:focus{border-color:var(--accent)}
 .sel{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:8px 12px;color:var(--text);font-size:13px;outline:none;cursor:pointer}
@@ -67,17 +56,19 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);hei
 .tbl td{padding:10px 12px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle}
 .tbl tr:last-child td{border-bottom:none}
 .tbl tr:hover td{background:var(--surface)}
-.overdue{background:rgba(239,68,68,.05);border-left:3px solid var(--red)}
+.overdue-row{background:rgba(239,68,68,.05) !important;border-left:3px solid var(--red)}
 .auth-bg{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:999}
 .auth-card{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:40px;width:360px;text-align:center}
 .logout{position:fixed;top:12px;right:12px;z-index:100;padding:6px 14px;font-size:12px;background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.3);border-radius:8px;cursor:pointer;font-weight:700}
-@media(max-width:640px){.sidebar{display:none}.grid2,.grid3,.grid4{grid-template-columns:1fr}}
+.panel-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:flex-end;z-index:200}
+.panel{background:var(--card);width:540px;height:100%;overflow:auto;padding:24px;border-left:1px solid var(--border)}
+@media(max-width:640px){.sidebar{display:none}.grid2,.grid3,.grid4{grid-template-columns:1fr}.panel{width:100%}}
   </style>
 </head>
 <body>
 <div id="root"></div>
 <script type="text/babel">
-const {useState,useEffect,useMemo} = React;
+const {useState,useEffect,useMemo,useCallback} = React;
 
 const USERS = [
   {name:"Bethel Esamah",pin:"AIA2026BE",role:"admin"},
@@ -87,15 +78,15 @@ const USERS = [
 ];
 
 const PIPELINE = {
-  not_contacted:{label:"Not Contacted",color:"#6B6B8A",icon:"o",score:0},
-  connection_sent:{label:"Connection Sent",color:"#3B82F6",icon:">",score:0},
-  connected:{label:"Connected",color:"#06B6D4",icon:"v",score:1},
-  message_sent:{label:"Message Sent",color:"#8B5CF6",icon:"m",score:1},
-  replied:{label:"Replied",color:"#10B981",icon:"r",score:2},
-  voice_note_sent:{label:"Voice Note Sent",color:"#F59E0B",icon:"*",score:2},
-  call_booked:{label:"Call Booked",color:"#EC4899",icon:"c",score:5},
-  closed:{label:"Closed Won",color:"#10B981",icon:"$",score:10},
-  not_interested:{label:"Not Interested",color:"#EF4444",icon:"x",score:0},
+  not_contacted:{label:"Not Contacted",color:"#6B6B8A",score:0},
+  connection_sent:{label:"Connection Sent",color:"#3B82F6",score:0},
+  connected:{label:"Connected",color:"#06B6D4",score:1},
+  message_sent:{label:"Message Sent",color:"#8B5CF6",score:1},
+  replied:{label:"Replied",color:"#10B981",score:2},
+  voice_note_sent:{label:"Voice Note Sent",color:"#F59E0B",score:2},
+  call_booked:{label:"Call Booked",color:"#EC4899",score:5},
+  closed:{label:"Closed Won",color:"#10B981",score:10},
+  not_interested:{label:"Not Interested",color:"#EF4444",score:0},
 };
 
 const PARTNER_STAGES = {
@@ -108,37 +99,37 @@ const PARTNER_STAGES = {
 };
 
 const CLIENT_SEGS = {
-  saas:{label:"SaaS & Cloud",color:"#10B981",icon:"C"},
-  fintech:{label:"FinTech",color:"#3B82F6",icon:"F"},
-  ecom:{label:"E-Commerce",color:"#F59E0B",icon:"S"},
-  healthcare:{label:"Healthcare",color:"#8B5CF6",icon:"H"},
-  agency:{label:"Marketing Agency",color:"#EC4899",icon:"A"},
-  realestate:{label:"Real Estate",color:"#EF4444",icon:"R"},
-  consulting:{label:"Consulting",color:"#06B6D4",icon:"C"},
-  general:{label:"High-Growth Founders",color:"#10B981",icon:"G"},
+  saas:{label:"SaaS and Cloud",color:"#10B981"},
+  fintech:{label:"FinTech",color:"#3B82F6"},
+  ecom:{label:"E-Commerce",color:"#F59E0B"},
+  healthcare:{label:"Healthcare",color:"#8B5CF6"},
+  agency:{label:"Marketing Agency",color:"#EC4899"},
+  realestate:{label:"Real Estate",color:"#EF4444"},
+  consulting:{label:"Consulting",color:"#06B6D4"},
+  general:{label:"High-Growth Founders",color:"#10B981"},
 };
 
 const PARTNER_SEGS = {
-  fintech:{label:"Fintech & Banking",color:"#059669",icon:"B"},
-  travel:{label:"Travel & Relocation",color:"#2563EB",icon:"T"},
-  fashion:{label:"Fashion & Lifestyle",color:"#EC4899",icon:"F"},
-  realestate:{label:"Real Estate",color:"#EF4444",icon:"R"},
-  business:{label:"Business & Investment",color:"#F59E0B",icon:"I"},
-  legal:{label:"Legal & Professional",color:"#8B5CF6",icon:"L"},
-  diaspora:{label:"Diaspora Community",color:"#0891B2",icon:"D"},
-  general:{label:"Other Partners",color:"#6366F1",icon:"O"},
+  fintech:{label:"Fintech and Banking",color:"#059669"},
+  travel:{label:"Travel and Relocation",color:"#2563EB"},
+  fashion:{label:"Fashion and Lifestyle",color:"#EC4899"},
+  realestate:{label:"Real Estate",color:"#EF4444"},
+  business:{label:"Business and Investment",color:"#F59E0B"},
+  legal:{label:"Legal and Professional",color:"#8B5CF6"},
+  diaspora:{label:"Diaspora Community",color:"#0891B2"},
+  general:{label:"Other Partners",color:"#6366F1"},
 };
 
 const TIERS = {
-  startup:{label:"Startup",color:"#10B981",icon:"S"},
-  growth:{label:"Growth",color:"#F59E0B",icon:"G"},
-  scale:{label:"Scale",color:"#8B5CF6",icon:"E"},
+  startup:{label:"Startup",color:"#10B981"},
+  growth:{label:"Growth",color:"#F59E0B"},
+  scale:{label:"Scale",color:"#8B5CF6"},
 };
 
 const FOLLOW_DAYS = [1,3,7,14,21];
 
-const save = (k,v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {} };
-const load = (k) => { try { const d = localStorage.getItem(k); return d ? JSON.parse(d) : null; } catch(e) { return null; } };
+const sv = (k,v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {} };
+const ld = (k) => { try { const d = localStorage.getItem(k); return d ? JSON.parse(d) : null; } catch(e) { return null; } };
 
 const calcScore = (lead) => {
   const s = PIPELINE[lead.pipeline || "not_contacted"];
@@ -158,40 +149,47 @@ const nextFollowUp = (lead) => {
 
 const isOverdue = (lead) => {
   if (!lead.seqStart) return false;
+  const p = lead.pipeline || "not_contacted";
+  if (p === "closed" || p === "not_interested") return false;
   const d = daysSince(lead.seqStart);
   const nf = nextFollowUp(lead);
-  if (!nf) return false;
-  const p = lead.pipeline || "not_contacted";
-  return d >= nf && p !== "closed" && p !== "not_interested";
+  return nf !== null && d >= nf;
+};
+
+const applyTemplate = (template, lead, seg) => {
+  if (!template) return "";
+  return template
+    .replace(/\[FIRST_NAME\]/g, lead.name ? lead.name.split(" ")[0] : "there")
+    .replace(/\[LAST_NAME\]/g, lead.name ? (lead.name.split(" ")[1] || "") : "")
+    .replace(/\[FULL_NAME\]/g, lead.name || "there")
+    .replace(/\[COMPANY\]/g, lead.company || "your company")
+    .replace(/\[TITLE\]/g, lead.title || "Founder")
+    .replace(/\[INDUSTRY\]/g, seg ? seg.label : "your industry")
+    .replace(/\[LOCATION\]/g, lead.location || "United States")
+    .replace(/\[WEBSITE\]/g, lead.website || "")
+    .replace(/\[EMAIL\]/g, lead.email || "");
 };
 
 function Auth({onAuth}) {
   const [pin, setPin] = useState("");
   const [err, setErr] = useState("");
-  const [attempts, setAttempts] = useState(0);
   const submit = () => {
     const u = USERS.find(u => u.pin === pin.trim().toUpperCase());
     if (u) { onAuth(u); }
-    else {
-      const a = attempts + 1;
-      setAttempts(a);
-      setErr("Invalid code. " + (5 - a) + " attempts left.");
-      setPin("");
-    }
+    else { setErr("Invalid code. Please try again."); setPin(""); }
   };
   return (
     <div className="auth-bg">
       <div className="auth-card">
-        <div style={{fontSize:40,marginBottom:16}}>A</div>
+        <div className="sb-logo" style={{margin:"0 auto 16px",width:48,height:48,fontSize:22}}>A</div>
         <div style={{fontSize:20,fontWeight:800,marginBottom:4}}>Ashley in Afrika OS</div>
         <div style={{color:"var(--muted)",fontSize:13,marginBottom:24}}>Authorized Access Only</div>
         <input className="inp" type="password" placeholder="Access Code" value={pin}
-          onChange={e => setPin(e.target.value)}
-          onKeyDown={e => e.key === "Enter" && submit()}
+          onChange={e => setPin(e.target.value)} onKeyDown={e => e.key === "Enter" && submit()}
           style={{marginBottom:12,textAlign:"center",letterSpacing:"0.2em"}}/>
         {err && <div style={{color:"var(--red)",fontSize:12,marginBottom:12}}>{err}</div>}
         <button className="btn btn-p" onClick={submit} style={{width:"100%",padding:"12px"}}>Authenticate</button>
-        <div style={{fontSize:10,color:"var(--muted)",marginTop:16}}>AIA -- SECURED ACCESS</div>
+        <div style={{fontSize:10,color:"var(--muted)",marginTop:16}}>AIA SECURED ACCESS</div>
       </div>
     </div>
   );
@@ -213,7 +211,8 @@ function EditField({value, placeholder, onSave, type}) {
   const [val, setVal] = useState(value || "");
   useEffect(() => { setVal(value || ""); }, [value]);
   if (editing) return (
-    <input autoFocus value={val} onChange={e => setVal(e.target.value)}
+    <input autoFocus value={val}
+      onChange={e => setVal(e.target.value)}
       onBlur={() => { setEditing(false); onSave(val); }}
       onKeyDown={e => { if (e.key === "Enter") { setEditing(false); onSave(val); } if (e.key === "Escape") { setEditing(false); setVal(value || ""); } }}
       placeholder={placeholder}
@@ -225,16 +224,14 @@ function EditField({value, placeholder, onSave, type}) {
     </span>
   );
   const href = type === "email" ? "mailto:" + val : val.startsWith("http") ? val : "https://" + val;
-  const icon = type === "email" ? "E:" : val.includes("linkedin") ? "LI:" : "W:";
+  const prefix = type === "email" ? "Email" : val.includes("linkedin") ? "LI" : "Web";
   const display = val.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "").substring(0, 22);
   return (
     <span style={{display:"flex",alignItems:"center",gap:3}}>
       <a href={href} target="_blank" rel="noreferrer"
-        style={{color: type==="email" ? "var(--amber)" : val.includes("linkedin") ? "#0A66C2" : "var(--accent2)",
-          textDecoration:"none",fontSize:11,fontWeight:600}}
-        onClick={e => e.stopPropagation()}>{icon} {display}</a>
-      <button onClick={e => { e.stopPropagation(); setEditing(true); }}
-        style={{background:"none",border:"none",color:"var(--muted)",cursor:"pointer",fontSize:9,padding:"1px 3px"}}>edit</button>
+        style={{color:type==="email"?"var(--amber)":val.includes("linkedin")?"#0A66C2":"var(--accent2)",textDecoration:"none",fontSize:11,fontWeight:600}}
+        onClick={e => e.stopPropagation()}>{prefix}: {display}</a>
+      <span onClick={e => { e.stopPropagation(); setEditing(true); }} style={{color:"var(--muted)",cursor:"pointer",fontSize:9}}>edit</span>
     </span>
   );
 }
@@ -243,39 +240,49 @@ function PipelineSelect({value, onChange}) {
   const s = PIPELINE[value || "not_contacted"];
   return (
     <select value={value || "not_contacted"} onChange={e => onChange(e.target.value)}
-      style={{padding:"4px 8px",background:s.color + "18",color:s.color,border:"1px solid " + s.color + "40",borderRadius:8,fontSize:11,fontWeight:700,cursor:"pointer",outline:"none"}}>
+      style={{padding:"4px 8px",background:s.color + "18",color:s.color,border:"1px solid " + s.color + "40",borderRadius:8,fontSize:11,fontWeight:700,cursor:"pointer",outline:"none",maxWidth:140}}>
       {Object.entries(PIPELINE).map(([k,v]) => <option key={k} value={k}>{v.label}</option>)}
     </select>
   );
 }
 
-function ScriptPanel({lead, onClose}) {
-  const seg = CLIENT_SEGS[lead.segment] || CLIENT_SEGS.general;
-  const sz = lead.size || "startup";
+function ScriptPanel({lead, isPartner, onClose, customScripts}) {
+  const seg = isPartner
+    ? (PARTNER_SEGS[lead.seg] || PARTNER_SEGS.general)
+    : (CLIENT_SEGS[lead.segment] || CLIENT_SEGS.general);
   const fname = lead.name ? lead.name.split(" ")[0] : "there";
+  const company = isPartner ? (lead.c || "") : (lead.company || "");
+  const title = isPartner ? (lead.t || "") : (lead.title || "");
+  const location = isPartner ? (lead.l || "") : (lead.location || "");
   const ind = seg.label.toLowerCase();
 
-  const dm = sz === "scale"
-    ? "Hi " + fname + ",\n\nNoticed " + lead.company + " is scaling fast. At that stage, ops rarely keeps pace -- support backlogs and execution gaps start costing real revenue.\n\nAt Ashley in Afrika, we deploy pre-trained remote execution teams for founders like you -- support, admin, and ops professionals ready in 2 weeks for less than one local hire.\n\nOpen to a 15-minute call?\n\nAshley Cleveland, Ashley in Afrika"
-    : sz === "growth"
-    ? "Hey " + fname + ",\n\nScaling a " + ind + " company past $1M usually means the founder becomes the bottleneck -- doing everything while ops slows growth down.\n\nWe drop in pre-trained remote execution teams -- support, admin, ops -- so you can buy back your time without the cost of local hiring.\n\nWorth a quick 10-min chat for " + lead.company + "?"
-    : "Hey " + fname + ",\n\nAs a " + lead.title + " at " + lead.company + ", I imagine you are wearing a lot of hats right now -- and ops is probably costing more time than it should.\n\nWe help founders like you deploy a remote execution pod -- pre-trained team members who handle admin, support, and ops -- so you can focus on growth.\n\nOpen to a quick call?";
+  const dm = isPartner
+    ? "Hi " + fname + ",\n\nI lead Ashley in Afrika -- we deploy pre-trained remote execution teams for high-growth founders in support, admin, and operations roles.\n\nGiven " + company + " position in the " + seg.label + " space, I see a strong alignment worth exploring. Whether that is co-marketing, referrals, or a content collaboration -- I would love to connect.\n\nWorth a brief conversation?\n\nAshley Cleveland\nAshley in Afrika"
+    : "Hi " + fname + ",\n\nI came across " + company + " and noticed you are building something impressive in the " + ind + " space.\n\nAt Ashley in Afrika, we help founders like you deploy pre-trained remote execution teams -- support, admin, and ops professionals ready in 2 weeks for less than one local hire.\n\nWould you be open to a 10-minute call to see if this fits " + company + "?\n\nAshley Cleveland\nAshley in Afrika";
 
-  const vn = "[VOICE NOTE SCRIPT]\n\n\"Hey " + fname + ", it is Ashley from Ashley in Afrika.\n\nI came across " + lead.company + " and I can see you are building something impressive in the " + ind + " space.\n\nI work with founders at your stage who find that ops does not scale with the business. We deploy pre-trained execution pods -- support, admin, and ops professionals who plug in fast and cost a fraction of local hiring.\n\nRecently helped a " + ind + " founder clear a massive backlog in 30 days and free up 25 hours per week. Would love to show you how we structure this. 15 minutes this week?\"\n\n[TIPS: Under 60 seconds. Warm, specific to their industry. End with a clear ask.]";
+  const vn = "[VOICE NOTE SCRIPT -- Under 60 seconds]\n\n\"Hey " + fname + ", it is Ashley from Ashley in Afrika.\n\nI came across " + company + " -- really impressive what you are building in the " + ind + " space.\n\nI work with founders at your stage who find that ops does not scale with the business. We deploy pre-trained execution pods -- support, admin, and ops professionals who plug in fast and cost a fraction of local hiring.\n\nRecently helped a " + ind + " founder free up 25 hours a week in 30 days. Would love to show you how. 15 minutes this week?\"\n\n[TIPS: Warm and specific. Mention their company. End with a clear ask.]";
 
-  const nurture = "[TOUCH 1 -- Day 1]\nSubject: Quick question about ops at " + lead.company + "\n\nHi " + fname + ",\n\nMost " + ind + " founders hitting growth hit the same wall -- execution capacity. Ops, admin, and support pile up faster than the team can handle.\n\nAt Ashley in Afrika, we drop in a pre-trained 3-person execution pod for less than one local US hire.\n\nOpen to a 10-minute call this week?\n\nAshley Cleveland, Ashley in Afrika\n\n------\n[TOUCH 2 -- Day 3]\nSubject: Re: ops at " + lead.company + "\n\nHey " + fname + ",\n\nBEFORE: Founder doing everything, team overwhelmed, growth stalling.\nAFTER: Execution pod deployed in 2 weeks. Founder freed 25 hours/week. 3 new clients in 30 days.\n\nIs this the challenge you are facing?\n\n------\n[TOUCH 3 -- Day 7]\nSubject: Free resource for " + lead.company + "\n\nHi " + fname + ",\n\nI put together an Ops Bottleneck Audit for " + ind + " founders -- maps where execution gaps cost the most time and revenue.\n\nWant me to send it? No call required.\n\nAshley Cleveland\n\n------\n[TOUCH 4 -- Day 14]\nSubject: Last note from me\n\nHey " + fname + ", timing may not be right -- totally fine.\n\nIf " + lead.company + " ever needs an execution team that deploys fast for less than local hiring, we would be a strong fit.\n\nAshley Cleveland, Ashley in Afrika";
+  const nurture = "[TOUCH 1 -- Day 1]\nSubject: Quick question about ops at " + company + "\n\nHi " + fname + ",\n\nMost " + ind + " founders scaling past $500K hit the same bottleneck -- execution capacity. Ops, admin, and support pile up faster than the team can handle.\n\nAt Ashley in Afrika, we solve this by dropping in a pre-trained 3-person execution pod for less than one local US hire.\n\nOpen to a 10-minute call this week?\n\nAshley Cleveland, Ashley in Afrika\n\n------\n[TOUCH 2 -- Day 3]\nSubject: Re: ops at " + company + "\n\nHey " + fname + ",\n\nBEFORE: Founder doing everything, team overwhelmed, growth stalling.\nAFTER: Execution pod deployed in 2 weeks. Founder freed 25 hours/week. 3 new clients in 30 days.\n\nIs this the challenge at " + company + "?\n\n------\n[TOUCH 3 -- Day 7]\nSubject: Free resource for " + company + "\n\nHi " + fname + ",\n\nI put together an Ops Bottleneck Audit for " + ind + " founders -- maps where execution gaps cost the most time.\n\nWant me to send it? No call required.\n\nAshley Cleveland\n\n------\n[TOUCH 4 -- Day 14]\nSubject: Last note from me\n\nHey " + fname + ", timing may not be right -- totally fine.\n\nIf " + company + " ever needs an execution team that deploys fast, we would be a strong fit.\n\nAshley Cleveland, Ashley in Afrika";
+
+  const scripts = [
+    {title:"LinkedIn DM", text: customScripts && customScripts.dm ? applyTemplate(customScripts.dm, isPartner ? {name:lead.n,company:lead.c,title:lead.t,location:lead.l,website:lead.w,email:lead.e} : lead, seg) : dm},
+    {title:"Voice Note Script", text: customScripts && customScripts.vn ? applyTemplate(customScripts.vn, isPartner ? {name:lead.n,company:lead.c,title:lead.t,location:lead.l} : lead, seg) : vn},
+    {title:"4-Step Nurture Sequence", text: customScripts && customScripts.nurture ? applyTemplate(customScripts.nurture, isPartner ? {name:lead.n,company:lead.c,title:lead.t,location:lead.l} : lead, seg) : nurture},
+  ];
 
   return (
-    <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.6)",display:"flex",alignItems:"center",justifyContent:"flex-end",zIndex:200}}>
-      <div style={{background:"var(--card)",width:"500px",height:"100%",overflow:"auto",padding:"24px",borderLeft:"1px solid var(--border)"}}>
+    <div className="panel-overlay">
+      <div className="panel">
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
           <div>
-            <div style={{fontWeight:800,fontSize:17}}>{lead.name || "Lead"}</div>
-            <div style={{color:"var(--muted)",fontSize:12}}>{lead.title} @ <strong style={{color:"var(--text)"}}>{lead.company}</strong></div>
+            <div style={{fontWeight:800,fontSize:17}}>{isPartner ? lead.n : lead.name}</div>
+            <div style={{color:"var(--muted)",fontSize:12}}>{title} at <strong style={{color:"var(--text)"}}>{company}</strong></div>
+            {location && <div style={{color:"var(--muted)",fontSize:11,marginTop:2}}>📍 {location}</div>}
           </div>
           <button onClick={onClose} style={{background:"var(--border)",border:"none",borderRadius:8,padding:"6px 12px",color:"var(--text)",cursor:"pointer",fontWeight:700}}>Close</button>
         </div>
-        {[["LinkedIn DM", dm], ["Voice Note Script", vn], ["4-Step Nurture Sequence", nurture]].map(([title, text]) => (
+        {customScripts && <div style={{background:"rgba(16,185,129,.1)",border:"1px solid rgba(16,185,129,.3)",borderRadius:8,padding:"8px 12px",marginBottom:16,fontSize:12,color:"var(--green)"}}>Using your custom uploaded scripts</div>}
+        {scripts.map(({title, text}) => (
           <div key={title} style={{marginBottom:20}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
               <div style={{fontWeight:700,fontSize:14}}>{title}</div>
@@ -289,93 +296,81 @@ function ScriptPanel({lead, onClose}) {
   );
 }
 
-function Dashboard({leads, partners}) {
-  const s = useMemo(() => {
-    const by = (stage) => leads.filter(l => (l.pipeline || "not_contacted") === stage).length;
-    const connSent = leads.filter(l => !["not_contacted","not_interested"].includes(l.pipeline || "not_contacted")).length;
-    const connected = leads.filter(l => ["connected","message_sent","replied","voice_note_sent","call_booked","closed"].includes(l.pipeline || "")).length;
-    const replied = leads.filter(l => ["replied","voice_note_sent","call_booked","closed"].includes(l.pipeline || "")).length;
-    const callBooked = by("call_booked") + by("closed");
-    const closed = by("closed");
-    const overdue = leads.filter(l => isOverdue(l)).length;
-    const msgSent = leads.filter(l => ["message_sent","replied","voice_note_sent","call_booked","closed"].includes(l.pipeline || "")).length;
-    const vnSent = leads.filter(l => ["voice_note_sent","call_booked","closed"].includes(l.pipeline || "")).length;
-    const pConfirmed = partners.filter(p => p.partnerStage === "partnership_confirmed").length;
-    const connRate = connSent > 0 ? Math.round(connected / connSent * 100) : 0;
-    const replyRate = msgSent > 0 ? Math.round(replied / msgSent * 100) : 0;
-    return {total:leads.length, connSent, connected, msgSent, replied, vnSent, callBooked, closed, overdue, pConfirmed, connRate, replyRate, rev:closed*12000};
-  }, [leads, partners]);
-
-  const MC = ({label, val, sub, cls, icon}) => (
-    <div className={"stat " + cls}>
-      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
-        <div>
-          <div className="stat-val">{val}</div>
-          <div className="stat-lbl">{label}</div>
-          {sub && <div className="stat-sub">{sub}</div>}
-        </div>
-        <div style={{fontSize:20}}>{icon}</div>
-      </div>
-    </div>
-  );
+function ScriptUploader({onSave, current}) {
+  const [dm, setDm] = useState(current ? current.dm : "");
+  const [vn, setVn] = useState(current ? current.vn : "");
+  const [nurture, setNurture] = useState(current ? current.nurture : "");
+  const [show, setShow] = useState(false);
 
   return (
     <div>
-      <div className="page-title">AIA Metrics Dashboard</div>
-      <div className="page-sub">Auto-calculated from pipeline data</div>
-      <div className="grid4" style={{marginBottom:16}}>
-        <MC label="Total Pipeline" val={s.total} cls="bl" icon="T"/>
-        <MC label="Connections Sent" val={s.connSent} cls="pu" icon=">"/>
-        <MC label="Connected" val={s.connected} sub={s.connRate + "% rate"} cls="cy" icon="v"/>
-        <MC label="Messages Sent" val={s.msgSent} cls="am" icon="m"/>
-        <MC label="Replies" val={s.replied} sub={s.replyRate + "% rate"} cls="gr" icon="r"/>
-        <MC label="Voice Notes" val={s.vnSent} cls="pk" icon="*"/>
-        <MC label="Calls Booked" val={s.callBooked} cls="am" icon="c"/>
-        <MC label="Closed Won" val={s.closed} sub={"$" + (s.rev/1000).toFixed(0) + "K revenue"} cls="gr" icon="$"/>
-      </div>
-      <div className="grid3" style={{marginBottom:16}}>
-        <div className="stat re">
-          <div className="stat-val">{s.overdue}</div>
-          <div className="stat-lbl">Overdue Follow-Ups</div>
-          <div className="stat-sub">Needs immediate action</div>
-        </div>
-        <div className="stat gr">
-          <div className="stat-val">{s.pConfirmed}</div>
-          <div className="stat-lbl">Partners Confirmed</div>
-          <div className="stat-sub">Active brand partnerships</div>
-        </div>
-        <div className="stat pu">
-          <div className="stat-val">{"$" + s.rev.toLocaleString()}</div>
-          <div className="stat-lbl">Pipeline Revenue</div>
-          <div className="stat-sub">At $12K avg deal size</div>
-        </div>
-      </div>
-      <div className="card">
-        <div style={{fontWeight:700,fontSize:15,marginBottom:16}}>Integrations Hub</div>
-        <div className="grid3">
-          {[
-            {name:"Apollo",desc:"Lead verification and email validation",url:"https://app.apollo.io",color:"var(--blue)"},
-            {name:"GoHighLevel",desc:"Auto-trigger follow-up when call booked",url:"https://app.gohighlevel.com",color:"var(--accent)"},
-            {name:"Zapier",desc:"Automate handoffs between tools",url:"https://zapier.com",color:"var(--amber)"},
-            {name:"Calendly",desc:"Embed booking links in outreach CTAs",url:"https://calendly.com",color:"var(--accent2)"},
-            {name:"Asana",desc:"Auto-create tasks on high-interest stage",url:"https://app.asana.com",color:"var(--pink)"},
-            {name:"Slack",desc:"Real-time pipeline milestone alerts",url:"https://slack.com",color:"var(--green)"},
-          ].map(i => (
-            <a key={i.name} href={i.url} target="_blank" rel="noreferrer" style={{textDecoration:"none"}}>
-              <div className="card-sm" style={{cursor:"pointer"}}>
-                <div style={{fontWeight:700,fontSize:13,color:i.color,marginBottom:4}}>{i.name}</div>
-                <div style={{fontSize:11,color:"var(--muted)",marginBottom:8}}>{i.desc}</div>
-                <span style={{fontSize:10,background:i.color+"18",color:i.color,padding:"2px 8px",borderRadius:6,fontWeight:700}}>Configure</span>
+      <button className="btn btn-s btn-sm" style={{borderColor:"var(--accent)",color:"var(--accent)"}} onClick={() => setShow(s => !s)}>
+        {current ? "Edit Scripts" : "Upload Scripts"}
+      </button>
+      {show && (
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.7)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:300}}>
+          <div style={{background:"var(--card)",border:"1px solid var(--border)",borderRadius:20,padding:28,width:600,maxHeight:"85vh",overflow:"auto"}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
+              <div>
+                <div style={{fontWeight:800,fontSize:18}}>Upload Custom Scripts</div>
+                <div style={{color:"var(--muted)",fontSize:12,marginTop:4}}>Use placeholders: [FIRST_NAME] [COMPANY] [TITLE] [INDUSTRY] [LOCATION]</div>
               </div>
-            </a>
-          ))}
+              <button onClick={() => setShow(false)} style={{background:"var(--border)",border:"none",borderRadius:8,padding:"6px 12px",color:"var(--text)",cursor:"pointer",fontWeight:700}}>Close</button>
+            </div>
+            {[["LinkedIn DM", dm, setDm],["Voice Note Script", vn, setVn],["4-Step Nurture Sequence", nurture, setNurture]].map(([title, val, setter]) => (
+              <div key={title} style={{marginBottom:16}}>
+                <div style={{fontWeight:700,fontSize:14,marginBottom:6}}>{title}</div>
+                <textarea value={val} onChange={e => setter(e.target.value)}
+                  placeholder={"Paste your " + title.toLowerCase() + " template here. Use [FIRST_NAME], [COMPANY], [INDUSTRY] etc."}
+                  style={{width:"100%",height:120,background:"var(--surface)",border:"1px solid var(--border)",borderRadius:10,padding:"10px 14px",color:"var(--text)",fontSize:12,resize:"vertical",outline:"none",fontFamily:"inherit",lineHeight:1.6}}/>
+              </div>
+            ))}
+            <div style={{display:"flex",gap:8}}>
+              <button className="btn btn-p" onClick={() => { onSave({dm,vn,nurture}); setShow(false); }}>Save Scripts</button>
+              {current && <button className="btn btn-s" style={{color:"var(--red)",borderColor:"var(--red)"}} onClick={() => { onSave(null); setShow(false); }}>Remove Custom Scripts</button>}
+            </div>
+          </div>
         </div>
+      )}
+    </div>
+  );
+}
+
+function ToolBar({label, count, overdueCount, filters, onSearch, searchVal, extraButtons, rightButtons}) {
+  return (
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",flexWrap:"wrap",gap:12,marginBottom:20}}>
+      <div>
+        <div className="page-title">{label}</div>
+        <div className="page-sub">
+          {count.toLocaleString()} total
+          {overdueCount > 0 && <span style={{color:"var(--red)",fontWeight:700}}> -- {overdueCount} overdue</span>}
+        </div>
+      </div>
+      <div style={{display:"flex",gap:8,flexWrap:"wrap",alignItems:"center"}}>
+        <input className="inp" placeholder="Search..." value={searchVal} onChange={e => onSearch(e.target.value)}
+          style={{width:150,padding:"8px 12px",fontSize:13}}/>
+        {filters}
+        {extraButtons}
+        {rightButtons}
       </div>
     </div>
   );
 }
 
-function Prospects({leads, setLeads}) {
+function CSVUploadBtn({label, onUpload, color}) {
+  return (
+    <label className="btn btn-s btn-sm" style={{cursor:"pointer",borderColor:color||"var(--green)",color:color||"var(--green)"}}>
+      {label || "Upload CSV"}
+      <input type="file" accept=".csv" style={{display:"none"}} onChange={e => {
+        const file = e.target.files[0];
+        if (!file) return;
+        Papa.parse(file, {header:true, skipEmptyLines:true, complete: r => { onUpload(r.data); e.target.value = ""; }});
+      }}/>
+    </label>
+  );
+}
+
+function Prospects({leads, setLeads, customScripts, setCustomScripts}) {
   const [fSeg, setFSeg] = useState("all");
   const [fSize, setFSize] = useState("all");
   const [fStage, setFStage] = useState("all");
@@ -387,6 +382,48 @@ function Prospects({leads, setLeads}) {
   const PER = 50;
 
   const upd = (id, field, val) => setLeads(prev => prev.map(l => l.id === id ? {...l, [field]: val} : l));
+
+  const handleCSVUpload = (rows) => {
+    const newLeads = rows.map((row, i) => {
+      const first = row["First Name"] || row["first_name"] || "";
+      const last = row["Last Name"] || row["last_name"] || "";
+      const name = (first + " " + last).trim() || row["Name"] || row["name"] || "";
+      const industry = (row["Industry"] || row["industry"] || "").toLowerCase();
+      let seg = "general";
+      if (industry.includes("saas") || industry.includes("software") || industry.includes("cloud")) seg = "saas";
+      else if (industry.includes("fintech") || industry.includes("financ")) seg = "fintech";
+      else if (industry.includes("ecom") || industry.includes("commerce")) seg = "ecom";
+      else if (industry.includes("health") || industry.includes("medical")) seg = "healthcare";
+      else if (industry.includes("agency") || industry.includes("marketing")) seg = "agency";
+      else if (industry.includes("real estate") || industry.includes("property")) seg = "realestate";
+      else if (industry.includes("consult")) seg = "consulting";
+      return {
+        id: "csv-" + Date.now() + "-" + i,
+        name, title: row["Title"] || row["title"] || row["Job Title"] || "",
+        company: row["Company Name"] || row["Company"] || row["company"] || "",
+        location: row["Company Location"] || row["Location"] || "United States",
+        website: row["Company URL"] || row["Website"] || row["website"] || "",
+        linkedin: row["LinkedIn Url"] || row["LinkedIn URL"] || row["linkedin"] || "",
+        email: row["Email"] || row["email"] || row["Person Email"] || "",
+        segment: seg, size: "startup", pipeline: "not_contacted", seqStart: null,
+        signal: row["Hiring Signal"] || "", reason: row["Reason This Is a Strong Lead"] || "",
+      };
+    });
+    setLeads(prev => {
+      const existing = new Map(prev.map(l => [(l.company || "").toLowerCase(), l]));
+      const toAdd = newLeads.filter(l => !existing.has((l.company || "").toLowerCase()));
+      return [...prev, ...toAdd];
+    });
+  };
+
+  const downloadCSV = () => {
+    const h = ["Name","Title","Company","Location","Website","LinkedIn","Email","Segment","Tier","Pipeline","Score"];
+    const rows = leads.map(l => [l.name,l.title,l.company,l.location,l.website||"",l.linkedin||"",l.email||"",l.segment,l.size||"startup",l.pipeline||"not_contacted",calcScore(l)].map(v => JSON.stringify(v||"")).join(","));
+    const csv = [h.join(","), ...rows].join("\n");
+    const blob = new Blob([csv], {type:"text/csv"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a"); a.href = url; a.download = "aia_leads.csv"; a.click();
+  };
 
   const filtered = useMemo(() => {
     let list = [...leads];
@@ -407,20 +444,20 @@ function Prospects({leads, setLeads}) {
 
   return (
     <div>
-      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",flexWrap:"wrap",gap:12,marginBottom:20}}>
-        <div>
-          <div className="page-title">AIA BrandUp Client Pipeline</div>
-          <div className="page-sub">{leads.length.toLocaleString()} prospects {overdueCount > 0 && <span style={{color:"var(--red)",fontWeight:700}}>-- {overdueCount} overdue</span>}</div>
-        </div>
-        <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
-          <input className="inp" placeholder="Search..." value={search} onChange={e => {setSearch(e.target.value); setPage(1);}} style={{width:150,padding:"8px 12px",fontSize:13}}/>
+      <ToolBar
+        label="AIA BrandUp Client Pipeline"
+        count={leads.length}
+        overdueCount={overdueCount}
+        searchVal={search}
+        onSearch={v => { setSearch(v); setPage(1); }}
+        filters={<>
           <select className="sel" value={fSeg} onChange={e => {setFSeg(e.target.value); setPage(1);}}>
             <option value="all">All Segments</option>
-            {Object.entries(CLIENT_SEGS).map(([k,v]) => <option key={k} value={k}>{v.icon} {v.label}</option>)}
+            {Object.entries(CLIENT_SEGS).map(([k,v]) => <option key={k} value={k}>{v.label}</option>)}
           </select>
           <select className="sel" value={fSize} onChange={e => {setFSize(e.target.value); setPage(1);}}>
             <option value="all">All Tiers</option>
-            {Object.entries(TIERS).map(([k,v]) => <option key={k} value={k}>{v.icon} {v.label}</option>)}
+            {Object.entries(TIERS).map(([k,v]) => <option key={k} value={k}>{v.label}</option>)}
           </select>
           <select className="sel" value={fStage} onChange={e => {setFStage(e.target.value); setPage(1);}}>
             <option value="all">All Stages</option>
@@ -431,59 +468,65 @@ function Prospects({leads, setLeads}) {
             <option value="overdue">Overdue First</option>
             <option value="company">Company A-Z</option>
           </select>
-          <button className={"btn btn-s btn-sm" + (fOverdue?" active":"")}
+          <button className="btn btn-s btn-sm"
             style={{borderColor:fOverdue?"var(--red)":"var(--border)",color:fOverdue?"var(--red)":"var(--text)",background:fOverdue?"rgba(239,68,68,.1)":"transparent"}}
             onClick={() => setFOverdue(f => !f)}>Overdue Only</button>
-        </div>
-      </div>
+        </>}
+        extraButtons={<>
+          <CSVUploadBtn label="Upload CSV" onUpload={handleCSVUpload} color="var(--green)"/>
+          <button className="btn btn-s btn-sm" style={{borderColor:"var(--accent2)",color:"var(--accent2)"}} onClick={downloadCSV}>Download CSV</button>
+          <ScriptUploader onSave={setCustomScripts} current={customScripts}/>
+        </>}
+      />
       <div className="card" style={{padding:0,overflow:"hidden"}}>
         <div style={{overflowX:"auto"}}>
           <table className="tbl">
             <colgroup>
-              <col style={{width:"18%"}}/><col style={{width:"14%"}}/><col style={{width:"14%"}}/><col style={{width:"7%"}}/><col style={{width:"7%"}}/><col style={{width:"8%"}}/><col style={{width:"8%"}}/><col style={{width:"8%"}}/><col style={{width:"8%"}}/><col style={{width:"8%"}}/>
+              <col style={{width:"17%"}}/><col style={{width:"14%"}}/><col style={{width:"15%"}}/><col style={{width:"7%"}}/><col style={{width:"8%"}}/><col style={{width:"9%"}}/><col style={{width:"7%"}}/><col style={{width:"7%"}}/><col style={{width:"7%"}}/><col style={{width:"9%"}}/>
             </colgroup>
             <thead>
-              <tr>
-                <th>Prospect</th><th>Links</th><th>Pipeline Stage</th><th>Score</th><th>Tier</th><th>Segment</th><th>Seq Day</th><th>Follow-Up</th><th>Overdue</th><th>Action</th>
-              </tr>
+              <tr><th>Prospect</th><th>Links</th><th>Pipeline Stage</th><th>Score</th><th>Tier</th><th>Segment</th><th>Seq Day</th><th>Follow-Up</th><th>Overdue</th><th>Action</th></tr>
             </thead>
             <tbody>
-              {pageLeads.map(ld => {
-                const score = calcScore(ld);
-                const seg = CLIENT_SEGS[ld.segment] || CLIENT_SEGS.general;
-                const tier = TIERS[ld.size || "startup"] || TIERS.startup;
-                const days = daysSince(ld.seqStart);
-                const nf = nextFollowUp(ld);
-                const od = isOverdue(ld);
+              {pageLeads.map(lead => {
+                const score = calcScore(lead);
+                const seg = CLIENT_SEGS[lead.segment] || CLIENT_SEGS.general;
+                const tier = TIERS[lead.size || "startup"] || TIERS.startup;
+                const days = daysSince(lead.seqStart);
+                const nf = nextFollowUp(lead);
+                const od = isOverdue(lead);
                 return (
-                  <tr key={ld.id} className={od ? "overdue" : ""}>
+                  <tr key={lead.id} className={od ? "overdue-row" : ""}>
                     <td>
-                      <div style={{fontWeight:700,fontSize:13,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{ld.name || "--"}</div>
-                      <div style={{color:"var(--muted)",fontSize:11,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{ld.title}</div>
-                      <div style={{color:"var(--text)",fontSize:11,fontWeight:700,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{ld.company}</div>
+                      <div style={{fontWeight:700,fontSize:13,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{lead.name || "--"}</div>
+                      <div style={{color:"var(--muted)",fontSize:11,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{lead.title}</div>
+                      <div style={{color:"var(--text)",fontSize:11,fontWeight:600,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{lead.company}</div>
+                      {lead.location && <div style={{color:"var(--muted)",fontSize:10,marginTop:1}}>📍 {lead.location}</div>}
                     </td>
                     <td>
                       <div style={{display:"flex",flexDirection:"column",gap:3}}>
-                        <EditField value={ld.website} placeholder="Website" type="url" onSave={v => upd(ld.id,"website",v)}/>
-                        <EditField value={ld.linkedin} placeholder="LinkedIn" type="url" onSave={v => upd(ld.id,"linkedin",v)}/>
-                        <EditField value={ld.email} placeholder="Email" type="email" onSave={v => upd(ld.id,"email",v)}/>
+                        <EditField value={lead.website} placeholder="Website" type="url" onSave={v => upd(lead.id,"website",v)}/>
+                        <EditField value={lead.linkedin} placeholder="LinkedIn" type="url" onSave={v => upd(lead.id,"linkedin",v)}/>
+                        <EditField value={lead.email} placeholder="Email" type="email" onSave={v => upd(lead.id,"email",v)}/>
                       </div>
                     </td>
-                    <td><PipelineSelect value={ld.pipeline || "not_contacted"} onChange={v => upd(ld.id,"pipeline",v)}/></td>
+                    <td><PipelineSelect value={lead.pipeline || "not_contacted"} onChange={v => upd(lead.id,"pipeline",v)}/></td>
                     <td>
                       <div style={{fontWeight:800,fontSize:15,color:score>=5?"var(--green)":score>=2?"var(--amber)":"var(--muted)"}}>{score}</div>
+                      <div style={{height:3,width:40,background:"var(--border)",borderRadius:2,marginTop:3,overflow:"hidden"}}>
+                        <div style={{height:"100%",width:Math.min(score/10*100,100)+"%",background:"var(--gradient)",borderRadius:2}}/>
+                      </div>
                     </td>
                     <td><span className="tag" style={{background:tier.color+"15",color:tier.color}}>{tier.label}</span></td>
                     <td><span className="tag" style={{background:seg.color+"15",color:seg.color,fontSize:9}}>{seg.label.split(" ")[0]}</span></td>
                     <td>
-                      {ld.seqStart
+                      {lead.seqStart
                         ? <span style={{fontSize:12,fontWeight:700,color:"var(--accent2)"}}>Day {days}</span>
-                        : <button className="btn btn-s btn-sm" style={{fontSize:10,padding:"3px 7px"}} onClick={() => upd(ld.id,"seqStart",new Date().toISOString().slice(0,10))}>Start</button>
-                      }
+                        : <button className="btn btn-s btn-sm" style={{fontSize:10,padding:"3px 7px"}} onClick={() => upd(lead.id,"seqStart",new Date().toISOString().slice(0,10))}>Start</button>}
                     </td>
-                    <td>{nf ? <span style={{fontSize:11,color:od?"var(--red)":"var(--muted)",fontWeight:od?700:400}}>Day {nf}</span> : ld.seqStart ? <span style={{fontSize:11,color:"var(--green)"}}>Done</span> : <span style={{color:"var(--muted)",fontSize:11}}>--</span>}</td>
-                    <td>{od ? <span className="badge" style={{background:"rgba(239,68,68,.1)",color:"var(--red)"}}>Overdue</span> : <span style={{color:"var(--muted)",fontSize:11}}>--</span>}</td>
-                    <td><button className="btn btn-p btn-sm" onClick={() => setActive(ld)}>Scripts</button></td>
+                    <td>{nf ? <span style={{fontSize:11,color:od?"var(--red)":"var(--muted)",fontWeight:od?700:400}}>Day {nf}</span> : lead.seqStart ? <span style={{fontSize:11,color:"var(--green)"}}>Done</span> : <span style={{color:"var(--muted)",fontSize:11}}>--</span>}</td>
+                    <td>{od ? <span className="badge" style={{background:"rgba(239,68,68,.1)",color:"var(--red)",fontSize:10}}>Overdue</span> : <span style={{color:"var(--muted)",fontSize:11}}>--</span>}</td>
+                    <td><button className="btn btn-p btn-sm" onClick={() => setActive(lead)}>Scripts</button></td>
                   </tr>
                 );
               })}
@@ -499,16 +542,47 @@ function Prospects({leads, setLeads}) {
           </div>
         </div>
       </div>
-      {active && <ScriptPanel lead={active} onClose={() => setActive(null)}/>}
+      {active && <ScriptPanel lead={active} isPartner={false} onClose={() => setActive(null)} customScripts={customScripts}/>}
     </div>
   );
 }
 
-function Partners({partners, setPartners}) {
+function Partners({partners, setPartners, customScripts, setCustomScripts}) {
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
+  const [active, setActive] = useState(null);
 
   const upd = (id, field, val) => setPartners(prev => prev.map(p => p.id === id ? {...p, [field]: val} : p));
+
+  const handleCSVUpload = (rows) => {
+    const newPartners = rows.map((row, i) => ({
+      id: "bp-csv-" + Date.now() + "-" + i,
+      n: (row["First Name"] || row["Name"] || row["name"] || "") + " " + (row["Last Name"] || ""),
+      t: row["Title"] || row["title"] || "",
+      c: row["Company Name"] || row["Company"] || row["company"] || "",
+      l: row["Company Location"] || row["Location"] || "",
+      w: row["Company URL"] || row["Website"] || row["website"] || "",
+      li: row["LinkedIn Url"] || row["LinkedIn URL"] || row["linkedin"] || "",
+      e: row["Email"] || row["email"] || "",
+      seg: row["Industry"] || row["Category"] || "general",
+      s: "New", sig: "", r: "",
+      partnerStage: "identified", audienceSize: "", collabType: "referral", nextAction: "",
+    }));
+    setPartners(prev => {
+      const existing = new Map(prev.map(p => [(p.c || "").toLowerCase(), p]));
+      const toAdd = newPartners.filter(p => !existing.has((p.c || "").toLowerCase()));
+      return [...prev, ...toAdd];
+    });
+  };
+
+  const downloadCSV = () => {
+    const h = ["Name","Title","Company","Location","Website","LinkedIn","Email","Category","Stage","Audience","Collab Type"];
+    const rows = partners.map(p => [p.n,p.t,p.c,p.l,p.w||"",p.li||"",p.e||"",p.seg,p.partnerStage||"identified",p.audienceSize||"",p.collabType||""].map(v => JSON.stringify(v||"")).join(","));
+    const csv = [h.join(","), ...rows].join("\n");
+    const blob = new Blob([csv], {type:"text/csv"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a"); a.href = url; a.download = "aia_partners.csv"; a.click();
+  };
 
   const filtered = useMemo(() => {
     let list = [...partners];
@@ -519,27 +593,32 @@ function Partners({partners, setPartners}) {
 
   return (
     <div>
-      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",flexWrap:"wrap",gap:12,marginBottom:20}}>
-        <div>
-          <div className="page-title">AIA Brand Partner Tracker</div>
-          <div className="page-sub">{partners.length} partners -- {filtered.length} shown</div>
-        </div>
-        <div style={{display:"flex",gap:8}}>
-          <input className="inp" placeholder="Search..." value={search} onChange={e => setSearch(e.target.value)} style={{width:160,padding:"8px 12px",fontSize:13}}/>
+      <ToolBar
+        label="AIA Brand Partner Tracker"
+        count={partners.length}
+        overdueCount={0}
+        searchVal={search}
+        onSearch={setSearch}
+        filters={
           <select className="sel" value={filter} onChange={e => setFilter(e.target.value)}>
             <option value="all">All Categories</option>
-            {Object.entries(PARTNER_SEGS).map(([k,v]) => <option key={k} value={k}>{v.icon} {v.label}</option>)}
+            {Object.entries(PARTNER_SEGS).map(([k,v]) => <option key={k} value={k}>{v.label}</option>)}
           </select>
-        </div>
-      </div>
+        }
+        extraButtons={<>
+          <CSVUploadBtn label="Upload CSV" onUpload={handleCSVUpload} color="var(--green)"/>
+          <button className="btn btn-s btn-sm" style={{borderColor:"var(--accent2)",color:"var(--accent2)"}} onClick={downloadCSV}>Download CSV</button>
+          <ScriptUploader onSave={setCustomScripts} current={customScripts}/>
+        </>}
+      />
       <div className="card" style={{padding:0,overflow:"hidden"}}>
         <div style={{overflowX:"auto"}}>
           <table className="tbl">
             <colgroup>
-              <col style={{width:"18%"}}/><col style={{width:"14%"}}/><col style={{width:"12%"}}/><col style={{width:"15%"}}/><col style={{width:"10%"}}/><col style={{width:"12%"}}/><col style={{width:"12%"}}/><col style={{width:"7%"}}/>
+              <col style={{width:"17%"}}/><col style={{width:"13%"}}/><col style={{width:"12%"}}/><col style={{width:"15%"}}/><col style={{width:"10%"}}/><col style={{width:"12%"}}/><col style={{width:"12%"}}/><col style={{width:"9%"}}/>
             </colgroup>
             <thead>
-              <tr><th>Partner</th><th>Links</th><th>Category</th><th>Relationship Stage</th><th>Audience</th><th>Collab Type</th><th>Next Action</th><th>DM</th></tr>
+              <tr><th>Partner</th><th>Links</th><th>Category</th><th>Relationship Stage</th><th>Audience Size</th><th>Collab Type</th><th>Notes</th><th>Scripts</th></tr>
             </thead>
             <tbody>
               {filtered.map(p => {
@@ -550,7 +629,8 @@ function Partners({partners, setPartners}) {
                     <td>
                       <div style={{fontWeight:700,fontSize:13,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.n || "--"}</div>
                       <div style={{color:"var(--muted)",fontSize:11,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.t}</div>
-                      <div style={{fontWeight:700,fontSize:11,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.c}</div>
+                      <div style={{color:"var(--text)",fontSize:11,fontWeight:600,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.c}</div>
+                      {p.l && <div style={{color:"var(--muted)",fontSize:10,marginTop:1}}>📍 {p.l}</div>}
                     </td>
                     <td>
                       <div style={{display:"flex",flexDirection:"column",gap:3}}>
@@ -562,7 +642,7 @@ function Partners({partners, setPartners}) {
                     <td><span className="tag" style={{background:seg.color+"15",color:seg.color,fontSize:9}}>{seg.label}</span></td>
                     <td>
                       <select value={p.partnerStage || "identified"} onChange={e => upd(p.id,"partnerStage",e.target.value)}
-                        style={{padding:"4px 8px",background:stage.color+"18",color:stage.color,border:"1px solid "+stage.color+"40",borderRadius:8,fontSize:11,fontWeight:700,cursor:"pointer",outline:"none"}}>
+                        style={{padding:"4px 8px",background:stage.color+"18",color:stage.color,border:"1px solid "+stage.color+"40",borderRadius:8,fontSize:11,fontWeight:700,cursor:"pointer",outline:"none",maxWidth:150}}>
                         {Object.entries(PARTNER_STAGES).map(([k,v]) => <option key={k} value={k}>{v.label}</option>)}
                       </select>
                     </td>
@@ -573,15 +653,109 @@ function Partners({partners, setPartners}) {
                         {["referral","content","integration","co-marketing","design-partner","speaking"].map(t => <option key={t} value={t}>{t}</option>)}
                       </select>
                     </td>
-                    <td><EditField value={p.nextAction} placeholder="Next step..." onSave={v => upd(p.id,"nextAction",v)}/></td>
-                    <td>
-                      <CopyBtn text={"Hi " + (p.n ? p.n.split(" ")[0] : "there") + ",\n\nI lead Ashley in Afrika -- we deploy pre-trained remote execution teams for high-growth founders.\n\nGiven " + p.c + " position in the " + seg.label + " space, I would love to explore collaboration.\n\nWorth a brief conversation?\n\nAshley Cleveland, Ashley in Afrika"} label="DM"/>
-                    </td>
+                    <td><EditField value={p.notes} placeholder="Add notes..." onSave={v => upd(p.id,"notes",v)}/></td>
+                    <td><button className="btn btn-p btn-sm" onClick={() => setActive(p)}>Scripts</button></td>
                   </tr>
                 );
               })}
             </tbody>
           </table>
+        </div>
+      </div>
+      {active && <ScriptPanel lead={active} isPartner={true} onClose={() => setActive(null)} customScripts={customScripts}/>}
+    </div>
+  );
+}
+
+function Dashboard({leads, partners}) {
+  const s = useMemo(() => {
+    const by = stage => leads.filter(l => (l.pipeline || "not_contacted") === stage).length;
+    const connSent = leads.filter(l => !["not_contacted"].includes(l.pipeline || "not_contacted")).length;
+    const connected = leads.filter(l => ["connected","message_sent","replied","voice_note_sent","call_booked","closed"].includes(l.pipeline || "")).length;
+    const msgSent = leads.filter(l => ["message_sent","replied","voice_note_sent","call_booked","closed"].includes(l.pipeline || "")).length;
+    const replied = leads.filter(l => ["replied","voice_note_sent","call_booked","closed"].includes(l.pipeline || "")).length;
+    const vnSent = leads.filter(l => ["voice_note_sent","call_booked","closed"].includes(l.pipeline || "")).length;
+    const callBooked = by("call_booked") + by("closed");
+    const closed = by("closed");
+    const overdue = leads.filter(l => isOverdue(l)).length;
+    const pConfirmed = partners.filter(p => p.partnerStage === "partnership_confirmed").length;
+    const connRate = connSent > 0 ? Math.round(connected / connSent * 100) : 0;
+    const replyRate = msgSent > 0 ? Math.round(replied / msgSent * 100) : 0;
+    const bookRate = replied > 0 ? Math.round(callBooked / replied * 100) : 0;
+    return {total:leads.length,connSent,connected,msgSent,replied,vnSent,callBooked,closed,overdue,pConfirmed,connRate,replyRate,bookRate,rev:closed*12000};
+  }, [leads, partners]);
+
+  const MC = ({label, val, sub, cls}) => (
+    <div className={"stat " + cls}>
+      <div className="stat-val">{val}</div>
+      <div className="stat-lbl">{label}</div>
+      {sub && <div className="stat-sub">{sub}</div>}
+    </div>
+  );
+
+  const funnelSteps = [
+    ["Prospects Reached","Connected",s.connSent,s.connected,"cy"],
+    ["Connected","Replied",s.connected,s.replied,"gr"],
+    ["Replied","Call Booked",s.replied,s.callBooked,"am"],
+    ["Call Booked","Closed",s.callBooked,s.closed,"pk"],
+  ];
+
+  return (
+    <div>
+      <div className="page-title">AIA Metrics Dashboard</div>
+      <div className="page-sub">Auto-calculated from pipeline data -- updates in real time</div>
+      <div className="grid4" style={{marginBottom:16}}>
+        <MC label="Total Pipeline" val={s.total} cls="bl"/>
+        <MC label="Connections Sent" val={s.connSent} cls="pu"/>
+        <MC label="Connected" val={s.connected} sub={s.connRate + "% rate"} cls="cy"/>
+        <MC label="Messages Sent" val={s.msgSent} cls="am"/>
+        <MC label="Replies" val={s.replied} sub={s.replyRate + "% rate"} cls="gr"/>
+        <MC label="Voice Notes" val={s.vnSent} cls="pk"/>
+        <MC label="Calls Booked" val={s.callBooked} sub={s.bookRate + "% book rate"} cls="am"/>
+        <MC label="Closed Won" val={s.closed} sub={"$" + (s.rev/1000).toFixed(0) + "K revenue"} cls="gr"/>
+      </div>
+      <div className="grid3" style={{marginBottom:16}}>
+        <div className="stat re"><div className="stat-val">{s.overdue}</div><div className="stat-lbl">Overdue Follow-Ups</div><div className="stat-sub">Needs immediate action</div></div>
+        <div className="stat gr"><div className="stat-val">{s.pConfirmed}</div><div className="stat-lbl">Partners Confirmed</div><div className="stat-sub">Active brand partnerships</div></div>
+        <div className="stat pu"><div className="stat-val">{"$" + s.rev.toLocaleString()}</div><div className="stat-lbl">Pipeline Revenue</div><div className="stat-sub">At $12K avg deal size</div></div>
+      </div>
+      <div className="card" style={{marginBottom:16}}>
+        <div style={{fontWeight:700,fontSize:15,marginBottom:16}}>Funnel Conversion</div>
+        {funnelSteps.map(([from, to, fromVal, toVal, cls]) => {
+          const pct = fromVal > 0 ? Math.round(toVal / fromVal * 100) : 0;
+          const color = cls === "cy" ? "var(--accent2)" : cls === "gr" ? "var(--green)" : cls === "am" ? "var(--amber)" : "var(--pink)";
+          return (
+            <div key={from} style={{marginBottom:14}}>
+              <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
+                <span style={{fontSize:13}}>{from} <span style={{color:"var(--muted)"}}>--</span> {to}</span>
+                <span style={{fontSize:13,fontWeight:700,color}}>{toVal} / {fromVal} ({pct}%)</span>
+              </div>
+              <div style={{height:6,background:"var(--border)",borderRadius:3,overflow:"hidden"}}>
+                <div style={{height:"100%",width:pct+"%",background:color,borderRadius:3,transition:"width .3s"}}/>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <div className="card">
+        <div style={{fontWeight:700,fontSize:15,marginBottom:12}}>Integrations Hub</div>
+        <div className="grid3">
+          {[
+            {name:"Apollo",desc:"Lead verification and email validation",url:"https://app.apollo.io",color:"var(--blue)"},
+            {name:"GoHighLevel",desc:"Auto-trigger follow-up sequences",url:"https://app.gohighlevel.com",color:"var(--accent)"},
+            {name:"Zapier",desc:"Automate handoffs between tools",url:"https://zapier.com",color:"var(--amber)"},
+            {name:"Calendly",desc:"Embed booking links in outreach CTAs",url:"https://calendly.com/ashleyinafrika",color:"var(--accent2)"},
+            {name:"Asana",desc:"Auto-create tasks at high-interest stage",url:"https://app.asana.com",color:"var(--pink)"},
+            {name:"Slack",desc:"Real-time pipeline milestone alerts",url:"https://slack.com",color:"var(--green)"},
+          ].map(i => (
+            <a key={i.name} href={i.url} target="_blank" rel="noreferrer" style={{textDecoration:"none"}}>
+              <div className="card-sm" style={{cursor:"pointer",transition:"border-color .15s"}} onMouseEnter={e => e.currentTarget.style.borderColor=i.color} onMouseLeave={e => e.currentTarget.style.borderColor="var(--border)"}>
+                <div style={{fontWeight:700,fontSize:13,color:i.color,marginBottom:4}}>{i.name}</div>
+                <div style={{fontSize:11,color:"var(--muted)",marginBottom:8}}>{i.desc}</div>
+                <span style={{fontSize:10,background:i.color+"18",color:i.color,padding:"2px 8px",borderRadius:6,fontWeight:700}}>Configure</span>
+              </div>
+            </a>
+          ))}
         </div>
       </div>
     </div>
@@ -591,20 +765,46 @@ function Partners({partners, setPartners}) {
 function ContentLib() {
   const defaults = [
     {id:"a1",name:"Ops Bottleneck Audit",type:"Lead Magnet",link:"",stage:"Touch 3",desc:"Free audit -- maps where execution gaps cost the most time. Send after positive reply."},
-    {id:"a2",name:"Calendly Booking Link",type:"Booking Link",link:"https://calendly.com/ashleyinafrika",stage:"Touch 2",desc:"Discovery call booking -- embed in voice note follow-up and email CTAs"},
-    {id:"a3",name:"Case Study -- 25 Hours Freed",type:"Case Study",link:"",stage:"Touch 2",desc:"Anonymous SaaS founder freed 25 hours/week in 30 days and onboarded 3 new clients"},
+    {id:"a2",name:"Calendly -- Ashley Cleveland",type:"Booking Link",link:"https://calendly.com/ashleyinafrika",stage:"Touch 2",desc:"Discovery call booking link -- embed in voice note follow-up and email CTAs"},
+    {id:"a3",name:"Case Study -- 25 Hours Freed in 30 Days",type:"Case Study",link:"",stage:"Touch 2",desc:"Anonymous SaaS founder freed 25 hours/week in 30 days and onboarded 3 new clients"},
     {id:"a4",name:"Ashley in Afrika Website",type:"Social",link:"https://ashleyinafrika.com",stage:"All",desc:"Main website -- send prospects here to validate credibility"},
-    {id:"a5",name:"LinkedIn Company Page",type:"Social",link:"https://linkedin.com/company/ashleyinafrika",stage:"All",desc:"Ashley LinkedIn -- prospects check this before replying"},
-    {id:"a6",name:"Execution Pod Overview Deck",type:"Demo",link:"",stage:"Touch 4",desc:"Shows pod structure, timeline, and deliverables. Send when interest is confirmed."},
+    {id:"a5",name:"Ashley Cleveland -- LinkedIn Company Page",type:"Social",link:"https://linkedin.com/company/ashleyinafrika",stage:"All",desc:"Ashley company LinkedIn -- prospects check this before replying"},
+    {id:"a6",name:"Ashley Cleveland -- Personal LinkedIn",type:"Social",link:"https://www.linkedin.com/in/ashleycleveland",stage:"All",desc:"Ashley personal LinkedIn -- use for direct outreach and connection requests"},
+    {id:"a7",name:"Execution Pod Overview Deck",type:"Demo",link:"",stage:"Touch 4",desc:"Shows pod structure, timeline, and deliverables. Send when interest is confirmed."},
   ];
-  const [assets, setAssets] = useState(() => load("aia_assets") || defaults);
-  useEffect(() => { save("aia_assets", assets); }, [assets]);
-
+  const [assets, setAssets] = useState(() => ld("aia_assets") || defaults);
+  const [showAdd, setShowAdd] = useState(false);
+  const [newA, setNewA] = useState({name:"",type:"Lead Magnet",link:"",stage:"Touch 1",desc:""});
+  useEffect(() => { sv("aia_assets", assets); }, [assets]);
   return (
     <div>
-      <div className="page-title">AIA Content and Asset Library</div>
-      <div className="page-sub">All active assets -- AA pulls these instantly during outreach without going to another platform</div>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))",gap:16,marginTop:20}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
+        <div>
+          <div className="page-title">AIA Content and Asset Library</div>
+          <div className="page-sub">AA pulls these instantly during outreach -- no switching platforms</div>
+        </div>
+        <button className="btn btn-p btn-sm" onClick={() => setShowAdd(s => !s)}>+ Add Asset</button>
+      </div>
+      {showAdd && (
+        <div className="card" style={{marginBottom:16}}>
+          <div className="grid2" style={{marginBottom:10}}>
+            <input className="inp" placeholder="Asset name" value={newA.name} onChange={e => setNewA(p => ({...p,name:e.target.value}))}/>
+            <select className="inp" value={newA.type} onChange={e => setNewA(p => ({...p,type:e.target.value}))}>
+              {["Lead Magnet","Case Study","Demo","Booking Link","Social","Video","Template","Report","Other"].map(t => <option key={t}>{t}</option>)}
+            </select>
+            <input className="inp" placeholder="URL / Link" value={newA.link} onChange={e => setNewA(p => ({...p,link:e.target.value}))}/>
+            <select className="inp" value={newA.stage} onChange={e => setNewA(p => ({...p,stage:e.target.value}))}>
+              {["Touch 1","Touch 2","Touch 3","Touch 4","All","Voice Note","Call Booked"].map(s => <option key={s}>{s}</option>)}
+            </select>
+          </div>
+          <textarea className="inp" placeholder="Description..." value={newA.desc} onChange={e => setNewA(p => ({...p,desc:e.target.value}))} style={{height:60,resize:"vertical",marginBottom:10}}/>
+          <div style={{display:"flex",gap:8}}>
+            <button className="btn btn-p btn-sm" onClick={() => { if(!newA.name)return; setAssets(p => [...p,{...newA,id:"a"+Date.now()}]); setNewA({name:"",type:"Lead Magnet",link:"",stage:"Touch 1",desc:""}); setShowAdd(false); }}>Save</button>
+            <button className="btn btn-s btn-sm" onClick={() => setShowAdd(false)}>Cancel</button>
+          </div>
+        </div>
+      )}
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))",gap:16}}>
         {assets.map(a => (
           <div key={a.id} className="card">
             <div style={{display:"flex",justifyContent:"space-between",marginBottom:8}}>
@@ -630,26 +830,26 @@ function ContentLib() {
 }
 
 function FounderVoice() {
-  const sections = [
-    {title:"One-Line Positioning",content:"We build pre-trained remote execution teams for high-growth founders -- delivering world-class African talent in support, admin, and operations at a fraction of local hiring costs."},
-    {title:"Core Value Proposition",content:"Founders scaling past $500K hit the same wall: ops, admin, and support work does not scale with the business. Hiring locally is expensive and slow. Doing it yourself kills growth.\n\nAshley in Afrika solves this by deploying a pre-trained 3-person remote execution pod -- ready in 2 weeks, for less than one local US hire.\n\nThe founder gets their time back. The business gets execution capacity. Growth happens."},
-    {title:"ICP -- Who We Serve",content:"High-growth founders and operators at:\n- SaaS and Cloud companies\n- FinTech startups\n- E-commerce brands\n- Healthcare tech\n- Marketing agencies\n- Real estate and PropTech\n- Consulting firms\n\nRevenue: $250K-$10M\nTeam size: 2-50 employees\nPrimary pain: Founder bottleneck -- doing everything, ops overwhelm slowing growth."},
-    {title:"Tone of Voice",content:"Warm, peer-to-peer, founder-to-founder. Ashley speaks from experience -- she knows the grind.\n\nNever corporate. Never formal. Always specific to their industry and pain point.\n\nEnergy: encouraging, direct, outcome-focused. Lead with empathy, close with results."},
-    {title:"Ashley Exact Framing -- Use This",content:"You are not hiring a VA. You are deploying a pre-trained execution pod that knows your industry, your tools, and your workflow from day one. Two weeks to launch. Less than a local hire. Built for founders who cannot afford to slow down."},
-    {title:"The African Talent Angle",content:"Ashley in Afrika specifically sources talent from across the African continent -- world-class professionals with strong communication skills, deep work ethic, and genuine commitment to founder success.\n\nThis is the differentiation: not just remote work -- African excellence.\n\nAlways lead with results. The African angle adds depth, never leads."},
-    {title:"Outreach Sequence",content:"Step 1: Initial curiosity DM (LinkedIn or email)\nStep 2: Voice note from Ashley upon positive response\nStep 3: Ops Bottleneck Audit sent as free resource\nStep 4: Discovery call booked via Calendly\n\nFollow-up cadence: Day 1 -- Day 3 -- Day 7 -- Day 14"},
-    {title:"What to Never Say",content:"- Never say virtual assistant -- undersells the offer\n- Never lead with price\n- Never send generic outreach -- always reference their specific industry and pain\n- Never position as freelancers -- they are pre-trained execution teams\n- Never skip specificity -- generic messages get ignored"},
+  const secs = [
+    {t:"One-Line Positioning",c:"We build pre-trained remote execution teams for high-growth founders -- delivering world-class African talent in support, admin, and operations at a fraction of local hiring costs."},
+    {t:"Core Value Proposition",c:"Founders scaling past $500K hit the same wall: ops, admin, and support work does not scale with the business. Hiring locally is expensive and slow. Doing it yourself kills growth.\n\nAshley in Afrika solves this by deploying a pre-trained 3-person remote execution pod -- ready in 2 weeks, for less than one local US hire.\n\nThe founder gets their time back. The business gets execution capacity. Growth happens."},
+    {t:"ICP -- Who We Serve",c:"High-growth founders and operators at:\n- SaaS and Cloud companies\n- FinTech startups\n- E-commerce brands\n- Healthcare tech\n- Marketing agencies\n- Real estate and PropTech\n- Consulting firms\n\nRevenue: $250K-$10M\nTeam size: 2-50 employees\nPrimary pain: Founder bottleneck -- doing everything, ops overwhelm slowing growth."},
+    {t:"Tone of Voice",c:"Warm, peer-to-peer, founder-to-founder. Ashley speaks from experience -- she knows the grind.\n\nNever corporate. Never formal. Always specific to their industry and pain point.\n\nEnergy: encouraging, direct, outcome-focused. Lead with empathy, close with results."},
+    {t:"Ashley Exact Framing -- Use This",c:"You are not hiring a VA. You are deploying a pre-trained execution pod that knows your industry, your tools, and your workflow from day one. Two weeks to launch. Less than a local hire. Built for founders who cannot afford to slow down."},
+    {t:"The African Talent Angle",c:"Ashley in Afrika specifically sources talent from across the African continent -- world-class professionals with strong communication skills, deep work ethic, and genuine commitment to founder success.\n\nThis is the differentiation: not just remote work -- African excellence.\n\nAlways lead with results. The African angle adds depth, never leads."},
+    {t:"Outreach Sequence",c:"Step 1: Initial curiosity DM (LinkedIn or email)\nStep 2: Voice note from Ashley upon positive response\nStep 3: Ops Bottleneck Audit sent as free resource\nStep 4: Discovery call booked via Calendly\n\nFollow-up cadence: Day 1 -- Day 3 -- Day 7 -- Day 14"},
+    {t:"What to Never Say",c:"- Never say virtual assistant -- undersells the offer\n- Never lead with price\n- Never send generic outreach -- always reference specific industry and pain\n- Never position as freelancers -- they are pre-trained execution teams\n- Never skip specificity -- generic messages get ignored"},
   ];
   return (
     <div>
       <div className="page-title">Ashley Voice and Positioning Reference</div>
       <div className="page-sub">AA reference guide -- ensures every message aligns with Ashley brand</div>
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(340px,1fr))",gap:16,marginTop:20}}>
-        {sections.map(s => (
-          <div key={s.title} className="card">
-            <div style={{fontWeight:800,fontSize:14,marginBottom:10}}>{s.title}</div>
-            <div style={{color:"var(--muted)",fontSize:13,lineHeight:1.8,whiteSpace:"pre-wrap"}}>{s.content}</div>
-            <div style={{marginTop:12}}><CopyBtn text={s.content} label="Copy"/></div>
+        {secs.map(s => (
+          <div key={s.t} className="card">
+            <div style={{fontWeight:800,fontSize:14,marginBottom:10}}>{s.t}</div>
+            <div style={{color:"var(--muted)",fontSize:13,lineHeight:1.8,whiteSpace:"pre-wrap"}}>{s.c}</div>
+            <div style={{marginTop:12}}><CopyBtn text={s.c} label="Copy"/></div>
           </div>
         ))}
       </div>
@@ -660,20 +860,18 @@ function FounderVoice() {
 function Objections() {
   const defaults = [
     {id:"o1",q:"We already have a virtual assistant or EA",a:"What we deliver is different from a traditional VA. Our execution pods are pre-trained on your industry, tools, and workflow from day one -- no 3-month learning curve. You get 3 team members working as a coordinated unit, not a single generalist."},
-    {id:"o2",q:"How do I know the quality will be good?",a:"Every team member goes through our vetting and training program before deployment. We match based on your specific industry and tech stack. You get a 30-day quality guarantee -- if the pod is not performing to your standards in the first 30 days, we replace them at no cost."},
-    {id:"o3",q:"I am worried about communication and time zones",a:"Our pods are trained in async-first communication -- detailed Loom updates, clear task documentation, and proactive status reporting. Most founders say communication actually improves when they work with us because everything is documented. Time zone overlap is built into matching."},
-    {id:"o4",q:"This seems expensive -- what is the ROI?",a:"Compare it to what you are spending now -- your own time on ops work, local contractor costs, or the growth you are leaving on the table. Our pods typically cost less than one local US hire. Founders who work with us get back 15-25 hours per week within the first month."},
+    {id:"o2",q:"How do I know the quality will be good?",a:"Every team member goes through our vetting and training program before deployment. We match based on your specific industry and tech stack. 30-day quality guarantee -- if the pod is not performing to your standards, we replace them at no cost."},
+    {id:"o3",q:"I am worried about communication and time zones",a:"Our pods are trained in async-first communication -- detailed Loom updates, clear task documentation, and proactive status reporting. Most founders say communication actually improves because everything is documented. Time zone overlap is built into matching."},
+    {id:"o4",q:"This seems expensive -- what is the ROI?",a:"Compare it to your current spend -- your own time on ops work, local contractor costs, or the growth you are leaving on the table. Our pods typically cost less than one local US hire. Founders who work with us get back 15-25 hours per week within the first month."},
     {id:"o5",q:"I am not sure I have enough work for a full team",a:"That is exactly the right size for us. Our pods flex with your workload and are cross-trained to cover multiple functions. You do not need to have it all figured out before we start."},
-    {id:"o6",q:"I have had bad experiences with remote workers before",a:"We hear this a lot -- and it is usually because the hire was not properly vetted or trained for the role. We select for your specific industry, pre-train on your tools and workflows, and there is an AA Operations team behind every pod. You are not managing alone."},
-    {id:"o7",q:"Can I start with just one person?",a:"Absolutely -- we can start with a single specialist and scale to a pod as you grow. Most founders start with one focused role (support, admin, or ops) and expand once they see the impact."},
+    {id:"o6",q:"I have had bad experiences with remote workers before",a:"We hear this a lot -- it is usually because the hire was not properly vetted or trained. We select for your specific industry, pre-train on your tools and workflows, and there is an AA Operations team behind every pod. You are not managing alone."},
+    {id:"o7",q:"Can I start with just one person?",a:"Absolutely -- we can start with a single specialist and scale to a pod as you grow. Most founders start with one focused role and expand once they see the impact."},
     {id:"o8",q:"How quickly can you get someone started?",a:"Typically 2 weeks from agreement to first day. We handle sourcing, vetting, training, and onboarding. You get a simple onboarding call -- and then they are running."},
   ];
-  const [objs, setObjs] = useState(() => load("aia_objections") || defaults);
+  const [objs, setObjs] = useState(() => ld("aia_objections") || defaults);
   const [search, setSearch] = useState("");
-  useEffect(() => { save("aia_objections", objs); }, [objs]);
-
+  useEffect(() => { sv("aia_objections", objs); }, [objs]);
   const filtered = objs.filter(o => (o.q + " " + o.a).toLowerCase().includes(search.toLowerCase()));
-
   return (
     <div>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
@@ -687,7 +885,7 @@ function Objections() {
         {filtered.map(o => (
           <div key={o.id} className="card">
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:10}}>
-              <div style={{fontWeight:700,fontSize:14,color:"var(--red)"}}>"{o.q}"</div>
+              <div style={{fontWeight:700,fontSize:14,color:"var(--red)"}}>{o.q}</div>
               <button onClick={() => setObjs(p => p.filter(x => x.id !== o.id))} style={{background:"none",border:"none",color:"var(--muted)",cursor:"pointer",fontSize:14}}>x</button>
             </div>
             <div style={{background:"var(--surface)",border:"1px solid var(--border)",borderRadius:10,padding:"12px",fontSize:13,color:"var(--muted)",lineHeight:1.7,marginBottom:10}}>{o.a}</div>
@@ -700,119 +898,95 @@ function Objections() {
 }
 
 function App() {
-  const [user, setUser] = useState(() => load("aia_user"));
+  const [user, setUser] = useState(() => ld("aia_user"));
   const [view, setView] = useState("dashboard");
   const [leads, setLeads] = useState([]);
   const [partners, setPartners] = useState([]);
+  const [clientScripts, setClientScripts] = useState(() => ld("aia_client_scripts") || null);
+  const [partnerScripts, setPartnerScripts] = useState(() => ld("aia_partner_scripts") || null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => { if (leads.length > 0) save("aia_clients", leads); }, [leads]);
-  useEffect(() => { if (partners.length > 0) save("aia_partners", partners); }, [partners]);
+  useEffect(() => { if (leads.length > 0) sv("aia_clients", leads); }, [leads]);
+  useEffect(() => { if (partners.length > 0) sv("aia_partners", partners); }, [partners]);
+  useEffect(() => { sv("aia_client_scripts", clientScripts); }, [clientScripts]);
+  useEffect(() => { sv("aia_partner_scripts", partnerScripts); }, [partnerScripts]);
 
   useEffect(() => {
-    // Load clients
-    const saved = load("aia_clients");
+    const saved = ld("aia_clients");
     if (saved && saved.length > 0) {
-      let merged = saved.map(l => ({...l, size: l.size || l.sz || "startup", pipeline: l.pipeline || "not_contacted"}));
+      let merged = saved.map(l => ({...l, size: l.size || l.sz || "startup", pipeline: l.pipeline || "not_contacted", segment: l.segment || l.seg || "general"}));
       if (typeof EMBEDDED_CLIENTS !== "undefined") {
         const urlMap = new Map();
         EMBEDDED_CLIENTS.forEach(p => { if (p.w) urlMap.set((p.c||"").toLowerCase().trim(), p.w); });
-        merged = merged.map(l => {
-          const key = (l.company || "").toLowerCase().trim();
-          return (!l.website && urlMap.has(key)) ? {...l, website: urlMap.get(key)} : l;
-        });
+        merged = merged.map(l => { const key = (l.company||"").toLowerCase().trim(); return (!l.website && urlMap.has(key)) ? {...l,website:urlMap.get(key)} : l; });
       }
-      setLeads(merged);
-      setLoading(false);
+      setLeads(merged); setLoading(false);
     } else if (typeof EMBEDDED_CLIENTS !== "undefined" && EMBEDDED_CLIENTS.length > 0) {
       const embedded = EMBEDDED_CLIENTS.map((p, i) => ({
-        id: p.id || "aia-" + i,
-        name: p.n, title: p.t, company: p.c, location: p.l,
-        website: p.w || "", linkedin: p.li || "", email: p.e || "",
+        id: p.id || "aia-" + i, name: p.n || "", title: p.t || "", company: p.c || "",
+        location: p.l || "", website: p.w || "", linkedin: p.li || "", email: p.e || "",
         segment: p.seg || "general", size: p.sz || "startup",
-        pipeline: "not_contacted", seqStart: null,
-        signal: p.sig || "", reason: p.r || "",
+        pipeline: "not_contacted", seqStart: null, signal: p.sig || "", reason: p.r || "",
       }));
-      setLeads(embedded);
-      setLoading(false);
-    } else {
-      setLoading(false);
-    }
+      setLeads(embedded); setLoading(false);
+    } else { setLoading(false); }
 
-    // Load partners -- always sync from embedded
     if (typeof EMBEDDED_PARTNERS !== "undefined" && EMBEDDED_PARTNERS.length > 0) {
       const embedded = EMBEDDED_PARTNERS.map((p, i) => ({
-        id: p.id || "aia-bp-" + i,
-        n: p.n, t: p.t, c: p.c, l: p.l,
-        w: p.w || "", li: p.li || "", e: p.e || "",
-        seg: p.seg, s: p.s || "New",
-        sig: p.sig || "", r: p.r || "",
-        partnerStage: "identified", audienceSize: "", collabType: "referral", nextAction: "",
+        id: p.id || "aia-bp-" + i, n: p.n || "", t: p.t || "", c: p.c || "",
+        l: p.l || "", w: p.w || "", li: p.li || "", e: p.e || "",
+        seg: p.seg || "general", s: "New", sig: p.sig || "", r: p.r || "",
+        partnerStage: "identified", audienceSize: "", collabType: "referral", notes: "",
       }));
-      const savedP = load("aia_partners");
+      const savedP = ld("aia_partners");
       if (savedP && savedP.length > 0) {
         const savedMap = new Map(savedP.map(p => [p.id, p]));
-        const merged = embedded.map(ep => {
-          const sv = savedMap.get(ep.id);
-          return sv ? {...ep, partnerStage: sv.partnerStage || "identified", audienceSize: sv.audienceSize || "", collabType: sv.collabType || "referral", nextAction: sv.nextAction || ""} : ep;
-        });
-        setPartners(merged);
-        save("aia_partners", merged);
-      } else {
-        setPartners(embedded);
-        save("aia_partners", embedded);
-      }
+        const merged = embedded.map(ep => { const sv2 = savedMap.get(ep.id); return sv2 ? {...ep,partnerStage:sv2.partnerStage||"identified",audienceSize:sv2.audienceSize||"",collabType:sv2.collabType||"referral",notes:sv2.notes||""} : ep; });
+        setPartners(merged); sv("aia_partners", merged);
+      } else { setPartners(embedded); sv("aia_partners", embedded); }
     }
   }, []);
 
-  const logout = () => { setUser(null); localStorage.removeItem("aia_user"); };
-
-  if (!user) return <Auth onAuth={u => { setUser(u); save("aia_user", u); }}/>;
+  if (!user) return <Auth onAuth={u => { setUser(u); sv("aia_user", u); }}/>;
 
   const overdueCount = leads.filter(l => isOverdue(l)).length;
 
   const NAV = [
-    {sec:"Analytics"},
-    {id:"dashboard", label:"Dashboard", icon:"D"},
+    {sec:"Analytics"},{id:"dashboard",label:"Dashboard",icon:"D"},
     {sec:"Pipeline"},
-    {id:"prospects", label:"BrandUp Clients", icon:"T", badge:leads.length, hotBadge:overdueCount},
-    {id:"partners", label:"Brand Partners", icon:"P", badge:partners.length},
+    {id:"prospects",label:"BrandUp Clients",icon:"T",badge:leads.length,hotBadge:overdueCount},
+    {id:"partners",label:"Brand Partners",icon:"P",badge:partners.length},
     {sec:"Resources"},
-    {id:"scripts", label:"Outreach Scripts", icon:"S"},
-    {id:"objections", label:"Objection Library", icon:"O"},
-    {id:"content", label:"Content Library", icon:"C"},
-    {id:"voice", label:"Founder Voice", icon:"V"},
+    {id:"scripts",label:"Outreach Scripts",icon:"S"},
+    {id:"objections",label:"Objection Library",icon:"O"},
+    {id:"content",label:"Content Library",icon:"C"},
+    {id:"voice",label:"Founder Voice",icon:"V"},
   ];
 
   if (loading) return (
     <div style={{height:"100vh",display:"flex",alignItems:"center",justifyContent:"center",background:"var(--bg)"}}>
-      <div style={{textAlign:"center"}}>
-        <div style={{fontSize:48,marginBottom:12}}>A</div>
-        <h2>Loading AIA OS...</h2>
-      </div>
+      <div style={{textAlign:"center"}}><div style={{fontSize:48,marginBottom:12,background:"var(--gradient)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",fontWeight:900}}>A</div><h2>Loading AIA OS...</h2></div>
     </div>
   );
 
   return (
     <div className="app">
-      <button className="logout" onClick={logout}>Logout</button>
+      <button className="logout" onClick={() => { setUser(null); localStorage.removeItem("aia_user"); }}>Logout</button>
       <div className="sidebar">
         <div className="sb-brand">
           <div className="sb-logo">A</div>
           <div className="sb-name">Ashley in Afrika</div>
-          <div className="sb-sub">Operating System</div>
+          <div className="sb-sub">Operating System v2</div>
         </div>
         <div style={{padding:"4px 0 8px"}}>
           {NAV.map((item, i) => item.sec
             ? <div key={i} className="nav-sec">{item.sec}</div>
-            : (
-              <div key={item.id} className={"nav-item" + (view===item.id?" active":"")} onClick={() => setView(item.id)}>
-                <span style={{fontSize:14,minWidth:18,textAlign:"center"}}>{item.icon}</span>
+            : <div key={item.id} className={"nav-item"+(view===item.id?" active":"")} onClick={() => setView(item.id)}>
+                <span style={{fontSize:14,minWidth:18,textAlign:"center",fontWeight:800}}>{item.icon}</span>
                 <span>{item.label}</span>
                 {item.badge > 0 && <span className="nb">{item.badge}</span>}
                 {item.hotBadge > 0 && <span className="nb hot">{item.hotBadge}</span>}
               </div>
-            )
           )}
         </div>
         <div style={{marginTop:"auto",padding:"12px 16px",borderTop:"1px solid var(--border)"}}>
@@ -822,19 +996,31 @@ function App() {
         </div>
       </div>
       <div className="content">
-        {view === "dashboard" && <Dashboard leads={leads} partners={partners}/>}
-        {view === "prospects" && <Prospects leads={leads} setLeads={setLeads}/>}
-        {view === "partners" && <Partners partners={partners} setPartners={setPartners}/>}
-        {view === "scripts" && (
+        {view==="dashboard" && <Dashboard leads={leads} partners={partners}/>}
+        {view==="prospects" && <Prospects leads={leads} setLeads={setLeads} customScripts={clientScripts} setCustomScripts={setClientScripts}/>}
+        {view==="partners" && <Partners partners={partners} setPartners={setPartners} customScripts={partnerScripts} setCustomScripts={setPartnerScripts}/>}
+        {view==="scripts" && (
           <div>
             <div className="page-title">AIA Outreach Scripts</div>
-            <div className="page-sub">Go to BrandUp Clients and click Scripts on any lead to generate personalized outreach</div>
-            <div className="card" style={{marginTop:20}}>
-              <div style={{fontWeight:700,fontSize:15,marginBottom:16}}>AIA 3-Step Outreach Sequence</div>
+            <div className="page-sub">Click Scripts on any prospect or partner to generate personalized outreach. Upload your own scripts below.</div>
+            <div className="grid2" style={{marginTop:20}}>
+              <div className="card">
+                <div style={{fontWeight:700,fontSize:15,marginBottom:12}}>Client Scripts</div>
+                <div style={{color:"var(--muted)",fontSize:13,marginBottom:16,lineHeight:1.7}}>{clientScripts ? "Custom scripts uploaded and active. Click Scripts on any client lead." : "Using default AIA outreach scripts. Upload custom templates to override."}</div>
+                <ScriptUploader onSave={setClientScripts} current={clientScripts}/>
+              </div>
+              <div className="card">
+                <div style={{fontWeight:700,fontSize:15,marginBottom:12}}>Partner Scripts</div>
+                <div style={{color:"var(--muted)",fontSize:13,marginBottom:16,lineHeight:1.7}}>{partnerScripts ? "Custom scripts uploaded and active. Click Scripts on any brand partner." : "Using default AIA partner outreach scripts. Upload custom templates to override."}</div>
+                <ScriptUploader onSave={setPartnerScripts} current={partnerScripts}/>
+              </div>
+            </div>
+            <div className="card" style={{marginTop:16}}>
+              <div style={{fontWeight:700,fontSize:15,marginBottom:12}}>AIA 3-Step Outreach Sequence</div>
               {[
-                {step:"Step 1",title:"Initial Curiosity Message (LinkedIn DM or Email)",desc:"Lead with the ops bottleneck problem. Tier-aware: Startup gets founder-to-founder warmth, Growth gets scaling-stage framing, Scale gets peer-executive framing. Never mention pricing. End with a soft 10 to 15 minute ask.",color:"var(--blue)"},
-                {step:"Step 2",title:"Voice Note from Ashley upon positive response",desc:"Ashley records a 60-second voice note. Warm, confident, specific to the founder. Mention one thing you noticed about their company. End with a specific Calendly link ask.",color:"var(--accent)"},
-                {step:"Step 3",title:"Ops Bottleneck Audit or Demo sent once they confirm interest",desc:"Send the free Ops Bottleneck Audit or the Execution Pod Overview Deck. Keep the message short -- they have already expressed interest. Confirm the discovery call time.",color:"var(--green)"},
+                {step:"Step 1",title:"Initial Curiosity Message",desc:"Lead with the ops bottleneck problem. Tier-aware. Never mention pricing. End with a soft 10 to 15 minute ask.",color:"var(--blue)"},
+                {step:"Step 2",title:"Voice Note from Ashley",desc:"Ashley records a 60-second voice note. Warm, confident, specific to the founder. Reference their company. End with a Calendly link ask.",color:"var(--accent)"},
+                {step:"Step 3",title:"Ops Bottleneck Audit or Demo",desc:"Send the free audit or the Execution Pod Overview Deck. Keep the message short. Confirm the discovery call time.",color:"var(--green)"},
               ].map(s => (
                 <div key={s.step} style={{padding:"14px 16px",borderLeft:"3px solid "+s.color,background:"var(--surface)",borderRadius:"0 10px 10px 0",marginBottom:10}}>
                   <div style={{display:"flex",gap:10,alignItems:"center",marginBottom:6}}>
@@ -847,9 +1033,9 @@ function App() {
             </div>
           </div>
         )}
-        {view === "objections" && <Objections/>}
-        {view === "content" && <ContentLib/>}
-        {view === "voice" && <FounderVoice/>}
+        {view==="objections" && <Objections/>}
+        {view==="content" && <ContentLib/>}
+        {view==="voice" && <FounderVoice/>}
       </div>
     </div>
   );
