@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ashley in Afrika | Operating System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+  <script src="aia_clients_data.js"></script>
+  <script src="aia_partners_data.js"></script>
+  <style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0A0A0F;--surface:#111118;--card:#16161F;--border:#1E1E2E;
+  --text:#F0F0FF;--muted:#6B6B8A;--accent:#7C3AED;--accent2:#06B6D4;
+  --green:#10B981;--amber:#F59E0B;--red:#EF4444;--blue:#3B82F6;--pink:#EC4899;
+  --gradient:linear-gradient(135deg,#7C3AED,#06B6D4);
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden}
+.app{display:flex;height:100vh;overflow:hidden}
+.sidebar{width:220px;min-width:220px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto}
+.sb-brand{padding:20px 16px 12px;border-bottom:1px solid var(--border)}
+.sb-logo{width:36px;height:36px;border-radius:10px;background:var(--gradient);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;color:#fff;margin-bottom:8px}
+.sb-name{font-size:13px;font-weight:800;font-family:'Outfit',sans-serif}
+.sb-sub{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:2px}
+.nav-sec{padding:12px 8px 4px;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:700}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:500;color:var(--muted);transition:all .15s;margin:1px 8px}
+.nav-item:hover{background:var(--card);color:var(--text)}
+.nav-item.active{background:var(--card);color:var(--text);font-weight:700}
+.nb{margin-left:auto;font-size:10px;background:var(--border);padding:2px 7px;border-radius:100px;font-weight:700}
+.nb.hot{background:rgba(239,68,68,.2);color:var(--red)}
+.content{flex:1;overflow-y:auto;overflow-x:hidden;padding:28px 32px}
+.page-title{font-size:26px;font-weight:800;font-family:'Outfit',sans-serif;margin-bottom:4px}
+.page-sub{color:var(--muted);font-size:14px;margin-bottom:20px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px}
+.card-sm{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;position:relative;overflow:hidden}
+.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.stat.gr::before{background:var(--green)}
+.stat.bl::before{background:var(--blue)}
+.stat.am::before{background:var(--amber)}
+.stat.pu::before{background:var(--accent)}
+.stat.re::before{background:var(--red)}
+.stat.cy::before{background:var(--accent2)}
+.stat.pk::before{background:var(--pink)}
+.stat-val{font-size:30px;font-weight:800;font-family:'Outfit',sans-serif;line-height:1}
+.stat-lbl{font-size:11px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.05em}
+.stat-sub{font-size:11px;color:var(--muted);margin-top:6px}
+.btn{padding:8px 16px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;border:1px solid;transition:all .15s;font-family:'DM Sans',sans-serif}
+.btn-p{background:var(--gradient);color:#fff;border-color:transparent}
+.btn-s{background:transparent;color:var(--text);border-color:var(--border)}
+.btn-s:hover{background:var(--surface)}
+.btn-sm{padding:5px 10px;font-size:11px;border-radius:7px}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:700}
+.tag{padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.inp{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;width:100%}
+.inp:focus{border-color:var(--accent)}
+.sel{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:8px 12px;color:var(--text);font-size:13px;outline:none;cursor:pointer}
+.tbl{width:100%;border-collapse:collapse;table-layout:fixed}
+.tbl th{padding:10px 12px;text-align:left;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--border);white-space:nowrap}
+.tbl td{padding:10px 12px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:var(--surface)}
+.overdue{background:rgba(239,68,68,.05);border-left:3px solid var(--red)}
+.auth-bg{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:999}
+.auth-card{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:40px;width:360px;text-align:center}
+.logout{position:fixed;top:12px;right:12px;z-index:100;padding:6px 14px;font-size:12px;background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.3);border-radius:8px;cursor:pointer;font-weight:700}
+@media(max-width:640px){.sidebar{display:none}.grid2,.grid3,.grid4{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const {useState,useEffect,useMemo} = React;
+
+const USERS = [
+  {name:"Bethel Esamah",pin:"AIA2026BE",role:"admin"},
+  {name:"Ashley Cleveland",pin:"AIA2026AC",role:"admin"},
+  {name:"Gwen Minoza",pin:"AIA2026GM",role:"team"},
+  {name:"Nailah Best",pin:"AIA2026NB",role:"team"},
+];
+
+const PIPELINE = {
+  not_contacted:{label:"Not Contacted",color:"#6B6B8A",icon:"o",score:0},
+  connection_sent:{label:"Connection Sent",color:"#3B82F6",icon:">",score:0},
+  connected:{label:"Connected",color:"#06B6D4",icon:"v",score:1},
+  message_sent:{label:"Message Sent",color:"#8B5CF6",icon:"m",score:1},
+  replied:{label:"Replied",color:"#10B981",icon:"r",score:2},
+  voice_note_sent:{label:"Voice Note Sent",color:"#F59E0B",icon:"*",score:2},
+  call_booked:{label:"Call Booked",color:"#EC4899",icon:"c",score:5},
+  closed:{label:"Closed Won",color:"#10B981",icon:"$",score:10},
+  not_interested:{label:"Not Interested",color:"#EF4444",icon:"x",score:0},
+};
+
+const PARTNER_STAGES = {
+  identified:{label:"Identified",color:"#6B6B8A"},
+  researched:{label:"Researched",color:"#3B82F6"},
+  outreach_sent:{label:"Outreach Sent",color:"#8B5CF6"},
+  responded:{label:"Responded",color:"#10B981"},
+  conversation_active:{label:"Conversation Active",color:"#F59E0B"},
+  partnership_confirmed:{label:"Partnership Confirmed",color:"#EC4899"},
+};
+
+const CLIENT_SEGS = {
+  saas:{label:"SaaS & Cloud",color:"#10B981",icon:"C"},
+  fintech:{label:"FinTech",color:"#3B82F6",icon:"F"},
+  ecom:{label:"E-Commerce",color:"#F59E0B",icon:"S"},
+  healthcare:{label:"Healthcare",color:"#8B5CF6",icon:"H"},
+  agency:{label:"Marketing Agency",color:"#EC4899",icon:"A"},
+  realestate:{label:"Real Estate",color:"#EF4444",icon:"R"},
+  consulting:{label:"Consulting",color:"#06B6D4",icon:"C"},
+  general:{label:"High-Growth Founders",color:"#10B981",icon:"G"},
+};
+
+const PARTNER_SEGS = {
+  fintech:{label:"Fintech & Banking",color:"#059669",icon:"B"},
+  travel:{label:"Travel & Relocation",color:"#2563EB",icon:"T"},
+  fashion:{label:"Fashion & Lifestyle",color:"#EC4899",icon:"F"},
+  realestate:{label:"Real Estate",color:"#EF4444",icon:"R"},
+  business:{label:"Business & Investment",color:"#F59E0B",icon:"I"},
+  legal:{label:"Legal & Professional",color:"#8B5CF6",icon:"L"},
+  diaspora:{label:"Diaspora Community",color:"#0891B2",icon:"D"},
+  general:{label:"Other Partners",color:"#6366F1",icon:"O"},
+};
+
+const TIERS = {
+  startup:{label:"Startup",color:"#10B981",icon:"S"},
+  growth:{label:"Growth",color:"#F59E0B",icon:"G"},
+  scale:{label:"Scale",color:"#8B5CF6",icon:"E"},
+};
+
+const FOLLOW_DAYS = [1,3,7,14,21];
+
+const save = (k,v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {} };
+const load = (k) => { try { const d = localStorage.getItem(k); return d ? JSON.parse(d) : null; } catch(e) { return null; } };
+
+const calcScore = (lead) => {
+  const s = PIPELINE[lead.pipeline || "not_contacted"];
+  return (s ? s.score : 0) + (lead.linkClicked ? 3 : 0);
+};
+
+const daysSince = (ds) => {
+  if (!ds) return null;
+  return Math.floor((new Date() - new Date(ds)) / 86400000);
+};
+
+const nextFollowUp = (lead) => {
+  if (!lead.seqStart) return null;
+  const d = daysSince(lead.seqStart);
+  return FOLLOW_DAYS.find(day => day > d) || null;
+};
+
+const isOverdue = (lead) => {
+  if (!lead.seqStart) return false;
+  const d = daysSince(lead.seqStart);
+  const nf = nextFollowUp(lead);
+  if (!nf) return false;
+  const p = lead.pipeline || "not_contacted";
+  return d >= nf && p !== "closed" && p !== "not_interested";
+};
+
+function Auth({onAuth}) {
+  const [pin, setPin] = useState("");
+  const [err, setErr] = useState("");
+  const [attempts, setAttempts] = useState(0);
+  const submit = () => {
+    const u = USERS.find(u => u.pin === pin.trim().toUpperCase());
+    if (u) { onAuth(u); }
+    else {
+      const a = attempts + 1;
+      setAttempts(a);
+      setErr("Invalid code. " + (5 - a) + " attempts left.");
+      setPin("");
+    }
+  };
+  return (
+    <div className="auth-bg">
+      <div className="auth-card">
+        <div style={{fontSize:40,marginBottom:16}}>A</div>
+        <div style={{fontSize:20,fontWeight:800,marginBottom:4}}>Ashley in Afrika OS</div>
+        <div style={{color:"var(--muted)",fontSize:13,marginBottom:24}}>Authorized Access Only</div>
+        <input className="inp" type="password" placeholder="Access Code" value={pin}
+          onChange={e => setPin(e.target.value)}
+          onKeyDown={e => e.key === "Enter" && submit()}
+          style={{marginBottom:12,textAlign:"center",letterSpacing:"0.2em"}}/>
+        {err && <div style={{color:"var(--red)",fontSize:12,marginBottom:12}}>{err}</div>}
+        <button className="btn btn-p" onClick={submit} style={{width:"100%",padding:"12px"}}>Authenticate</button>
+        <div style={{fontSize:10,color:"var(--muted)",marginTop:16}}>AIA -- SECURED ACCESS</div>
+      </div>
+    </div>
+  );
+}
+
+function CopyBtn({text, label}) {
+  const [copied, setCopied] = useState(false);
+  return (
+    <button className="btn btn-s btn-sm"
+      style={{background:copied?"rgba(16,185,129,.2)":"transparent",color:copied?"var(--green)":"var(--text)",borderColor:copied?"var(--green)":"var(--border)"}}
+      onClick={() => { navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 2000); }}>
+      {copied ? "Copied!" : label || "Copy"}
+    </button>
+  );
+}
+
+function EditField({value, placeholder, onSave, type}) {
+  const [editing, setEditing] = useState(false);
+  const [val, setVal] = useState(value || "");
+  useEffect(() => { setVal(value || ""); }, [value]);
+  if (editing) return (
+    <input autoFocus value={val} onChange={e => setVal(e.target.value)}
+      onBlur={() => { setEditing(false); onSave(val); }}
+      onKeyDown={e => { if (e.key === "Enter") { setEditing(false); onSave(val); } if (e.key === "Escape") { setEditing(false); setVal(value || ""); } }}
+      placeholder={placeholder}
+      style={{padding:"3px 6px",background:"var(--bg)",border:"1px solid var(--accent)",borderRadius:5,color:"var(--text)",fontSize:11,width:"100%",outline:"none"}}/>
+  );
+  if (!val) return (
+    <span onClick={() => setEditing(true)} style={{cursor:"pointer",color:"var(--muted)",fontSize:11,borderBottom:"1px dashed var(--border)"}}>
+      + {placeholder}
+    </span>
+  );
+  const href = type === "email" ? "mailto:" + val : val.startsWith("http") ? val : "https://" + val;
+  const icon = type === "email" ? "E:" : val.includes("linkedin") ? "LI:" : "W:";
+  const display = val.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "").substring(0, 22);
+  return (
+    <span style={{display:"flex",alignItems:"center",gap:3}}>
+      <a href={href} target="_blank" rel="noreferrer"
+        style={{color: type==="email" ? "var(--amber)" : val.includes("linkedin") ? "#0A66C2" : "var(--accent2)",
+          textDecoration:"none",fontSize:11,fontWeight:600}}
+        onClick={e => e.stopPropagation()}>{icon} {display}</a>
+      <button onClick={e => { e.stopPropagation(); setEditing(true); }}
+        style={{background:"none",border:"none",color:"var(--muted)",cursor:"pointer",fontSize:9,padding:"1px 3px"}}>edit</button>
+    </span>
+  );
+}
+
+function PipelineSelect({value, onChange}) {
+  const s = PIPELINE[value || "not_contacted"];
+  return (
+    <select value={value || "not_contacted"} onChange={e => onChange(e.target.value)}
+      style={{padding:"4px 8px",background:s.color + "18",color:s.color,border:"1px solid " + s.color + "40",borderRadius:8,fontSize:11,fontWeight:700,cursor:"pointer",outline:"none"}}>
+      {Object.entries(PIPELINE).map(([k,v]) => <option key={k} value={k}>{v.label}</option>)}
+    </select>
+  );
+}
+
+function ScriptPanel({lead, onClose}) {
+  const seg = CLIENT_SEGS[lead.segment] || CLIENT_SEGS.general;
+  const sz = lead.size || "startup";
+  const fname = lead.name ? lead.name.split(" ")[0] : "there";
+  const ind = seg.label.toLowerCase();
+
+  const dm = sz === "scale"
+    ? "Hi " + fname + ",\n\nNoticed " + lead.company + " is scaling fast. At that stage, ops rarely keeps pace -- support backlogs and execution gaps start costing real revenue.\n\nAt Ashley in Afrika, we deploy pre-trained remote execution teams for founders like you -- support, admin, and ops professionals ready in 2 weeks for less than one local hire.\n\nOpen to a 15-minute call?\n\nAshley Cleveland, Ashley in Afrika"
+    : sz === "growth"
+    ? "Hey " + fname + ",\n\nScaling a " + ind + " company past $1M usually means the founder becomes the bottleneck -- doing everything while ops slows growth down.\n\nWe drop in pre-trained remote execution teams -- support, admin, ops -- so you can buy back your time without the cost of local hiring.\n\nWorth a quick 10-min chat for " + lead.company + "?"
+    : "Hey " + fname + ",\n\nAs a " + lead.title + " at " + lead.company + ", I imagine you are wearing a lot of hats right now -- and ops is probably costing more time than it should.\n\nWe help founders like you deploy a remote execution pod -- pre-trained team members who handle admin, support, and ops -- so you can focus on growth.\n\nOpen to a quick call?";
+
+  const vn = "[VOICE NOTE SCRIPT]\n\n\"Hey " + fname + ", it is Ashley from Ashley in Afrika.\n\nI came across " + lead.company + " and I can see you are building something impressive in the " + ind + " space.\n\nI work with founders at your stage who find that ops does not scale with the business. We deploy pre-trained execution pods -- support, admin, and ops professionals who plug in fast and cost a fraction of local hiring.\n\nRecently helped a " + ind + " founder clear a massive backlog in 30 days and free up 25 hours per week. Would love to show you how we structure this. 15 minutes this week?\"\n\n[TIPS: Under 60 seconds. Warm, specific to their industry. End with a clear ask.]";
+
+  const nurture = "[TOUCH 1 -- Day 1]\nSubject: Quick question about ops at " + lead.company + "\n\nHi " + fname + ",\n\nMost " + ind + " founders hitting growth hit the same wall -- execution capacity. Ops, admin, and support pile up faster than the team can handle.\n\nAt Ashley in Afrika, we drop in a pre-trained 3-person execution pod for less than one local US hire.\n\nOpen to a 10-minute call this week?\n\nAshley Cleveland, Ashley in Afrika\n\n------\n[TOUCH 2 -- Day 3]\nSubject: Re: ops at " + lead.company + "\n\nHey " + fname + ",\n\nBEFORE: Founder doing everything, team overwhelmed, growth stalling.\nAFTER: Execution pod deployed in 2 weeks. Founder freed 25 hours/week. 3 new clients in 30 days.\n\nIs this the challenge you are facing?\n\n------\n[TOUCH 3 -- Day 7]\nSubject: Free resource for " + lead.company + "\n\nHi " + fname + ",\n\nI put together an Ops Bottleneck Audit for " + ind + " founders -- maps where execution gaps cost the most time and revenue.\n\nWant me to send it? No call required.\n\nAshley Cleveland\n\n------\n[TOUCH 4 -- Day 14]\nSubject: Last note from me\n\nHey " + fname + ", timing may not be right -- totally fine.\n\nIf " + lead.company + " ever needs an execution team that deploys fast for less than local hiring, we would be a strong fit.\n\nAshley Cleveland, Ashley in Afrika";
+
+  return (
+    <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.6)",display:"flex",alignItems:"center",justifyContent:"flex-end",zIndex:200}}>
+      <div style={{background:"var(--card)",width:"500px",height:"100%",overflow:"auto",padding:"24px",borderLeft:"1px solid var(--border)"}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
+          <div>
+            <div style={{fontWeight:800,fontSize:17}}>{lead.name || "Lead"}</div>
+            <div style={{color:"var(--muted)",fontSize:12}}>{lead.title} @ <strong style={{color:"var(--text)"}}>{lead.company}</strong></div>
+          </div>
+          <button onClick={onClose} style={{background:"var(--border)",border:"none",borderRadius:8,padding:"6px 12px",color:"var(--text)",cursor:"pointer",fontWeight:700}}>Close</button>
+        </div>
+        {[["LinkedIn DM", dm], ["Voice Note Script", vn], ["4-Step Nurture Sequence", nurture]].map(([title, text]) => (
+          <div key={title} style={{marginBottom:20}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+              <div style={{fontWeight:700,fontSize:14}}>{title}</div>
+              <CopyBtn text={text} label="Copy"/>
+            </div>
+            <div style={{background:"var(--surface)",border:"1px solid var(--border)",borderRadius:10,padding:"12px",fontSize:12,color:"var(--muted)",lineHeight:1.7,whiteSpace:"pre-wrap",maxHeight:180,overflowY:"auto"}}>{text}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function Dashboard({leads, partners}) {
+  const s = useMemo(() => {
+    const by = (stage) => leads.filter(l => (l.pipeline || "not_contacted") === stage).length;
+    const connSent = leads.filter(l => !["not_contacted","not_interested"].includes(l.pipeline || "not_contacted")).length;
+    const connected = leads.filter(l => ["connected","message_sent","replied","voice_note_sent","call_booked","closed"].includes(l.pipeline || "")).length;
+    const replied = leads.filter(l => ["replied","voice_note_sent","call_booked","closed"].includes(l.pipeline || "")).length;
+    const callBooked = by("call_booked") + by("closed");
+    const closed = by("closed");
+    const overdue = leads.filter(l => isOverdue(l)).length;
+    const msgSent = leads.filter(l => ["message_sent","replied","voice_note_sent","call_booked","closed"].includes(l.pipeline || "")).length;
+    const vnSent = leads.filter(l => ["voice_note_sent","call_booked","closed"].includes(l.pipeline || "")).length;
+    const pConfirmed = partners.filter(p => p.partnerStage === "partnership_confirmed").length;
+    const connRate = connSent > 0 ? Math.round(connected / connSent * 100) : 0;
+    const replyRate = msgSent > 0 ? Math.round(replied / msgSent * 100) : 0;
+    return {total:leads.length, connSent, connected, msgSent, replied, vnSent, callBooked, closed, overdue, pConfirmed, connRate, replyRate, rev:closed*12000};
+  }, [leads, partners]);
+
+  const MC = ({label, val, sub, cls, icon}) => (
+    <div className={"stat " + cls}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+        <div>
+          <div className="stat-val">{val}</div>
+          <div className="stat-lbl">{label}</div>
+          {sub && <div className="stat-sub">{sub}</div>}
+        </div>
+        <div style={{fontSize:20}}>{icon}</div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div>
+      <div className="page-title">AIA Metrics Dashboard</div>
+      <div className="page-sub">Auto-calculated from pipeline data</div>
+      <div className="grid4" style={{marginBottom:16}}>
+        <MC label="Total Pipeline" val={s.total} cls="bl" icon="T"/>
+        <MC label="Connections Sent" val={s.connSent} cls="pu" icon=">"/>
+        <MC label="Connected" val={s.connected} sub={s.connRate + "% rate"} cls="cy" icon="v"/>
+        <MC label="Messages Sent" val={s.msgSent} cls="am" icon="m"/>
+        <MC label="Replies" val={s.replied} sub={s.replyRate + "% rate"} cls="gr" icon="r"/>
+        <MC label="Voice Notes" val={s.vnSent} cls="pk" icon="*"/>
+        <MC label="Calls Booked" val={s.callBooked} cls="am" icon="c"/>
+        <MC label="Closed Won" val={s.closed} sub={"$" + (s.rev/1000).toFixed(0) + "K revenue"} cls="gr" icon="$"/>
+      </div>
+      <div className="grid3" style={{marginBottom:16}}>
+        <div className="stat re">
+          <div className="stat-val">{s.overdue}</div>
+          <div className="stat-lbl">Overdue Follow-Ups</div>
+          <div className="stat-sub">Needs immediate action</div>
+        </div>
+        <div className="stat gr">
+          <div className="stat-val">{s.pConfirmed}</div>
+          <div className="stat-lbl">Partners Confirmed</div>
+          <div className="stat-sub">Active brand partnerships</div>
+        </div>
+        <div className="stat pu">
+          <div className="stat-val">{"$" + s.rev.toLocaleString()}</div>
+          <div className="stat-lbl">Pipeline Revenue</div>
+          <div className="stat-sub">At $12K avg deal size</div>
+        </div>
+      </div>
+      <div className="card">
+        <div style={{fontWeight:700,fontSize:15,marginBottom:16}}>Integrations Hub</div>
+        <div className="grid3">
+          {[
+            {name:"Apollo",desc:"Lead verification and email validation",url:"https://app.apollo.io",color:"var(--blue)"},
+            {name:"GoHighLevel",desc:"Auto-trigger follow-up when call booked",url:"https://app.gohighlevel.com",color:"var(--accent)"},
+            {name:"Zapier",desc:"Automate handoffs between tools",url:"https://zapier.com",color:"var(--amber)"},
+            {name:"Calendly",desc:"Embed booking links in outreach CTAs",url:"https://calendly.com",color:"var(--accent2)"},
+            {name:"Asana",desc:"Auto-create tasks on high-interest stage",url:"https://app.asana.com",color:"var(--pink)"},
+            {name:"Slack",desc:"Real-time pipeline milestone alerts",url:"https://slack.com",color:"var(--green)"},
+          ].map(i => (
+            <a key={i.name} href={i.url} target="_blank" rel="noreferrer" style={{textDecoration:"none"}}>
+              <div className="card-sm" style={{cursor:"pointer"}}>
+                <div style={{fontWeight:700,fontSize:13,color:i.color,marginBottom:4}}>{i.name}</div>
+                <div style={{fontSize:11,color:"var(--muted)",marginBottom:8}}>{i.desc}</div>
+                <span style={{fontSize:10,background:i.color+"18",color:i.color,padding:"2px 8px",borderRadius:6,fontWeight:700}}>Configure</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Prospects({leads, setLeads}) {
+  const [fSeg, setFSeg] = useState("all");
+  const [fSize, setFSize] = useState("all");
+  const [fStage, setFStage] = useState("all");
+  const [fOverdue, setFOverdue] = useState(false);
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [sortBy, setSortBy] = useState("score");
+  const [active, setActive] = useState(null);
+  const PER = 50;
+
+  const upd = (id, field, val) => setLeads(prev => prev.map(l => l.id === id ? {...l, [field]: val} : l));
+
+  const filtered = useMemo(() => {
+    let list = [...leads];
+    if (fSeg !== "all") list = list.filter(l => l.segment === fSeg);
+    if (fSize !== "all") list = list.filter(l => (l.size || "startup") === fSize);
+    if (fStage !== "all") list = list.filter(l => (l.pipeline || "not_contacted") === fStage);
+    if (fOverdue) list = list.filter(l => isOverdue(l));
+    if (search) list = list.filter(l => (l.name + " " + l.company + " " + l.title).toLowerCase().includes(search.toLowerCase()));
+    if (sortBy === "score") list.sort((a,b) => calcScore(b) - calcScore(a));
+    else if (sortBy === "overdue") list.sort((a,b) => (isOverdue(b)?1:0) - (isOverdue(a)?1:0));
+    else list.sort((a,b) => (a.company||"").localeCompare(b.company||""));
+    return list;
+  }, [leads, fSeg, fSize, fStage, fOverdue, search, sortBy]);
+
+  const totalPages = Math.ceil(filtered.length / PER);
+  const pageLeads = filtered.slice((page-1)*PER, page*PER);
+  const overdueCount = leads.filter(l => isOverdue(l)).length;
+
+  return (
+    <div>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",flexWrap:"wrap",gap:12,marginBottom:20}}>
+        <div>
+          <div className="page-title">AIA BrandUp Client Pipeline</div>
+          <div className="page-sub">{leads.length.toLocaleString()} prospects {overdueCount > 0 && <span style={{color:"var(--red)",fontWeight:700}}>-- {overdueCount} overdue</span>}</div>
+        </div>
+        <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+          <input className="inp" placeholder="Search..." value={search} onChange={e => {setSearch(e.target.value); setPage(1);}} style={{width:150,padding:"8px 12px",fontSize:13}}/>
+          <select className="sel" value={fSeg} onChange={e => {setFSeg(e.target.value); setPage(1);}}>
+            <option value="all">All Segments</option>
+            {Object.entries(CLIENT_SEGS).map(([k,v]) => <option key={k} value={k}>{v.icon} {v.label}</option>)}
+          </select>
+          <select className="sel" value={fSize} onChange={e => {setFSize(e.target.value); setPage(1);}}>
+            <option value="all">All Tiers</option>
+            {Object.entries(TIERS).map(([k,v]) => <option key={k} value={k}>{v.icon} {v.label}</option>)}
+          </select>
+          <select className="sel" value={fStage} onChange={e => {setFStage(e.target.value); setPage(1);}}>
+            <option value="all">All Stages</option>
+            {Object.entries(PIPELINE).map(([k,v]) => <option key={k} value={k}>{v.label}</option>)}
+          </select>
+          <select className="sel" value={sortBy} onChange={e => setSortBy(e.target.value)}>
+            <option value="score">Score High-Low</option>
+            <option value="overdue">Overdue First</option>
+            <option value="company">Company A-Z</option>
+          </select>
+          <button className={"btn btn-s btn-sm" + (fOverdue?" active":"")}
+            style={{borderColor:fOverdue?"var(--red)":"var(--border)",color:fOverdue?"var(--red)":"var(--text)",background:fOverdue?"rgba(239,68,68,.1)":"transparent"}}
+            onClick={() => setFOverdue(f => !f)}>Overdue Only</button>
+        </div>
+      </div>
+      <div className="card" style={{padding:0,overflow:"hidden"}}>
+        <div style={{overflowX:"auto"}}>
+          <table className="tbl">
+            <colgroup>
+              <col style={{width:"18%"}}/><col style={{width:"14%"}}/><col style={{width:"14%"}}/><col style={{width:"7%"}}/><col style={{width:"7%"}}/><col style={{width:"8%"}}/><col style={{width:"8%"}}/><col style={{width:"8%"}}/><col style={{width:"8%"}}/><col style={{width:"8%"}}/>
+            </colgroup>
+            <thead>
+              <tr>
+                <th>Prospect</th><th>Links</th><th>Pipeline Stage</th><th>Score</th><th>Tier</th><th>Segment</th><th>Seq Day</th><th>Follow-Up</th><th>Overdue</th><th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {pageLeads.map(ld => {
+                const score = calcScore(ld);
+                const seg = CLIENT_SEGS[ld.segment] || CLIENT_SEGS.general;
+                const tier = TIERS[ld.size || "startup"] || TIERS.startup;
+                const days = daysSince(ld.seqStart);
+                const nf = nextFollowUp(ld);
+                const od = isOverdue(ld);
+                return (
+                  <tr key={ld.id} className={od ? "overdue" : ""}>
+                    <td>
+                      <div style={{fontWeight:700,fontSize:13,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{ld.name || "--"}</div>
+                      <div style={{color:"var(--muted)",fontSize:11,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{ld.title}</div>
+                      <div style={{color:"var(--text)",fontSize:11,fontWeight:700,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{ld.company}</div>
+                    </td>
+                    <td>
+                      <div style={{display:"flex",flexDirection:"column",gap:3}}>
+                        <EditField value={ld.website} placeholder="Website" type="url" onSave={v => upd(ld.id,"website",v)}/>
+                        <EditField value={ld.linkedin} placeholder="LinkedIn" type="url" onSave={v => upd(ld.id,"linkedin",v)}/>
+                        <EditField value={ld.email} placeholder="Email" type="email" onSave={v => upd(ld.id,"email",v)}/>
+                      </div>
+                    </td>
+                    <td><PipelineSelect value={ld.pipeline || "not_contacted"} onChange={v => upd(ld.id,"pipeline",v)}/></td>
+                    <td>
+                      <div style={{fontWeight:800,fontSize:15,color:score>=5?"var(--green)":score>=2?"var(--amber)":"var(--muted)"}}>{score}</div>
+                    </td>
+                    <td><span className="tag" style={{background:tier.color+"15",color:tier.color}}>{tier.label}</span></td>
+                    <td><span className="tag" style={{background:seg.color+"15",color:seg.color,fontSize:9}}>{seg.label.split(" ")[0]}</span></td>
+                    <td>
+                      {ld.seqStart
+                        ? <span style={{fontSize:12,fontWeight:700,color:"var(--accent2)"}}>Day {days}</span>
+                        : <button className="btn btn-s btn-sm" style={{fontSize:10,padding:"3px 7px"}} onClick={() => upd(ld.id,"seqStart",new Date().toISOString().slice(0,10))}>Start</button>
+                      }
+                    </td>
+                    <td>{nf ? <span style={{fontSize:11,color:od?"var(--red)":"var(--muted)",fontWeight:od?700:400}}>Day {nf}</span> : ld.seqStart ? <span style={{fontSize:11,color:"var(--green)"}}>Done</span> : <span style={{color:"var(--muted)",fontSize:11}}>--</span>}</td>
+                    <td>{od ? <span className="badge" style={{background:"rgba(239,68,68,.1)",color:"var(--red)"}}>Overdue</span> : <span style={{color:"var(--muted)",fontSize:11}}>--</span>}</td>
+                    <td><button className="btn btn-p btn-sm" onClick={() => setActive(ld)}>Scripts</button></td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+        <div style={{padding:"12px 20px",borderTop:"1px solid var(--border)",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+          <div style={{color:"var(--muted)",fontSize:13}}>Showing {(page-1)*PER+1}--{Math.min(page*PER,filtered.length)} of {filtered.length.toLocaleString()}</div>
+          <div style={{display:"flex",gap:8,alignItems:"center"}}>
+            <button className="btn btn-s btn-sm" disabled={page===1} onClick={() => setPage(p => p-1)}>Prev</button>
+            <span style={{fontSize:13,fontWeight:700}}>{page}/{totalPages||1}</span>
+            <button className="btn btn-s btn-sm" disabled={page>=totalPages} onClick={() => setPage(p => p+1)}>Next</button>
+          </div>
+        </div>
+      </div>
+      {active && <ScriptPanel lead={active} onClose={() => setActive(null)}/>}
+    </div>
+  );
+}
+
+function Partners({partners, setPartners}) {
+  const [filter, setFilter] = useState("all");
+  const [search, setSearch] = useState("");
+
+  const upd = (id, field, val) => setPartners(prev => prev.map(p => p.id === id ? {...p, [field]: val} : p));
+
+  const filtered = useMemo(() => {
+    let list = [...partners];
+    if (filter !== "all") list = list.filter(p => p.seg === filter);
+    if (search) list = list.filter(p => (p.n + " " + p.c).toLowerCase().includes(search.toLowerCase()));
+    return list;
+  }, [partners, filter, search]);
+
+  return (
+    <div>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",flexWrap:"wrap",gap:12,marginBottom:20}}>
+        <div>
+          <div className="page-title">AIA Brand Partner Tracker</div>
+          <div className="page-sub">{partners.length} partners -- {filtered.length} shown</div>
+        </div>
+        <div style={{display:"flex",gap:8}}>
+          <input className="inp" placeholder="Search..." value={search} onChange={e => setSearch(e.target.value)} style={{width:160,padding:"8px 12px",fontSize:13}}/>
+          <select className="sel" value={filter} onChange={e => setFilter(e.target.value)}>
+            <option value="all">All Categories</option>
+            {Object.entries(PARTNER_SEGS).map(([k,v]) => <option key={k} value={k}>{v.icon} {v.label}</option>)}
+          </select>
+        </div>
+      </div>
+      <div className="card" style={{padding:0,overflow:"hidden"}}>
+        <div style={{overflowX:"auto"}}>
+          <table className="tbl">
+            <colgroup>
+              <col style={{width:"18%"}}/><col style={{width:"14%"}}/><col style={{width:"12%"}}/><col style={{width:"15%"}}/><col style={{width:"10%"}}/><col style={{width:"12%"}}/><col style={{width:"12%"}}/><col style={{width:"7%"}}/>
+            </colgroup>
+            <thead>
+              <tr><th>Partner</th><th>Links</th><th>Category</th><th>Relationship Stage</th><th>Audience</th><th>Collab Type</th><th>Next Action</th><th>DM</th></tr>
+            </thead>
+            <tbody>
+              {filtered.map(p => {
+                const seg = PARTNER_SEGS[p.seg] || PARTNER_SEGS.general;
+                const stage = PARTNER_STAGES[p.partnerStage || "identified"];
+                return (
+                  <tr key={p.id}>
+                    <td>
+                      <div style={{fontWeight:700,fontSize:13,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.n || "--"}</div>
+                      <div style={{color:"var(--muted)",fontSize:11,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.t}</div>
+                      <div style={{fontWeight:700,fontSize:11,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.c}</div>
+                    </td>
+                    <td>
+                      <div style={{display:"flex",flexDirection:"column",gap:3}}>
+                        <EditField value={p.w} placeholder="Website" type="url" onSave={v => upd(p.id,"w",v)}/>
+                        <EditField value={p.li} placeholder="LinkedIn" type="url" onSave={v => upd(p.id,"li",v)}/>
+                        <EditField value={p.e} placeholder="Email" type="email" onSave={v => upd(p.id,"e",v)}/>
+                      </div>
+                    </td>
+                    <td><span className="tag" style={{background:seg.color+"15",color:seg.color,fontSize:9}}>{seg.label}</span></td>
+                    <td>
+                      <select value={p.partnerStage || "identified"} onChange={e => upd(p.id,"partnerStage",e.target.value)}
+                        style={{padding:"4px 8px",background:stage.color+"18",color:stage.color,border:"1px solid "+stage.color+"40",borderRadius:8,fontSize:11,fontWeight:700,cursor:"pointer",outline:"none"}}>
+                        {Object.entries(PARTNER_STAGES).map(([k,v]) => <option key={k} value={k}>{v.label}</option>)}
+                      </select>
+                    </td>
+                    <td><EditField value={p.audienceSize} placeholder="e.g. 500K" onSave={v => upd(p.id,"audienceSize",v)}/></td>
+                    <td>
+                      <select value={p.collabType || "referral"} onChange={e => upd(p.id,"collabType",e.target.value)}
+                        style={{padding:"4px 8px",background:"var(--surface)",border:"1px solid var(--border)",borderRadius:8,fontSize:11,cursor:"pointer",outline:"none",color:"var(--text)"}}>
+                        {["referral","content","integration","co-marketing","design-partner","speaking"].map(t => <option key={t} value={t}>{t}</option>)}
+                      </select>
+                    </td>
+                    <td><EditField value={p.nextAction} placeholder="Next step..." onSave={v => upd(p.id,"nextAction",v)}/></td>
+                    <td>
+                      <CopyBtn text={"Hi " + (p.n ? p.n.split(" ")[0] : "there") + ",\n\nI lead Ashley in Afrika -- we deploy pre-trained remote execution teams for high-growth founders.\n\nGiven " + p.c + " position in the " + seg.label + " space, I would love to explore collaboration.\n\nWorth a brief conversation?\n\nAshley Cleveland, Ashley in Afrika"} label="DM"/>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ContentLib() {
+  const defaults = [
+    {id:"a1",name:"Ops Bottleneck Audit",type:"Lead Magnet",link:"",stage:"Touch 3",desc:"Free audit -- maps where execution gaps cost the most time. Send after positive reply."},
+    {id:"a2",name:"Calendly Booking Link",type:"Booking Link",link:"https://calendly.com/ashleyinafrika",stage:"Touch 2",desc:"Discovery call booking -- embed in voice note follow-up and email CTAs"},
+    {id:"a3",name:"Case Study -- 25 Hours Freed",type:"Case Study",link:"",stage:"Touch 2",desc:"Anonymous SaaS founder freed 25 hours/week in 30 days and onboarded 3 new clients"},
+    {id:"a4",name:"Ashley in Afrika Website",type:"Social",link:"https://ashleyinafrika.com",stage:"All",desc:"Main website -- send prospects here to validate credibility"},
+    {id:"a5",name:"LinkedIn Company Page",type:"Social",link:"https://linkedin.com/company/ashleyinafrika",stage:"All",desc:"Ashley LinkedIn -- prospects check this before replying"},
+    {id:"a6",name:"Execution Pod Overview Deck",type:"Demo",link:"",stage:"Touch 4",desc:"Shows pod structure, timeline, and deliverables. Send when interest is confirmed."},
+  ];
+  const [assets, setAssets] = useState(() => load("aia_assets") || defaults);
+  useEffect(() => { save("aia_assets", assets); }, [assets]);
+
+  return (
+    <div>
+      <div className="page-title">AIA Content and Asset Library</div>
+      <div className="page-sub">All active assets -- AA pulls these instantly during outreach without going to another platform</div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))",gap:16,marginTop:20}}>
+        {assets.map(a => (
+          <div key={a.id} className="card">
+            <div style={{display:"flex",justifyContent:"space-between",marginBottom:8}}>
+              <div>
+                <div style={{fontWeight:700,fontSize:14,marginBottom:4}}>{a.name}</div>
+                <div style={{display:"flex",gap:6}}>
+                  <span className="tag" style={{background:"rgba(124,58,237,.15)",color:"var(--accent)"}}>{a.type}</span>
+                  <span className="tag" style={{background:"rgba(6,182,212,.15)",color:"var(--accent2)"}}>{a.stage}</span>
+                </div>
+              </div>
+              <button onClick={() => setAssets(p => p.filter(x => x.id !== a.id))} style={{background:"none",border:"none",color:"var(--muted)",cursor:"pointer",fontSize:14}}>x</button>
+            </div>
+            <div style={{color:"var(--muted)",fontSize:12,marginBottom:12,lineHeight:1.6}}>{a.desc}</div>
+            <div style={{display:"flex",gap:8}}>
+              {a.link && <a href={a.link} target="_blank" rel="noreferrer" className="btn btn-s btn-sm" style={{textDecoration:"none"}}>Open</a>}
+              {a.link && <CopyBtn text={a.link} label="Copy Link"/>}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function FounderVoice() {
+  const sections = [
+    {title:"One-Line Positioning",content:"We build pre-trained remote execution teams for high-growth founders -- delivering world-class African talent in support, admin, and operations at a fraction of local hiring costs."},
+    {title:"Core Value Proposition",content:"Founders scaling past $500K hit the same wall: ops, admin, and support work does not scale with the business. Hiring locally is expensive and slow. Doing it yourself kills growth.\n\nAshley in Afrika solves this by deploying a pre-trained 3-person remote execution pod -- ready in 2 weeks, for less than one local US hire.\n\nThe founder gets their time back. The business gets execution capacity. Growth happens."},
+    {title:"ICP -- Who We Serve",content:"High-growth founders and operators at:\n- SaaS and Cloud companies\n- FinTech startups\n- E-commerce brands\n- Healthcare tech\n- Marketing agencies\n- Real estate and PropTech\n- Consulting firms\n\nRevenue: $250K-$10M\nTeam size: 2-50 employees\nPrimary pain: Founder bottleneck -- doing everything, ops overwhelm slowing growth."},
+    {title:"Tone of Voice",content:"Warm, peer-to-peer, founder-to-founder. Ashley speaks from experience -- she knows the grind.\n\nNever corporate. Never formal. Always specific to their industry and pain point.\n\nEnergy: encouraging, direct, outcome-focused. Lead with empathy, close with results."},
+    {title:"Ashley Exact Framing -- Use This",content:"You are not hiring a VA. You are deploying a pre-trained execution pod that knows your industry, your tools, and your workflow from day one. Two weeks to launch. Less than a local hire. Built for founders who cannot afford to slow down."},
+    {title:"The African Talent Angle",content:"Ashley in Afrika specifically sources talent from across the African continent -- world-class professionals with strong communication skills, deep work ethic, and genuine commitment to founder success.\n\nThis is the differentiation: not just remote work -- African excellence.\n\nAlways lead with results. The African angle adds depth, never leads."},
+    {title:"Outreach Sequence",content:"Step 1: Initial curiosity DM (LinkedIn or email)\nStep 2: Voice note from Ashley upon positive response\nStep 3: Ops Bottleneck Audit sent as free resource\nStep 4: Discovery call booked via Calendly\n\nFollow-up cadence: Day 1 -- Day 3 -- Day 7 -- Day 14"},
+    {title:"What to Never Say",content:"- Never say virtual assistant -- undersells the offer\n- Never lead with price\n- Never send generic outreach -- always reference their specific industry and pain\n- Never position as freelancers -- they are pre-trained execution teams\n- Never skip specificity -- generic messages get ignored"},
+  ];
+  return (
+    <div>
+      <div className="page-title">Ashley Voice and Positioning Reference</div>
+      <div className="page-sub">AA reference guide -- ensures every message aligns with Ashley brand</div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(340px,1fr))",gap:16,marginTop:20}}>
+        {sections.map(s => (
+          <div key={s.title} className="card">
+            <div style={{fontWeight:800,fontSize:14,marginBottom:10}}>{s.title}</div>
+            <div style={{color:"var(--muted)",fontSize:13,lineHeight:1.8,whiteSpace:"pre-wrap"}}>{s.content}</div>
+            <div style={{marginTop:12}}><CopyBtn text={s.content} label="Copy"/></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function Objections() {
+  const defaults = [
+    {id:"o1",q:"We already have a virtual assistant or EA",a:"What we deliver is different from a traditional VA. Our execution pods are pre-trained on your industry, tools, and workflow from day one -- no 3-month learning curve. You get 3 team members working as a coordinated unit, not a single generalist."},
+    {id:"o2",q:"How do I know the quality will be good?",a:"Every team member goes through our vetting and training program before deployment. We match based on your specific industry and tech stack. You get a 30-day quality guarantee -- if the pod is not performing to your standards in the first 30 days, we replace them at no cost."},
+    {id:"o3",q:"I am worried about communication and time zones",a:"Our pods are trained in async-first communication -- detailed Loom updates, clear task documentation, and proactive status reporting. Most founders say communication actually improves when they work with us because everything is documented. Time zone overlap is built into matching."},
+    {id:"o4",q:"This seems expensive -- what is the ROI?",a:"Compare it to what you are spending now -- your own time on ops work, local contractor costs, or the growth you are leaving on the table. Our pods typically cost less than one local US hire. Founders who work with us get back 15-25 hours per week within the first month."},
+    {id:"o5",q:"I am not sure I have enough work for a full team",a:"That is exactly the right size for us. Our pods flex with your workload and are cross-trained to cover multiple functions. You do not need to have it all figured out before we start."},
+    {id:"o6",q:"I have had bad experiences with remote workers before",a:"We hear this a lot -- and it is usually because the hire was not properly vetted or trained for the role. We select for your specific industry, pre-train on your tools and workflows, and there is an AA Operations team behind every pod. You are not managing alone."},
+    {id:"o7",q:"Can I start with just one person?",a:"Absolutely -- we can start with a single specialist and scale to a pod as you grow. Most founders start with one focused role (support, admin, or ops) and expand once they see the impact."},
+    {id:"o8",q:"How quickly can you get someone started?",a:"Typically 2 weeks from agreement to first day. We handle sourcing, vetting, training, and onboarding. You get a simple onboarding call -- and then they are running."},
+  ];
+  const [objs, setObjs] = useState(() => load("aia_objections") || defaults);
+  const [search, setSearch] = useState("");
+  useEffect(() => { save("aia_objections", objs); }, [objs]);
+
+  const filtered = objs.filter(o => (o.q + " " + o.a).toLowerCase().includes(search.toLowerCase()));
+
+  return (
+    <div>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
+        <div>
+          <div className="page-title">AIA Objection Handling Library</div>
+          <div className="page-sub">Pre-approved responses -- AA responds immediately without escalating</div>
+        </div>
+        <input className="inp" placeholder="Search..." value={search} onChange={e => setSearch(e.target.value)} style={{width:200,padding:"8px 12px",fontSize:13}}/>
+      </div>
+      <div style={{display:"flex",flexDirection:"column",gap:12}}>
+        {filtered.map(o => (
+          <div key={o.id} className="card">
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:10}}>
+              <div style={{fontWeight:700,fontSize:14,color:"var(--red)"}}>"{o.q}"</div>
+              <button onClick={() => setObjs(p => p.filter(x => x.id !== o.id))} style={{background:"none",border:"none",color:"var(--muted)",cursor:"pointer",fontSize:14}}>x</button>
+            </div>
+            <div style={{background:"var(--surface)",border:"1px solid var(--border)",borderRadius:10,padding:"12px",fontSize:13,color:"var(--muted)",lineHeight:1.7,marginBottom:10}}>{o.a}</div>
+            <CopyBtn text={o.a} label="Copy Response"/>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  const [user, setUser] = useState(() => load("aia_user"));
+  const [view, setView] = useState("dashboard");
+  const [leads, setLeads] = useState([]);
+  const [partners, setPartners] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => { if (leads.length > 0) save("aia_clients", leads); }, [leads]);
+  useEffect(() => { if (partners.length > 0) save("aia_partners", partners); }, [partners]);
+
+  useEffect(() => {
+    // Load clients
+    const saved = load("aia_clients");
+    if (saved && saved.length > 0) {
+      let merged = saved.map(l => ({...l, size: l.size || l.sz || "startup", pipeline: l.pipeline || "not_contacted"}));
+      if (typeof EMBEDDED_CLIENTS !== "undefined") {
+        const urlMap = new Map();
+        EMBEDDED_CLIENTS.forEach(p => { if (p.w) urlMap.set((p.c||"").toLowerCase().trim(), p.w); });
+        merged = merged.map(l => {
+          const key = (l.company || "").toLowerCase().trim();
+          return (!l.website && urlMap.has(key)) ? {...l, website: urlMap.get(key)} : l;
+        });
+      }
+      setLeads(merged);
+      setLoading(false);
+    } else if (typeof EMBEDDED_CLIENTS !== "undefined" && EMBEDDED_CLIENTS.length > 0) {
+      const embedded = EMBEDDED_CLIENTS.map((p, i) => ({
+        id: p.id || "aia-" + i,
+        name: p.n, title: p.t, company: p.c, location: p.l,
+        website: p.w || "", linkedin: p.li || "", email: p.e || "",
+        segment: p.seg || "general", size: p.sz || "startup",
+        pipeline: "not_contacted", seqStart: null,
+        signal: p.sig || "", reason: p.r || "",
+      }));
+      setLeads(embedded);
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+
+    // Load partners -- always sync from embedded
+    if (typeof EMBEDDED_PARTNERS !== "undefined" && EMBEDDED_PARTNERS.length > 0) {
+      const embedded = EMBEDDED_PARTNERS.map((p, i) => ({
+        id: p.id || "aia-bp-" + i,
+        n: p.n, t: p.t, c: p.c, l: p.l,
+        w: p.w || "", li: p.li || "", e: p.e || "",
+        seg: p.seg, s: p.s || "New",
+        sig: p.sig || "", r: p.r || "",
+        partnerStage: "identified", audienceSize: "", collabType: "referral", nextAction: "",
+      }));
+      const savedP = load("aia_partners");
+      if (savedP && savedP.length > 0) {
+        const savedMap = new Map(savedP.map(p => [p.id, p]));
+        const merged = embedded.map(ep => {
+          const sv = savedMap.get(ep.id);
+          return sv ? {...ep, partnerStage: sv.partnerStage || "identified", audienceSize: sv.audienceSize || "", collabType: sv.collabType || "referral", nextAction: sv.nextAction || ""} : ep;
+        });
+        setPartners(merged);
+        save("aia_partners", merged);
+      } else {
+        setPartners(embedded);
+        save("aia_partners", embedded);
+      }
+    }
+  }, []);
+
+  const logout = () => { setUser(null); localStorage.removeItem("aia_user"); };
+
+  if (!user) return <Auth onAuth={u => { setUser(u); save("aia_user", u); }}/>;
+
+  const overdueCount = leads.filter(l => isOverdue(l)).length;
+
+  const NAV = [
+    {sec:"Analytics"},
+    {id:"dashboard", label:"Dashboard", icon:"D"},
+    {sec:"Pipeline"},
+    {id:"prospects", label:"BrandUp Clients", icon:"T", badge:leads.length, hotBadge:overdueCount},
+    {id:"partners", label:"Brand Partners", icon:"P", badge:partners.length},
+    {sec:"Resources"},
+    {id:"scripts", label:"Outreach Scripts", icon:"S"},
+    {id:"objections", label:"Objection Library", icon:"O"},
+    {id:"content", label:"Content Library", icon:"C"},
+    {id:"voice", label:"Founder Voice", icon:"V"},
+  ];
+
+  if (loading) return (
+    <div style={{height:"100vh",display:"flex",alignItems:"center",justifyContent:"center",background:"var(--bg)"}}>
+      <div style={{textAlign:"center"}}>
+        <div style={{fontSize:48,marginBottom:12}}>A</div>
+        <h2>Loading AIA OS...</h2>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="app">
+      <button className="logout" onClick={logout}>Logout</button>
+      <div className="sidebar">
+        <div className="sb-brand">
+          <div className="sb-logo">A</div>
+          <div className="sb-name">Ashley in Afrika</div>
+          <div className="sb-sub">Operating System</div>
+        </div>
+        <div style={{padding:"4px 0 8px"}}>
+          {NAV.map((item, i) => item.sec
+            ? <div key={i} className="nav-sec">{item.sec}</div>
+            : (
+              <div key={item.id} className={"nav-item" + (view===item.id?" active":"")} onClick={() => setView(item.id)}>
+                <span style={{fontSize:14,minWidth:18,textAlign:"center"}}>{item.icon}</span>
+                <span>{item.label}</span>
+                {item.badge > 0 && <span className="nb">{item.badge}</span>}
+                {item.hotBadge > 0 && <span className="nb hot">{item.hotBadge}</span>}
+              </div>
+            )
+          )}
+        </div>
+        <div style={{marginTop:"auto",padding:"12px 16px",borderTop:"1px solid var(--border)"}}>
+          <div style={{fontSize:11,color:"var(--muted)"}}>Logged in as</div>
+          <div style={{fontSize:13,fontWeight:700}}>{user.name}</div>
+          <div style={{fontSize:10,color:"var(--accent)",textTransform:"uppercase",letterSpacing:".06em"}}>{user.role}</div>
+        </div>
+      </div>
+      <div className="content">
+        {view === "dashboard" && <Dashboard leads={leads} partners={partners}/>}
+        {view === "prospects" && <Prospects leads={leads} setLeads={setLeads}/>}
+        {view === "partners" && <Partners partners={partners} setPartners={setPartners}/>}
+        {view === "scripts" && (
+          <div>
+            <div className="page-title">AIA Outreach Scripts</div>
+            <div className="page-sub">Go to BrandUp Clients and click Scripts on any lead to generate personalized outreach</div>
+            <div className="card" style={{marginTop:20}}>
+              <div style={{fontWeight:700,fontSize:15,marginBottom:16}}>AIA 3-Step Outreach Sequence</div>
+              {[
+                {step:"Step 1",title:"Initial Curiosity Message (LinkedIn DM or Email)",desc:"Lead with the ops bottleneck problem. Tier-aware: Startup gets founder-to-founder warmth, Growth gets scaling-stage framing, Scale gets peer-executive framing. Never mention pricing. End with a soft 10 to 15 minute ask.",color:"var(--blue)"},
+                {step:"Step 2",title:"Voice Note from Ashley upon positive response",desc:"Ashley records a 60-second voice note. Warm, confident, specific to the founder. Mention one thing you noticed about their company. End with a specific Calendly link ask.",color:"var(--accent)"},
+                {step:"Step 3",title:"Ops Bottleneck Audit or Demo sent once they confirm interest",desc:"Send the free Ops Bottleneck Audit or the Execution Pod Overview Deck. Keep the message short -- they have already expressed interest. Confirm the discovery call time.",color:"var(--green)"},
+              ].map(s => (
+                <div key={s.step} style={{padding:"14px 16px",borderLeft:"3px solid "+s.color,background:"var(--surface)",borderRadius:"0 10px 10px 0",marginBottom:10}}>
+                  <div style={{display:"flex",gap:10,alignItems:"center",marginBottom:6}}>
+                    <span className="tag" style={{background:s.color+"18",color:s.color}}>{s.step}</span>
+                    <span style={{fontWeight:700,fontSize:14}}>{s.title}</span>
+                  </div>
+                  <div style={{color:"var(--muted)",fontSize:13,lineHeight:1.7}}>{s.desc}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        {view === "objections" && <Objections/>}
+        {view === "content" && <ContentLib/>}
+        {view === "voice" && <FounderVoice/>}
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
