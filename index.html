@@ -466,7 +466,7 @@ function ProspectDB({leads,setLeads}){
     <div>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",flexWrap:"wrap",gap:12,marginBottom:20}}>
         <div>
-          <div className="page-title">🎯 WAI Prospect Pipeline</div>
+          <div className="page-title">🎯 AIA BrandUp Client Pipeline</div>
           <div className="page-sub">{leads.length.toLocaleString()} prospects · {filtered.length} shown{overdue_count>0&&<span style={{color:"var(--red)",fontWeight:700}}> · {overdue_count} overdue 🚨</span>}</div>
         </div>
         <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
@@ -591,7 +591,7 @@ function PartnerTracker({partners,setPartners}){
     <div>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",flexWrap:"wrap",gap:12,marginBottom:20}}>
         <div>
-          <div className="page-title">🌍 Brand Partner Tracker</div>
+          <div className="page-title">🌍 AIA Brand Partner Tracker</div>
           <div className="page-sub">{partners.length} partners · {filtered.length} shown</div>
         </div>
         <div style={{display:"flex",gap:8}}>
@@ -881,12 +881,18 @@ function App(){
       setLeads(embedded);setLoading(false);
     } else {setLoading(false)}
 
-    // Load partners
-    const savedP=load("aia_partners");
-    if(savedP&&savedP.length>0){setPartners(savedP)}
-    else if(typeof EMBEDDED_PARTNERS!=="undefined"&&EMBEDDED_PARTNERS.length>0){
-      const ep=EMBEDDED_PARTNERS.map((p,i)=>({id:p.id||`bp-${i}`,n:p.n,t:p.t,c:p.c,l:p.l,w:p.w||"",li:p.li||"",e:p.e||"",seg:p.seg,s:"New",sig:p.sig||"",r:p.r||"",partnerStage:"identified",audienceSize:"",collabType:"referral",nextAction:""}));
-      setPartners(ep);save("aia_partners",ep);
+    // Load partners — always merge from embedded to ensure fresh data
+    if(typeof EMBEDDED_PARTNERS!=="undefined"&&EMBEDDED_PARTNERS.length>0){
+      const embedded=EMBEDDED_PARTNERS.map((p,i)=>({id:p.id||`bp-${i}`,n:p.n,t:p.t,c:p.c,l:p.l,w:p.w||"",li:p.li||"",e:p.e||"",seg:p.seg,s:p.s||"New",sig:p.sig||"",r:p.r||"",partnerStage:"identified",audienceSize:"",collabType:"referral",nextAction:""}));
+      const savedP=load("aia_partners");
+      if(savedP&&savedP.length>0){
+        // Merge: keep saved edits (stage, nextAction, collabType) but use embedded for core data
+        const savedMap=new Map(savedP.map(p=>[p.id,p]));
+        const merged=embedded.map(ep=>{const saved=savedMap.get(ep.id);return saved?{...ep,partnerStage:saved.partnerStage||"identified",audienceSize:saved.audienceSize||"",collabType:saved.collabType||"referral",nextAction:saved.nextAction||""}:ep});
+        setPartners(merged);save("aia_partners",merged);
+      } else {
+        setPartners(embedded);save("aia_partners",embedded);
+      }
     }
   },[]);
 
@@ -910,7 +916,7 @@ function App(){
     {id:"voice",label:"Founder Voice",icon:"📖"},
   ];
 
-  if(loading)return <div style={{height:"100vh",display:"flex",alignItems:"center",justifyContent:"center",background:"var(--bg)"}}><div style={{textAlign:"center"}}><div style={{fontSize:48,marginBottom:12}}>🚀</div><h2>Loading WAI OS...</h2></div></div>;
+  if(loading)return <div style={{height:"100vh",display:"flex",alignItems:"center",justifyContent:"center",background:"var(--bg)"}}><div style={{textAlign:"center"}}><div style={{fontSize:48,marginBottom:12}}>🚀</div><h2>Loading AIA OS...</h2></div></div>;
 
   return(
     <div className="app">
@@ -944,10 +950,10 @@ function App(){
         {view==="partners"&&<PartnerTracker partners={partners} setPartners={setPartners}/>}
         {view==="scripts"&&(
           <div>
-            <div className="page-title">⚡ Outreach Scripts Reference</div>
-            <div className="page-sub">Go to Prospects and click "Scripts" on any lead to generate personalized scripts</div>
+            <div className="page-title">⚡ AIA Outreach Scripts</div>
+            <div className="page-sub">Go to BrandUp Clients and click "Scripts" on any lead to generate personalized scripts</div>
             <div className="card" style={{marginTop:20}}>
-              <div style={{fontWeight:700,fontSize:15,marginBottom:12}}>Quick Reference — WAI 3-Step Sequence</div>
+              <div style={{fontWeight:700,fontSize:15,marginBottom:12}}>AIA Outreach Sequence Reference</div>
               {[
                 {step:"Step 1",title:"Initial Curiosity Message (LinkedIn DM)",desc:"Lead with the rework problem. Size-aware: SME gets founder-to-founder, MME gets growth-stage, BME gets executive framing. Never mention pricing. End with a soft 15-minute ask.",color:"var(--blue)"},
                 {step:"Step 2",title:"Voice Note (from Tim upon positive response)",desc:"Tim records a 60-second voice note. Warm, confident, specific to the firm. Mention one thing you noticed about their firm. Use Tim's quote: 'Getting you a version significantly better than what you were originally handed.'",color:"var(--accent)"},
